@@ -11,10 +11,9 @@ app.use('/',function(req,res,next){
   res.send('heyy');
   var connection = mysql.createConnection({
     host     : 'database-2.csmzzxbw7ojv.us-east-2.rds.amazonaws.com',
-    user     : 'Unified7',
+    user     : 'admin',
     password : 'Unified7!!',
-    port     : 3306,
-    db       : 'university'
+    port     : 3306
   });
   
   connection.connect(function(err) {
