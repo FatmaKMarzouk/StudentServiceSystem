@@ -13,7 +13,8 @@ app.use('/',function(req,res,next){
     host     : 'database-2.csmzzxbw7ojv.us-east-2.rds.amazonaws.com',
     user     : 'Unified7',
     password : 'Unified7!!',
-    port     : 3306
+    port     : 3306,
+    db       : 'university'
   });
   
   connection.connect(function(err) {
