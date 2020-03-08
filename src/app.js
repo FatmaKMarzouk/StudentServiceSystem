@@ -9,13 +9,13 @@ app.set('view engine','ejs');
 app.use('/',function(req,res,next){
   console.log('Request URL :'+ req.url);
   res.send('heyy');
-  var con = mysql.createConnection({
+  /*var con = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
     database: 'addressbook',
   });
-  con.connect();
+  con.connect();*/
 
   next();
 });
