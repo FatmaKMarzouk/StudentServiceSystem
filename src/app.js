@@ -9,13 +9,22 @@ app.set('view engine','ejs');
 app.use('/',function(req,res,next){
   console.log('Request URL :'+ req.url);
   res.send('heyy');
-  /*var con = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'addressbook',
+  var connection = mysql.createConnection({
+    host     : 'database-2.csmzzxbw7ojv.us-east-2.rds.amazonaws.com',
+    user     : 'Unified7',
+    password : 'Unified7!!',
+    port     : 3306
   });
-  con.connect();*/
+  
+  connection.connect(function(err) {
+    if (err) {
+      console.error('Database connection failed: ' + err.stack);
+      return;
+    }
+  
+    console.log('Connected to database.');
+  });
+  
 
   next();
 });
