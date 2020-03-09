@@ -26,6 +26,7 @@ app.use('/',function(req,res,next){
       console.log(err.code);
       console.log(err.fatal);
       console.log(err.sqlState);
+      console.log(err.sqlMessage);
       return;
     }
 
