@@ -23,6 +23,7 @@ app.use('/',function(req,res,next){
   connection.connect(function(err) {
     if (err) {
       console.error('Database connection failed: ' + err.stack);
+      console.log(err.code);
       return;
     }
 
