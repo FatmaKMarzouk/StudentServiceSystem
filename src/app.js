@@ -7,6 +7,7 @@ var RDS_HOSTNAME ='alexuni.csmzzxbw7ojv.us-east-2.rds.amazonaws.com';
 var RDS_USERNAME = 'Unified7';
 var RDS_PASSWORD = 'Unified7!!';
 var RDS_PORT = '3306';
+var RDS_DB_NAME= 'AlexUni';
 app.use('/assets',express.static(__dirname + '/public'));
 app.set('view engine','ejs');
 app.use('/',function(req,res,next){
