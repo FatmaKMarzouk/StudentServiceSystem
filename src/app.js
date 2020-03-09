@@ -25,6 +25,7 @@ app.use('/',function(req,res,next){
       console.error('Database connection failed: ' + err.stack);
       console.log(err.code);
       console.log(err.fatal);
+      console.log(err.sqlState);
       return;
     }
 
