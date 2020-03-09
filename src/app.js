@@ -4,7 +4,7 @@ var app = express ();
 var mysql = require('mysql');
 var port = process.env.PORT || 3000;
 var RDS_HOSTNAME ='alexuni.csmzzxbw7ojv.us-east-2.rds.amazonaws.com';
-var RDS_USERNAME = 'admin';
+var RDS_USERNAME = 'Unified7';
 var RDS_PASSWORD = 'Unified7!!';
 var RDS_PORT = '3306';
 app.use('/assets',express.static(__dirname + '/public'));
