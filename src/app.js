@@ -15,7 +15,6 @@ app.use('/',function(req,res,next){
   console.log('Request URL :'+ req.url);
   res.send('heyy');
   var connection = mysql.createConnection({
-     ssl     : 'Amazon RDS',
     host     : process.env.RDS_HOSTNAME,
     user     : process.env.RDS_USERNAME,
     password : process.env.RDS_PASSWORD,
