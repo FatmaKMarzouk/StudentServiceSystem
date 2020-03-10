@@ -35,7 +35,7 @@ app.use('/',function(req,res,next){
     console.log('Connected to database.');
   });
 
- connection.close();
+ connection.end();
   next();
 });
 
