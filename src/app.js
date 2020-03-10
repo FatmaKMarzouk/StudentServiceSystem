@@ -2,7 +2,7 @@ var express = require('express');
 
 var app = express ();
 var mysql = require('mysql');
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 80;
 var RDS_HOSTNAME ='alexandriauniversity.csmzzxbw7ojv.us-east-2.rds.amazonaws.com';
 var RDS_PORT = '3306';
 var RDS_DB_NAME= 'AlexandriaUniversity';
