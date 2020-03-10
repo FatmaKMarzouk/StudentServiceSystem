@@ -37,7 +37,6 @@ app.use('/',function(req,res,next){
   });
 
  connection.end();
-  next();
 });
 
 app.listen(port); //this function does http.createServer
