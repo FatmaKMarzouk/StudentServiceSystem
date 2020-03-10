@@ -15,27 +15,29 @@ app.use('/',function(req,res,next){
   console.log('Request URL :'+ req.url);
   res.send('heyy');
   var connection = mysql.createConnection({
-    host     : process.env.RDS_HOSTNAME,
-    user     : process.env.RDS_USERNAME,
-    password : process.env.RDS_PASSWORD,
-    port     : process.env.RDS_PORT,
-    dbname   : process.env.RDS_DB_NAME
+    host     : RDS_HOSTNAME,
+    user     : RDS_USERNAME,
+    password : RDS_PASSWORD,
+    port     : RDS_PORT,
+    dbname   : RDS_DB_NAME
   });
 
   connection.connect(function(err) {
     if (err) {
+      console.log({
+        host            : RDS_HOSTNAME,
+        user            : RDS_USERNAME,
+        password        : RDS_PASSWORD,
+        database        : RDS_DB_NAME
+     })
       console.error('Database connection failed: ' + err.stack);
-      console.log(err.code);
-      console.log(err.fatal);
-      console.log(err.sqlState);
-      console.log(err.sqlMessage);
       return;
     }
 
     console.log('Connected to database.');
   });
 
- connection.close();
+ connection.end();
   next();
 });
 
