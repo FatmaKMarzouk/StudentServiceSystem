@@ -3,11 +3,11 @@ var express = require('express');
 var app = express ();
 var mysql = require('mysql');
 var port = process.env.PORT || 3000;
-var RDS_HOSTNAME ='alexuni.csmzzxbw7ojv.us-east-2.rds.amazonaws.com';
-var RDS_USERNAME = 'Unified7';
-var RDS_PASSWORD = 'Unified7!!';
+var RDS_HOSTNAME ='database-2.csmzzxbw7ojv.us-east-2.rds.amazonaws.com';
 var RDS_PORT = '3306';
-var RDS_DB_NAME= 'AlexUni';
+var RDS_DB_NAME= '';
+var RDS_USERNAME = 'admin';
+var RDS_PASSWORD = 'Unified7!!';
 app.use('/assets',express.static(__dirname + '/public'));
 app.set('view engine','ejs');
 app.use('/',function(req,res,next){
