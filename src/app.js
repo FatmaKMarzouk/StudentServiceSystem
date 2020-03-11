@@ -15,6 +15,7 @@ console.log('hana');
 app.use('/',function(req,res,next){
   console.log('Request URL :'+ req.url);
   res.send('heyy');
+  res.send('hii');
   var connection = mysql.createConnection({
     host     : RDS_HOSTNAME,
     user     : RDS_USERNAME,
