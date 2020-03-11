@@ -11,6 +11,7 @@ var RDS_PASSWORD = 'Unified7!!';
 app.use('/assets',express.static(__dirname + '/public'));
 app.set('view engine','ejs');
 console.log('hi');
+console.log('hana');
 app.use('/',function(req,res,next){
   console.log('Request URL :'+ req.url);
   res.send('heyy');
