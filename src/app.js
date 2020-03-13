@@ -10,8 +10,8 @@ var RDS_USERNAME = "Unified7";
 var RDS_PASSWORD = "Unified7!!";
 app.set("view engine", "ejs");
 
-var login = require("./routes/login")
-app.use('/',login);
+var routes = require("./routes/index");
+var login = require("./routes/login");
 
 var connection = mysql.createConnection({
   host: RDS_HOSTNAME,
@@ -28,4 +28,12 @@ connection.connect(function(err) {
   console.log("Connected to database.");
 });
 
+app.use(function(req,res,next){
+    req.connection = connection;
+    next();
+});
+app.use('/',routes);
+app.use('/login',login);
+
 app.listen(port); //this function does http.createServer
+module.exports = app;

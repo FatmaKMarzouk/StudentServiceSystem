@@ -14,11 +14,11 @@ app.use(session({
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
-router.get('/', function(request, response) {
+router.get('/', function(request, response,next) {
 	response.sendFile(__dirname+'/login.html');
 });
 
-app.post('/auth', function(request, response) {
+router.post('/auth', function(request, response) {
 	var username = request.body.username;
 	var password = request.body.password;
 	if (username && password) {
