@@ -1,5 +1,4 @@
 var express = require("express");
-
 var app = express();
 var mysql = require("mysql");
 var port = process.env.PORT || 3000;
@@ -9,10 +8,10 @@ var RDS_PORT = "3306";
 var RDS_DB_NAME = "AlexUni";
 var RDS_USERNAME = "Unified7";
 var RDS_PASSWORD = "Unified7!!";
-app.use("/assets", express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
-console.log("hialy");
-console.log(__dirname + '/login.js');
+
+var login = require("./routes/login")
+app.use('/',login);
 
 var connection = mysql.createConnection({
   host: RDS_HOSTNAME,
@@ -23,28 +22,10 @@ var connection = mysql.createConnection({
 });
 connection.connect(function(err) {
   if (err) {
-    console.log({
-      host: RDS_HOSTNAME,
-      user: RDS_USERNAME,
-      password: RDS_PASSWORD,
-      database: RDS_DB_NAME
-    });
     console.error("Database connection failed: " + err.stack);
     return;
   }
-
   console.log("Connected to database.");
-
-  console.log("Connected to database hana.");
-});
-
-
-app.use("/", function(req, res, js) {
-  console.log('da5l app.use');
- res.sendFile(path.join(__dirname + '/login.html'));
- var test = require('./login.js');
- /* var login = require('./login.js');
-  res.redirect('./login.js');*/
 });
 
 app.listen(port); //this function does http.createServer
