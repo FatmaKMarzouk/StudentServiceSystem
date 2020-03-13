@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
 router.get('/', function(request, response) {
-	response.sendFile('F:/Graduation Project/StudentServiceSystem/src/login.html');
+	response.sendFile(__dirname+'/login.html');
 });
 
 app.post('/auth', function(request, response) {
