@@ -3,11 +3,6 @@ var app = express();
 var mysql = require("mysql");
 var port = process.env.PORT || 3000;
 var path= require('path');
-// var RDS_HOSTNAME = "alexuni.csmzzxbw7ojv.us-east-2.rds.amazonaws.com";
-// var RDS_PORT = "3306";
-// var RDS_DB_NAME = "AlexUni";
-// var RDS_USERNAME = "Unified7";
-// var RDS_PASSWORD = "Unified7!!";
 app.set("view engine", "ejs");
 
 var routes = require("./routes/index");
