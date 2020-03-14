@@ -18,7 +18,7 @@ router.use(bodyParser.json());
 router.get('/', function(request, response,next) {
 	response.sendFile(__dirname+'/login.html');
 });
-var connection = require('F:/Graduation Project/StudentServiceSystem/src/controllers/dbconnection');
+var connection = require('../controllers/dbconnection');
 router.post('/auth', function(request, response) {
 	console.log('its fatma');
 	var username = request.body.username;
