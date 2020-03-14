@@ -20,10 +20,17 @@ router.get('/', function(request, response,next) {
 
 router.post('/auth', function(request, response) {
 	console.log('wkenklwf');
+	var mysqlConf = require('F:/Graduation Project/StudentServiceSystem/src/controllers/dbconnection').mysql_pool;
+	mysqlConf.getConnection(function (err, connection) {
+	      console.log('hello');
+	      connection.query('SELECT FROM Students WHERE Username=1' ,[{FIELDS}], function (err, rows) {
+	            connection.release();   //---> don't forget the connection release.
+	        });
+	   });
 	var username = request.body.username;
 	var password = request.body.password;
 	if (username && password) {
-		connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [Username, Password], function(error, results, fields) {
+		connection.query('SELECT * FROM Students WHERE Username = ? AND Password = ?', [username, password], function(error, results, fields) {
 			if (results.length > 0) {
 				request.session.loggedin = true;
 				request.session.username = username;
