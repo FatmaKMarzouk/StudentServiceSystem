@@ -13,7 +13,7 @@ app.set("view engine", "ejs");
 var routes = require("./routes/index");
 var login = require("./routes/login");
 
-var connection = mysql.createConnection({
+connection = mysql.createConnection({
   host: RDS_HOSTNAME,
   user: RDS_USERNAME,
   password: RDS_PASSWORD,
