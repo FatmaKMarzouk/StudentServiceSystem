@@ -5,14 +5,28 @@ var RDS_DB_NAME = "AlexUni";
 var RDS_USERNAME = "Unified7";
 var RDS_PASSWORD = "Unified7!!";
 
-var config;
-config = {
-    mysql_pool : mysql.createPool({
-        host     : RDS_HOSTNAME,
-        port     : RDS_PORT,
-        user     : RDS_USERNAME,
-        password : RDS_PASSWORD,
-        database : RDS_DB_NAME
-    })
-};
-module.exports = config;
+var mysql = require('mysql');
+var db;
+
+function connectDatabase() {
+    if (!db) {
+        db = mysql.createConnection({
+            host: RDS_HOSTNAME,
+            user: RDS_USERNAME,
+            password: RDS_PASSWORD,
+            port: RDS_PORT,
+            dbname: RDS_DB_NAME
+        });
+
+        db.connect(function(err){
+            if(!err) {
+                console.log('Database is connected!');
+            } else {
+                console.log('Error connecting database!');
+            }
+        });
+    }
+    return db;
+}
+
+module.exports = connectDatabase();

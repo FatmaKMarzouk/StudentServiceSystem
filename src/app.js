@@ -9,11 +9,9 @@ var routes = require("./routes/index");
 var login = require("./routes/login");
 
 
-var mysqlConf = require('F:/Graduation Project/StudentServiceSystem/src/controllers/dbconnection').mysql_pool;
-mysqlConf.getConnection(function (err, connection) {
-      console.log('hello');
-      console.log(mysqlConf.host);
-   });
+var db = require('F:/Graduation Project/StudentServiceSystem/src/controllers/dbconnection');
+db.query('SELECT * FROM Students WHERE Username = 1');
+
 // connection = mysql.createConnection({
 //   host: RDS_HOSTNAME,
 //   user: RDS_USERNAME,
