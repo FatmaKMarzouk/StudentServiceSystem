@@ -5,25 +5,25 @@ module.exports = router;
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
-var app = express();
-app.use(session({
+router.use(session({
 	secret: 'secret',
 	resave: true,
 	saveUninitialized: true
 }));
-app.use(bodyParser.urlencoded({extended : true}));
-app.use(bodyParser.json());
+router.use(bodyParser.urlencoded({extended : true}));
+router.use(bodyParser.json());
 
 router.get('/', function(request, response,next) {
 	response.sendFile(__dirname+'/login.html');
 });
 
 router.post('/auth', function(request, response) {
-	console.log('wkenklwf');
+	console.log('its fatma');
+	console.log(connection.host);
 	var username = request.body.username;
 	var password = request.body.password;
 	if (username && password) {
-		connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [Username, Password], function(error, results, fields) {
+		connection.query('SELECT * FROM Students WHERE Username = ? AND Password = ?', [username, password], function(error, results, fields) {
 			if (results.length > 0) {
 				request.session.loggedin = true;
 				request.session.username = username;
