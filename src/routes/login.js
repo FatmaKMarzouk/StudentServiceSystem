@@ -10,21 +10,23 @@ router.use(session({
 	resave: true,
 	saveUninitialized: true
 }));
+var mysql = require("mysql");
+
 router.use(bodyParser.urlencoded({extended : true}));
 router.use(bodyParser.json());
 
 router.get('/', function(request, response,next) {
 	response.sendFile(__dirname+'/login.html');
 });
-
+var connection = require('F:/Graduation Project/StudentServiceSystem/src/controllers/dbconnection');
 router.post('/auth', function(request, response) {
 	console.log('its fatma');
-	console.log(connection.host);
 	var username = request.body.username;
 	var password = request.body.password;
 	if (username && password) {
+		connection.query('USE AlexUni');
 		connection.query('SELECT * FROM Students WHERE Username = ? AND Password = ?', [username, password], function(error, results, fields) {
-			if (results.length > 0) {
+			if (results.length>0) {
 				request.session.loggedin = true;
 				request.session.username = username;
 				response.redirect('/home');
