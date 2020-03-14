@@ -32,8 +32,7 @@ app.use(function(req,res,next){
     req.connection = connection;
     next();
 });
-app.use('/',routes);
-app.use('/login',login);
+app.use(login);
 
 app.listen(port); //this function does http.createServer
 module.exports = app;

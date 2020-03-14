@@ -19,6 +19,7 @@ router.get('/', function(request, response,next) {
 });
 
 router.post('/auth', function(request, response) {
+	console.log('wkenklwf');
 	var username = request.body.username;
 	var password = request.body.password;
 	if (username && password) {
