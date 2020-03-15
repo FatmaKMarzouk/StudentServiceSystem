@@ -3,12 +3,13 @@ var app = express();
 var mysql = require("mysql");
 var port = process.env.PORT || 3000;
 var path= require('path');
-app.set("view engine", "ejs");
 
-
+var home = require("./routes/home")
 var login = require("./routes/login");
 var sec = require("./routes/sec");
+
 app.use(login);
-app.use(sec);
+app.use(home);
+
 app.listen(port); //this function does http.createServer
 module.exports = app;

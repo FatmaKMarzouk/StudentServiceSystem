@@ -5,11 +5,7 @@ module.exports = router;
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
-router.use(session({
-	secret: 'secret',
-	resave: true,
-	saveUninitialized: true
-}));
+
 var mysql = require("mysql");
 console.log("connection 2")
 router.use(bodyParser.urlencoded({extended : true}));

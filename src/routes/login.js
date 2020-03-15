@@ -53,8 +53,7 @@ router.post('/auth', function(request, response) {
 				if (results.length>0) {
 					request.session.loggedin = true;
 					request.session.username = username;
-					response.redirect('/sec');
-
+					response.redirect('/home');
 					} else {
 					response.send('wrong secretary account');
 				}
