@@ -42,10 +42,6 @@ router.post('/auth', function(request, response) {
 			} else {
 				response.send('Incorrect Username and/or Password!');
 			}
-			
-
-
-
 		});
 		 }
 		 else if (checkboxSec){
@@ -57,13 +53,8 @@ router.post('/auth', function(request, response) {
 					} else {
 					response.send('wrong secretary account');
 				}
-				
-
-
 
 			});
-
-
 
 		 }
 
