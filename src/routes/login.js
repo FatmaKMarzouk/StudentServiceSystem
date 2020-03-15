@@ -21,7 +21,7 @@ var connection = require('../controllers/dbconnection');
 
 router.post('/auth', function(request, response) {
 	console.log('its fatma');
-	
+
 	var checkboxStd = request.body.std;
 	var checkboxSec = request.body.sec;
 	var username = request.body.username;
@@ -43,9 +43,9 @@ router.post('/auth', function(request, response) {
 				response.send('Incorrect Username and/or Password!');
 			}
 			response.end();
-			
-		
-		
+
+
+
 		});
 		 }
 		 else if (checkboxSec){
@@ -54,20 +54,20 @@ router.post('/auth', function(request, response) {
 					request.session.loggedin = true;
 					request.session.username = username;
 					response.redirect('/sec');
-					
+
 					} else {
 					response.send('wrong secretary account');
 				}
 				response.end();
-				
-			
-			
+
+
+
 			});
 
-			
+
 
 		 }
-		  
+
 	} else {
 		response.send('Please enter Username and Password!');
 		response.end();
