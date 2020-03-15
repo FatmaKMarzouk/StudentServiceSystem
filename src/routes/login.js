@@ -10,7 +10,6 @@ router.use(session({
 	resave: true,
 	saveUninitialized: true
 }));
-var mysql = require("mysql");
 
 router.use(bodyParser.urlencoded({extended : true}));
 router.use(bodyParser.json());
@@ -19,6 +18,7 @@ router.get('/', function(request, response,next) {
 	response.sendFile(__dirname+'/login.html');
 });
 var connection = require('../controllers/dbconnection');
+
 router.post('/auth', function(request, response) {
 	console.log('its fatma');
 	
@@ -74,13 +74,5 @@ router.post('/auth', function(request, response) {
 	}
 });
 
-/*app.get('/home', function(request, response) {
-	if (request.session.loggedin) {
-		response.send('Welcome back, ' + request.session.username + '!');
-	} else {
-		response.send('Please login to view this page!');
-	}
-	response.end();
-});*/
 
 //app.listen(3000);

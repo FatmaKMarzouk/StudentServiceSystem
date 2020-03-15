@@ -5,7 +5,7 @@ var port = process.env.PORT || 3000;
 var path= require('path');
 app.set("view engine", "ejs");
 
-var routes = require("./routes/index");
+
 var login = require("./routes/login");
 var sec = require("./routes/sec");
 app.use(login);
