@@ -10,7 +10,6 @@ router.use(session({
 	resave: true,
 	saveUninitialized: true
 }));
-var mysql = require("mysql");
 
 router.use(bodyParser.urlencoded({extended : true}));
 router.use(bodyParser.json());
@@ -19,13 +18,22 @@ router.get('/', function(request, response,next) {
 	response.sendFile(__dirname+'/login.html');
 });
 var connection = require('../controllers/dbconnection');
+
 router.post('/auth', function(request, response) {
 	console.log('its fatma');
 	var username = request.body.username;
 	var password = request.body.password;
+	var role = request.body.role;
+	console.log(role);
 	if (username && password) {
 		connection.query('USE AlexUni');
-		connection.query('SELECT * FROM Students WHERE Username = ? AND Password = ?', [username, password], function(error, results, fields) {
+		if(role=='Students'){
+		var query='SELECT * FROM Students WHERE Username = ? AND Password = ?';
+		}
+		if(role=='Secretary'){
+		var query='SELECT * FROM Secretary WHERE Username = ? AND Password = ?';
+		}
+		connection.query(query, [username, password], function(error, results, fields) {
 			if (results.length>0) {
 				request.session.loggedin = true;
 				request.session.username = username;
@@ -41,13 +49,5 @@ router.post('/auth', function(request, response) {
 	}
 });
 
-/*app.get('/home', function(request, response) {
-	if (request.session.loggedin) {
-		response.send('Welcome back, ' + request.session.username + '!');
-	} else {
-		response.send('Please login to view this page!');
-	}
-	response.end();
-});*/
 
 //app.listen(3000);
