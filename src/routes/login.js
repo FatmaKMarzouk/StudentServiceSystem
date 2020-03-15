@@ -28,7 +28,7 @@ router.post('/auth', function(request, response) {
 	var password = request.body.password;
 	if (checkboxSec && checkboxStd){
 		response.send('Please choose only one box');
-		response.end();
+		
 
 	 }
 	else if (username && password) {
@@ -42,7 +42,7 @@ router.post('/auth', function(request, response) {
 			} else {
 				response.send('Incorrect Username and/or Password!');
 			}
-			response.end();
+			
 
 
 
@@ -53,11 +53,11 @@ router.post('/auth', function(request, response) {
 				if (results.length>0) {
 					request.session.loggedin = true;
 					request.session.username = username;
-					response.redirect('/home');
+					response.redirect('/homesec');
 					} else {
 					response.send('wrong secretary account');
 				}
-				response.end();
+				
 
 
 
@@ -69,7 +69,7 @@ router.post('/auth', function(request, response) {
 
 	} else {
 		response.send('Please enter Username and Password!');
-		response.end();
+		
 	}
 });
 

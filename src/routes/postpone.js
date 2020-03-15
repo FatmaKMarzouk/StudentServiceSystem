@@ -7,12 +7,12 @@ var bodyParser = require('body-parser');
 var path = require('path');
 
 var mysql = require("mysql");
-console.log("connection 2")
+
 router.use(bodyParser.urlencoded({extended : true}));
 router.use(bodyParser.json());
 
-router.get('/sec', function(request, response,next) {
-	response.sendFile(__dirname+'/sec.html');
+router.get('/postpone', function(request, response,next) {
+	response.sendFile(__dirname+'/postpone.html');
     console.log("connection 3")
 });
 var connection = require('../controllers/dbconnection');
