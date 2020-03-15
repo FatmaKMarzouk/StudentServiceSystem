@@ -21,19 +21,20 @@ var connection = require('../controllers/dbconnection');
 
 router.post('/auth', function(request, response) {
 	console.log('its fatma');
+	
+	var checkboxStd = request.body.std;
+	var checkboxSec = request.body.sec;
 	var username = request.body.username;
 	var password = request.body.password;
-	var role = request.body.role;
-	console.log(role);
-	if (username && password) {
+	if (checkboxSec && checkboxStd){
+		response.send('Please choose only one box');
+		response.end();
+
+	 }
+	else if (username && password) {
 		connection.query('USE AlexUni');
-		if(role=='Students'){
-		var query='SELECT * FROM Students WHERE Username = ? AND Password = ?';
-		}
-		if(role=='Secretary'){
-		var query='SELECT * FROM Secretary WHERE Username = ? AND Password = ?';
-		}
-		connection.query(query, [username, password], function(error, results, fields) {
+	     if(checkboxStd){
+		connection.query('SELECT * FROM Students WHERE Username = ? AND Password = ?', [username, password], function(error, results, fields) {
 			if (results.length>0) {
 				request.session.loggedin = true;
 				request.session.username = username;
@@ -42,7 +43,31 @@ router.post('/auth', function(request, response) {
 				response.send('Incorrect Username and/or Password!');
 			}
 			response.end();
+			
+		
+		
 		});
+		 }
+		 else if (checkboxSec){
+			connection.query('SELECT * FROM Secretary WHERE ID = ? AND Password = ?', [username, password], function(error, results, fields) {
+				if (results.length>0) {
+					request.session.loggedin = true;
+					request.session.username = username;
+					response.redirect('/sec');
+					
+					} else {
+					response.send('wrong secretary account');
+				}
+				response.end();
+				
+			
+			
+			});
+
+			
+
+		 }
+		  
 	} else {
 		response.send('Please enter Username and Password!');
 		response.end();
