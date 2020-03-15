@@ -21,10 +21,19 @@ router.get('/', function(request, response,next) {
 var connection = require('../controllers/dbconnection');
 router.post('/auth', function(request, response) {
 	console.log('its fatma');
+	
+	var checkboxStd = request.body.std;
+	var checkboxSec = request.body.sec;
 	var username = request.body.username;
 	var password = request.body.password;
-	if (username && password) {
+	if (checkboxSec && checkboxStd){
+		response.send('Please choose only one box');
+		response.end();
+
+	 }
+	else if (username && password) {
 		connection.query('USE AlexUni');
+	     if(checkboxStd){
 		connection.query('SELECT * FROM Students WHERE Username = ? AND Password = ?', [username, password], function(error, results, fields) {
 			if (results.length>0) {
 				request.session.loggedin = true;
@@ -34,7 +43,31 @@ router.post('/auth', function(request, response) {
 				response.send('Incorrect Username and/or Password!');
 			}
 			response.end();
+			
+		
+		
 		});
+		 }
+		 else if (checkboxSec){
+			connection.query('SELECT * FROM Secretary WHERE ID = ? AND Password = ?', [username, password], function(error, results, fields) {
+				if (results.length>0) {
+					request.session.loggedin = true;
+					request.session.username = username;
+					response.redirect('/sec');
+					
+					} else {
+					response.send('wrong secretary account');
+				}
+				response.end();
+				
+			
+			
+			});
+
+			
+
+		 }
+		  
 	} else {
 		response.send('Please enter Username and Password!');
 		response.end();

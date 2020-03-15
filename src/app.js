@@ -7,8 +7,8 @@ app.set("view engine", "ejs");
 
 var routes = require("./routes/index");
 var login = require("./routes/login");
-
+var sec = require("./routes/sec");
 app.use(login);
-
+app.use(sec);
 app.listen(port); //this function does http.createServer
 module.exports = app;
