@@ -18,7 +18,15 @@ router.get('/homesec', function(request, response,next) {
     
     if (request.session.loggedin) {
       response.sendFile(__dirname+'/homesec.html');
-   
+      router.post('/postpone', function(request, response) {
+
+        response.redirect('/postpone');
+      });
+      
+      
+      
+      
+      
   } else {
     response.send('Please login to view this page!');
   }

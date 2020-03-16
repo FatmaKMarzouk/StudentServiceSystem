@@ -18,9 +18,24 @@ router.get('/postpone', function(request, response,next) {
 var connection = require('../controllers/dbconnection');
 
 router.post('/upload', function(request, response) {
+    
+    connection.query('USE AlexUni');
+    stdId = request.body.stdId;
+    connection.query('SELECT * FROM Students WHERE ID = ? ', [stdId], function(error, results, fields) {
+      
+        if (results.length>0) {
+           connection.query("UPDATE Students SET armypostpone = b'1' WHERE ID = ? ",[stdId], function(error, result,fields){
 
-    console.log("heey")
-    response.send('File Uploaded');
-		response.end();
+            if (error) throw error;
+             response.send('Info updated');
+
+           });
+            
+        } else {
+            response.send('Please enter a recorded ID');
+        }
+            });
+    //response.send('File Uploaded');
+		//response.end();
 
 });
