@@ -18,7 +18,7 @@ var connection = require('../controllers/dbconnection');
 
 router.post('/enroll', function(request, response) {
 	console.log('its anhoon');
-	response.send('3aaaaaaaaaaaaaaaaaaa');
+	response.send('Student has been added successfully');
 
 	var nameen = request.body.nameen;
 	var namear = request.body.namear;
@@ -39,15 +39,20 @@ router.post('/enroll', function(request, response) {
 
 	//if (username && password) {
 		connection.query('USE AlexUni');
-		console.log(nameen);
-		//connection.query('INSERT INTO Students (NameEn,NameAr,emergencyContact,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Username,Password) VALUES [nameen, namear, emergencycontact, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, username, password] ',  function(error, results, fields){
+		//console.log(nameen);
+		//connection.query('INSERT INTO Students (NameEn,NameAr,emergencyContact,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Username,Password) VALUES (nameen, namear, emergencycontact, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, username, password) ',  function(error, results, fields){
+
+		//connection.query('INSERT INTO Students NameEn = "hamada" ',  function(error, results, fields){
 
 		//NameEn,Namear,emergencyContact,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Username,Password
-		connection.query('INSERT INTO Students WHERE NameEn  = ? AND Namear  = ? AND emergencyContact  = ?  AND medicalCondition  = ? AND Email  = ? AND Nationality  = ? AND Birthdate  = ? AND SSN  = ? AND phoneNumber  = ? AND Address  = ? AND Username  = ? AND Password  = ? AND Gender  = ?', [nameen, namear, emergencycontact, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, username, password, gender],  function(error, results, fields) {
-		// 	if (results.length>0) {
-		// 		console.log(results);
-		// 		response.redirect('/home');
-		// 	} else {
+		//connection.query('INSERT INTO Students NameEn  = "booo"  AND Namear  = "booo" AND emergencyContact  = "booo"  AND medicalCondition  = "booo" AND Email  = "booo" AND Nationality  = "booo" AND Birthdate  = "booo" AND SSN  = "booo" AND phoneNumber  = "booo" AND Address  = "booo" AND Username  = "booo" AND Password  = "asdasd" AND Gender  = "femal"',  function(error, results, fields) {
+		connection.query('INSERT INTO Students NameEn  = ? AND Namear  = ? AND emergencyContact  = ?  AND medicalCondition  = ? AND Email  = ? AND Nationality  = ? AND Birthdate  = ? AND SSN  = ? AND phoneNumber  = ? AND Address  = ? AND Username  = ? AND Password  = ? AND Gender  = ?', [nameen, namear, emergencycontact, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, username, password, gender],  function(error, results, fields) {
+			console.log(results);
+			// if (results.length>0) {
+			// 	console.log(results);
+			// 	//response.redirect('/home');
+			// } 
+			// else {
 		// 		response.send('Incorrect data');
 		// 	}
 		// 	response.end();
