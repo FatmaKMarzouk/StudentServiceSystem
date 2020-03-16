@@ -16,24 +16,19 @@ router.use(bodyParser.json());
 
 router.get('/', function(request, response,next) {
 	response.sendFile(__dirname+'/login.html');
+
 });
 var connection = require('../controllers/dbconnection');
 
-router.post('/auth', function(request, response) {
+router.post('/auth', function(request, response,next) {
 	console.log('its fatma');
 
-	var checkboxStd = request.body.std;
-	var checkboxSec = request.body.sec;
+	var role = request.body.role;
 	var username = request.body.username;
 	var password = request.body.password;
-	if (checkboxSec && checkboxStd){
-		response.send('Please choose only one box');
-		response.end();
-
-	 }
-	else if (username && password) {
+	if (username && password) {
 		connection.query('USE AlexUni');
-	     if(checkboxStd){
+	     if(role=='student'){
 		connection.query('SELECT * FROM Students WHERE Username = ? AND Password = ?', [username, password], function(error, results, fields) {
 			if (results.length>0) {
 				request.session.loggedin = true;
@@ -42,13 +37,12 @@ router.post('/auth', function(request, response) {
 			} else {
 				response.send('Incorrect Username and/or Password!');
 			}
-			response.end();
 
 
 
 		});
 		 }
-		 else if (checkboxSec){
+		 else if (role=='secretary'){
 			connection.query('SELECT * FROM Secretary WHERE ID = ? AND Password = ?', [username, password], function(error, results, fields) {
 				if (results.length>0) {
 					request.session.loggedin = true;
@@ -57,7 +51,6 @@ router.post('/auth', function(request, response) {
 					} else {
 					response.send('wrong secretary account');
 				}
-				response.end();
 
 
 

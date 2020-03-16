@@ -12,10 +12,10 @@ router.use(bodyParser.json());
 
 router.get('/home', function(request, response,next) {
   if (request.session.loggedin) {
-    response.send('Welcome back, ' + request.session.username + '!');
+      response.sendFile(__dirname+'/home.html');
   } else {
     response.send('Please login to view this page!');
   }
-  response.end();
+
 });
 var connection = require('../controllers/dbconnection');
