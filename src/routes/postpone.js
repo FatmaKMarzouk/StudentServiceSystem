@@ -22,7 +22,7 @@ router.post('/upload', function(request, response) {
     connection.query('USE AlexUni');
     stdId = request.body.stdId;
     connection.query('SELECT * FROM Students WHERE ID = ? ', [stdId], function(error, results, fields) {
-      
+        
         if (results.length>0) {
            connection.query("UPDATE Students SET armypostpone = b'1' WHERE ID = ? ",[stdId], function(error, result,fields){
 
