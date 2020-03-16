@@ -38,10 +38,24 @@
 	<body>
 		<div class="login-form">
 			<h1>Enrolling a student</h1>
-			<form action="enroll" method="POST">
-				<input type="text" name="username" placeholder="Username" required>
-				<input type="password" name="password" placeholder="Password" required>
-				<input type="submit">
+			<form action="/enroll" method="POST">
+				<input type="text" name="nameen" placeholder="nameen" required>
+				<input type="text" name="namear" placeholder="namear" required>
+				<input type="text" name="emergencycontact" placeholder="emergencycontact" required>
+				<input type="text" name="medicalcondition" placeholder="medicalcondition" >
+				<input type="email" name="email" placeholder="email" required>
+				<input type="text" name="nationality" placeholder="nationality" required>
+				<input type="date" name="birthdate" placeholder="birthdate" required>
+				<input type="text" name="ssn" placeholder="ssn" required>
+				<input type="text" name="phonenumber" placeholder="phonenumber" required>
+				<input type="text" name="address" placeholder="address" required>
+				<input type="text" name="username" placeholder="username" required>
+				<input type="text" name="password" placeholder="password" required>
+				<input type="text" name="gender" placeholder="gender" required>
+				<input type="file" name="birthCerftificate" placeholder="birthCerftificate">
+				<input type="file" name="Nationalid" placeholder="Nationalid">
+				<input type="file" name="NominationCard" placeholder="NominationCard">
+				<input type="submit" value="Enroll student">
 			</form>
 		</div>
 	</body>
