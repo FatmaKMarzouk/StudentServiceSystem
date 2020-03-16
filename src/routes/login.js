@@ -37,9 +37,6 @@ router.post('/auth', function(request, response,next) {
 			} else {
 				response.send('Incorrect Username and/or Password!');
 			}
-
-
-
 		});
 		 }
 		 else if (role=='secretary'){
