@@ -47,22 +47,17 @@ router.post('/auth', function(request, response,next) {
 				if (results.length>0) {
 					request.session.loggedin = true;
 					request.session.username = username;
-					response.redirect('/home');
+					response.redirect('/homesec');
 					} else {
 					response.send('wrong secretary account');
 				}
-
-
-
 			});
-
-
 
 		 }
 
 	} else {
 		response.send('Please enter Username and Password!');
-		response.end();
+
 	}
 });
 
