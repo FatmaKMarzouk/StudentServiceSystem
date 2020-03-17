@@ -11,13 +11,13 @@ router.use(bodyParser.json());
 
 router.get('/enrollement', function(request, response,next) {
 	response.sendFile(__dirname+'/enrollement.html');
-	console.log('its anhoon11');
+	//console.log('its anhoon11');
 });
 
 var connection = require('../controllers/dbconnection');
 
 router.post('/enroll', function(request, response) {
-	console.log('its anhoon');
+	//console.log('its anhoon');
 	response.send('Student has been added successfully');
 
 	var nameen = request.body.nameen;
@@ -33,35 +33,18 @@ router.post('/enroll', function(request, response) {
 	var username = request.body.username;
 	var password = request.body.password;
 	var gender = request.body.gender;
+	var program = request.body.program;
+	var faculty = request.body.faculty;
 	var birthCerftificate = request.body.birthCerftificate;
-	var Nationalid = request.body.Nationalid;
-	var NominationCard = request.body.NominationCard;
+	var nationalid = request.body.nationalid;
+	var nominationCard = request.body.nominationCard;
 
-	//if (username && password) {
+	
 		connection.query('USE AlexUni');
-		//console.log(nameen);
-		//connection.query('INSERT INTO Students (NameEn,NameAr,emergencyContact,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Username,Password) VALUES (nameen, namear, emergencycontact, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, username, password) ',  function(error, results, fields){
+		//connection.query('INSERT INTO Students (NameEn,NameAr,emergencyContact,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Username,Password,Faculty,Program) VALUES (nameen, namear, emergencycontact, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, username, password,faculty,program) ',  function(error, results, fields){
+		connection.query('INSERT INTO Students (NameEn,NameAr,emergencyContact,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Username,Password,Faculty,Program) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ',[nameen, namear, emergencycontact, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, username, password,faculty,program] ,  function(error, results, fields){
 
-		//connection.query('INSERT INTO Students NameEn = "hamada" ',  function(error, results, fields){
+			if (error) throw error;
 
-		//NameEn,Namear,emergencyContact,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Username,Password
-		//connection.query('INSERT INTO Students NameEn  = "booo"  AND Namear  = "booo" AND emergencyContact  = "booo"  AND medicalCondition  = "booo" AND Email  = "booo" AND Nationality  = "booo" AND Birthdate  = "booo" AND SSN  = "booo" AND phoneNumber  = "booo" AND Address  = "booo" AND Username  = "booo" AND Password  = "asdasd" AND Gender  = "femal"',  function(error, results, fields) {
-		connection.query('INSERT INTO Students NameEn  = ? AND Namear  = ? AND emergencyContact  = ?  AND medicalCondition  = ? AND Email  = ? AND Nationality  = ? AND Birthdate  = ? AND SSN  = ? AND phoneNumber  = ? AND Address  = ? AND Username  = ? AND Password  = ? AND Gender  = ?', [nameen, namear, emergencycontact, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, username, password, gender],  function(error, results, fields) {
-			console.log(results);
-			// if (results.length>0) {
-			// 	console.log(results);
-			// 	//response.redirect('/home');
-			// } 
-			// else {
-		// 		response.send('Incorrect data');
-		// 	}
-		// 	response.end();
-		// });
-	// } else {
-	// 	response.send('Please enter the students information');
-	// 	response.end();
-	// }
-
-	console.log('its anhoooooooooooooon');
-});
+		});
 });
