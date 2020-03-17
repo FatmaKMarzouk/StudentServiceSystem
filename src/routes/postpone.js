@@ -5,11 +5,15 @@ module.exports = router;
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
-
+var multer  = require('multer')
+var upload = multer({ dest: 'uploads/' })
 var mysql = require("mysql");
-
+var request = require('request');
+var fs = require('fs');
 router.use(bodyParser.urlencoded({extended : true}));
 router.use(bodyParser.json());
+
+
 
 router.get('/postpone', function(request, response,next) {
 	response.sendFile(__dirname+'/postpone.html');
@@ -17,25 +21,42 @@ router.get('/postpone', function(request, response,next) {
 });
 var connection = require('../controllers/dbconnection');
 
-router.post('/upload', function(request, response) {
+router.post('/uploaddoc',upload.single('armydoc'), function(req, response) {
+     armydoc = req.file;
     
     connection.query('USE AlexUni');
-    stdId = request.body.stdId;
+    stdId = req.body.stdId;
     connection.query('SELECT * FROM Students WHERE ID = ? ', [stdId], function(error, results, fields) {
         
+
+
+
+
         if (results.length>0) {
-           connection.query("UPDATE Students SET armypostpone = b'1' WHERE ID = ? ",[stdId], function(error, result,fields){
+           console.log("iam heereee")
+            fs.readFile(armydoc.path,function (err, data) {
+                console.log("iam heereee2")
+                connection.query("UPDATE Students SET armypostpone = b'1', postponedoc = ? WHERE ID = ? ",[data,stdId], function(error, results,fields){
 
-            if (error) throw error;
-             response.send('Info updated');
-
-           });
+                    response.send('File Uploaded');
+    
+               });
+                                 
+                   });
+           
+            
             
         } else {
-            response.send('Please enter a recorded ID');
+           // response.send('Please enter a recorded ID');
         }
             });
     //response.send('File Uploaded');
 		//response.end();
+    
+    
+    
+    
+    
+    
 
 });
