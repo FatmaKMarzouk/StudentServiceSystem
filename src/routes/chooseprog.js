@@ -27,7 +27,7 @@ router.get('/chooseprog', function(request, response,next) {
     connection.query('USE AlexUni');
     connection.query('SELECT Name FROM Program WHERE FacultyName = ? AND SSP = ?',[facultyname,ssp],function(error,results2,fields){
       if (results2.length>0){
-        console.log(results2);
+        console.log(results2);  //To be shown in drop down menu
       }
       else {
         console.log("no valid program available");
