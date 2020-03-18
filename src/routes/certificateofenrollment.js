@@ -18,16 +18,12 @@ router.get('/certificateofenrollment', function(req,res,next){
         {
             Object.keys(results).forEach(function(key) {
                 var row = results[key];
-                resultobject1 = {
-                    fullnameEN: row.NameEn,
-                    fullnameAR: row.NameAr,
-                    faculty: row.Faculty,
-                    program: row.Program
-
-                };
-                res.send('1st result: ' + resultobject1);
-                return;
+                    fullnameEN = row.NameEn,
+                    fullnameAR = row.NameAr,
+                    faculty = row.Faculty,
+                    program = row.Program
                 });
+                console.log(results);
              /*   console.log("1st result " + results);
                 res.send(`${results}\n2nd results\n`);*/
         }
