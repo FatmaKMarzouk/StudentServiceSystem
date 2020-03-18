@@ -3,7 +3,7 @@ var app = express();
 var mysql = require("mysql");
 var port = process.env.PORT || 3000;
 var path= require('path');
-
+var multer  = require('multer')
 var home = require("./routes/home")
 var login = require("./routes/login");
 var postpone = require("./routes/postpone");
