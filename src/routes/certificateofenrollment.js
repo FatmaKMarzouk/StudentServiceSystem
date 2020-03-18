@@ -12,13 +12,14 @@ router.get('/certificateofenrollment', function(req,res,next){
     console.log('gowa el certificate '+username);
     var resultobject1='';
     var resultobject2='';
+    connection.connect
     connection.query('Use AlexUni');
-    connection.query('SELECT NameEN,NameAr,Faculty,Program FROM Students WHERE Username = ?', [username], function(err,results,field){
+    connection.query('SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.armypostpone, Students.Gender, Payment.Paid FROM Students RIGHT JOIN Payment ON Students.ID=Payment.ID WHERE Students.Username = ?', [username], function(err,results,field){
         if(results.length>0)
         {
             Object.keys(results).forEach(function(key) {
                 var row = results[key];
-                console.log(row);
+                //console.log(row);
                 resultobject1=row;
                 });
                 return;
@@ -30,15 +31,41 @@ router.get('/certificateofenrollment', function(req,res,next){
     connection.query('SELECT GPA,Semester FROM Student WHERE ID = ?', [username], function(err,results,field){
         if(results.length>0)
         {
-              Object.keys(results).forEach(function(key) {
+            Object.keys(results).forEach(function(key) {
                 var row = results[key];
                 resultobject2=row;
-                console.log(row);
+                //console.log(row);
                 return;
                 });
-                res.send('result 1: ' + resultobject1 + '\n\n\n\n result 2: ' + resultobject2);
-        }
-    //    res.send('\n2nd Result\n' + results);
+
+                let allresults = { ...resultobject1, ...resultobject2 };
+                console.log('ALLRESULTS:    ');
+                console.log(allresults);
+                if(allresults.Gender='Male')
+                {
+                    if(allresults.Paid && allresults.armypostpone) 
+                    {
+                        console.log(allresults);
+                        res.json(allresults);
+                    }
+                    else
+                    {
+                         res.send('You are not eligible for extracting certificate of enrollment as fees are not paid or your army postponing papers are not done.');
+                    }
+                } 
+                else 
+                {
+                    if(allresults.Paid)
+                    {
+                        console.log(allresults);
+                        res.json(allresults);
+                    } 
+                    else 
+                    {
+                        res.send('You are not eligible for extracting certificate of enrollment as fees are not paid.');
+                    }
+                }
+                }
     });
         
 });
