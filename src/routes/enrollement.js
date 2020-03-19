@@ -6,12 +6,13 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var nodemailer = require('nodemailer');
-
+var facultysec;
+//var user;
 
 router.use(bodyParser.urlencoded({extended : true}));
 router.use(bodyParser.json());
 
-var facultyesc;
+
 
 router.get('/enrollement', function(request, response,next) {
 	response.sendFile(__dirname+'/enrollement.html');
@@ -22,19 +23,13 @@ router.get('/enrollement', function(request, response,next) {
 		
 		connection.query('SELECT FacultyName FROM Secretary WHERE ID = ? ',[secusername] ,  function(error, results, fields){
 
-			// if (results.length>0){
-			// 	console.log(results);  
-			// 	facultyesc = JSON.stringify(results.FacultyName);
-			// 	console.log("fooooooooooooooo");
-			// 	console.log(facultyesc); 
-			//   }
 			if(results.length>0){
 				console.log("hhhhhooooooooooooo");
 				Object.keys(results).forEach(function(key){
 				  var row = results[key];
-				  facultyesc = row.FacultyName;
+				  facultysec = row.FacultyName;
 				  console.log("fooooooooooooooo");
-			      console.log(facultyesc); 
+			      console.log(facultysec); 
 				});}
 			else {
 			 	console.log("3aaaaaaaaaaaa");
@@ -46,8 +41,6 @@ router.get('/enrollement', function(request, response,next) {
 
 });
 
-console.log("woooooo");
-console.log(facultyesc); 
 var connection = require('../controllers/dbconnection');
 
 
@@ -68,13 +61,13 @@ router.post('/enroll', function(request, response) {
 	var phonenumber = request.body.phonenumber;
 	var address = request.body.address;
 	var username = request.body.username;
-	//var password = request.body.password;
 	var gender = request.body.gender;
-	var program = request.body.program;
-	//var faculty = request.body.faculty;
+	var private = request.body.private;
 	var birthCerftificate = request.body.birthCerftificate;
 	var nationalid = request.body.nationalid;
 	var nominationCard = request.body.nominationCard;
+	var user='';
+
 	
 		connection.query('USE AlexUni');
 
@@ -87,18 +80,43 @@ router.post('/enroll', function(request, response) {
 
 
 		//connection.query('INSERT INTO Students (NameEn,NameAr,emergencyContact,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Username,Password,Faculty,Program) VALUES (nameen, namear, emergencycontact, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, username, password,faculty,program) ',  function(error, results, fields){
-		// connection.query('INSERT INTO Students (NameEn,NameAr,emergencyContact,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Username,Password,Faculty,Program) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ',[nameen, namear, emergencycontact, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, username, result ,facultysec, program] ,  function(error, results, fields){
+		connection.query('INSERT INTO Students (NameEn,NameAr,emergencyContact,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Password,Faculty,Program) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ',[nameen, namear, emergencycontact, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, result ,facultysec, 'General'] ,  function(error, results, fields){
 
-		// 	console.log("ana heenaaaaaaaaaaa")
-		// 	if (error) throw error;
+			if(private == 'specialprogram'){
+				connection.query("UPDATE Students SET SSP = b'1' WHERE Email = ? ",[email], function(error, results,fields){
 
-		// });
+               });
+			}
+
+			connection.query("UPDATE Students SET Username = ID WHERE Email = ? ",[email], function(error, results,fields){
+			});
+
+			connection.query("SELECT Username FROM Students WHERE Email = ? ",[email], function(error, results1,fields){
+				if(results1.length>0){
+					console.log("hhhhhooooooooooooo");
+					Object.keys(results1).forEach(function(key){
+					  var row = results1[key];
+					  user = row.Username;
+					  console.log("fooooooooooooooo");
+					  console.log(user); 
+					  return user;
+					});}
+				else {
+					 console.log("3aaaaaaaaaaaa");
+				   }
+				
+			});
+
+			console.log("ana heenaaaaaaaaaaa")
+			if (error) throw error;
+
+		});
 
 		const output = `
 			<p>You have been accepted in Alexandria University</p>
 			<h3>Contact Details</h3>
 			<ul>  
-			<li>Username: ${username}</li>
+			<li>Username: ${user}</li>
 			<li>Password: ${result}</li>
 			</ul>
 			<h3>Message</h3>
