@@ -24,11 +24,9 @@ router.get('/enrollement', function(request, response,next) {
 		connection.query('SELECT FacultyName FROM Secretary WHERE ID = ? ',[secusername] ,  function(error, results, fields){
 
 			if(results.length>0){
-				console.log("hhhhhooooooooooooo");
 				Object.keys(results).forEach(function(key){
 				  var row = results[key];
 				  facultysec = row.FacultyName;
-				  console.log("fooooooooooooooo");
 			      console.log(facultysec); 
 				});}
 			else {
@@ -46,8 +44,6 @@ var connection = require('../controllers/dbconnection');
 
 router.post('/enroll', function(request, response) {
 
-	console.log("plzzzzzzzzz");
-	//console.log(facultysec);
 	response.send('Student has been added successfully');
 
 	var nameen = request.body.nameen;
@@ -77,8 +73,6 @@ router.post('/enroll', function(request, response) {
 		   result += characters.charAt(Math.floor(Math.random() * charactersLength));
 		}
 
-
-		//connection.query('INSERT INTO Students (NameEn,NameAr,emergencyContact,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Username,Password,Faculty,Program) VALUES (nameen, namear, emergencycontact, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, username, password,faculty,program) ',  function(error, results, fields){
 		connection.query('INSERT INTO Students (NameEn,NameAr,emergencyContact,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Password,Faculty,Program) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ',[nameen, namear, emergencycontact, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, result ,facultysec, 'General'] ,  function(error, results, fields){
 
 			if(private == 'specialprogram'){
@@ -92,11 +86,9 @@ router.post('/enroll', function(request, response) {
 
 			connection.query("SELECT Username FROM Students WHERE Email = ? ",[email], function(error, results1,fields){
 				if(results1.length>0){
-					console.log("hhhhhooooooooooooo");
 					Object.keys(results1).forEach(function(key){
 					  var row = results1[key];
 					  user = row.Username;
-					  console.log("fooooooooooooooo");
 					  console.log(user); 
 					  return user;
 					});}
@@ -144,7 +136,6 @@ router.post('/enroll', function(request, response) {
 				
 			});
 
-			console.log("ana heenaaaaaaaaaaa")
 			if (error) throw error;
 
 
