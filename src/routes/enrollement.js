@@ -14,6 +14,23 @@ router.use(bodyParser.json());
 router.get('/enrollement', function(request, response,next) {
 	response.sendFile(__dirname+'/enrollement.html');
 	//console.log('its anhoon11');
+	if (request.session.loggedin) {
+		var secusername = request.session.username;
+		
+		connection.query('SELECT FacultyName FROM Secretary WHERE username = ? ',[secusername] ,  function(error, results, fields){
+
+			//if (results.length>0){
+				console.log(results);  
+				var faculty = results;
+				console.log(faculty); 
+			//  }
+			//   else {
+			// 	console.log("3aaaaaaaaaaaa");
+			//   }
+
+		});
+	}
+	console.log(secusername);
 });
 
 var connection = require('../controllers/dbconnection');
@@ -51,6 +68,7 @@ router.post('/enroll', function(request, response) {
 		   result += characters.charAt(Math.floor(Math.random() * charactersLength));
 		}
 
+
 		//connection.query('INSERT INTO Students (NameEn,NameAr,emergencyContact,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Username,Password,Faculty,Program) VALUES (nameen, namear, emergencycontact, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, username, password,faculty,program) ',  function(error, results, fields){
 		connection.query('INSERT INTO Students (NameEn,NameAr,emergencyContact,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Username,Password,Faculty,Program) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ',[nameen, namear, emergencycontact, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, username, result ,faculty,program] ,  function(error, results, fields){
 
@@ -70,12 +88,12 @@ router.post('/enroll', function(request, response) {
 		`;
 
 		let transporter = nodemailer.createTransport({
-			host: 'mail.google.com',
+			host: 'smtp.gmail.com',
 			port: 587,
 			secure: false, // true for 465, false for other ports
 			auth: {
-				user: '', // generated ethereal user
-				pass: ''  // generated ethereal password
+				user: 'alexandriauniversity7@gmail.com', // generated ethereal user
+				pass: 'Unified7!!'  // generated ethereal password
 			},
 			tls:{
 			  rejectUnauthorized:false
@@ -84,7 +102,7 @@ router.post('/enroll', function(request, response) {
 
 		let mailOptions = {
 			from: '"Nodemailer Contact" <hanaayman1997@gmail.com>', // sender address
-			to: 'hanooona1997@gmail.com', // list of receivers
+			to: email, // list of receivers
 			subject: 'Alexandria University', // Subject line
 			text: 'Hello world?', // plain text body
 			html: output // html body

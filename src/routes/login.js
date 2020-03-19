@@ -48,6 +48,8 @@ router.post('/auth', function(request, response,next) {
 					} else {
 					response.send('wrong secretary account');
 				}
+				var secid = username;
+				console.log(secid);
 			});
 
 		 }
