@@ -139,8 +139,6 @@ router.post('/enroll', function(request, response) {
 			if (error) throw error;
 
 
-
 		});
-
 
 });
