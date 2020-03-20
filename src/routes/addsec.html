@@ -37,26 +37,20 @@
 	</head>
 	<body>
 		<div class="login-form">
-			<h1>Student Homepage</h1>
-			<form action="/chooseprog">
-				  <input type="submit" value="Select Program">
+			<h1>Enrolling a student</h1>
+			<form action="/enroll" method="POST" enctype="multipart/formdata">
+				<input type="text" name="name" placeholder="name" >
+
+				<br>
+				<br>
+
+				<input type="submit" value="Add Employee">
 			</form>
-			<form action="/certificateofenrollment">
-				  <input type="submit" value="Certificate of Enrollment">
+			<br>
+			<form action="/">
+				<input type="submit" value="Log out">
 			</form>
+
 		</div>
-
-		<br>
-		<form action="/">
-			<input type="submit" value="Log out">
-		</form>
-
- <body>
-
-
-
- </body>
-
-  </html>
 	</body>
 </html>

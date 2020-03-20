@@ -46,7 +46,7 @@ router.get('/enrollement', function(request, response,next) {
 var connection = require('../controllers/dbconnection');
 
 
-router.post('/enroll', upload.array('myFiles', 12) ,function(request, response, next) {
+router.post('/enroll',function(request, response) {
 
 	response.send('Student has been added successfully');
 	const files = req.files;
