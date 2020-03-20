@@ -7,7 +7,11 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var nodemailer = require('nodemailer');
 var facultysec;
-//var user;
+var multer  = require('multer')
+var upload = multer({ dest: 'uploads/' })
+var request = require('request');
+var fs = require('fs');
+
 
 router.use(bodyParser.urlencoded({extended : true}));
 router.use(bodyParser.json());
@@ -42,9 +46,10 @@ router.get('/enrollement', function(request, response,next) {
 var connection = require('../controllers/dbconnection');
 
 
-router.post('/enroll', function(request, response) {
+router.post('/enroll', upload.array('myFiles', 12) ,function(request, response, next) {
 
 	response.send('Student has been added successfully');
+	const files = req.files;
 
 	var nameen = request.body.nameen;
 	var namear = request.body.namear;
