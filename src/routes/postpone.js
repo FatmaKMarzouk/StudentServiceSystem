@@ -16,8 +16,13 @@ router.use(bodyParser.json());
 
 
 router.get('/postpone', function(request, response,next) {
-	response.sendFile(__dirname+'/postpone.html');
-    console.log("connection 3")
+    if (request.session.loggedin){if (request.session.loggedin){
+    response.sendFile(__dirname+'/postpone.html');
+    }
+    }
+else {
+    response.send('Please sign in');
+}
 });
 var connection = require('../controllers/dbconnection');
 
@@ -33,7 +38,7 @@ router.post('/uploaddoc',upload.single('armydoc'), function(req, response) {
 
 
         if (results.length>0) {
-           console.log("iam heereee")
+           
             fs.readFile(armydoc.path,function (err, data) {
                 console.log("iam heereee2")
                 connection.query("UPDATE Students SET armypostpone = b'1', postponedoc = ? WHERE ID = ? ",[data,stdId], function(error, results,fields){
@@ -47,11 +52,10 @@ router.post('/uploaddoc',upload.single('armydoc'), function(req, response) {
             
             
         } else {
-           // response.send('Please enter a recorded ID');
+            response.send('Please enter a recorded ID');
         }
             });
-    //response.send('File Uploaded');
-		//response.end();
+   
     
     
     

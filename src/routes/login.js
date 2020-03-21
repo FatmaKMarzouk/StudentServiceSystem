@@ -46,7 +46,7 @@ router.post('/auth', function(request, response,next) {
 					request.session.username = username;
 					response.redirect('/homesec');
 					} else {
-					response.send('wrong secretary account');
+					response.send('Incorrect Username and/or Password!');
 				}
 			});
 
