@@ -6,7 +6,6 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
 var requests =[];
-var i=0;
 router.use(bodyParser.urlencoded({extended : true}));
 router.use(bodyParser.json());
 var connection = require('../controllers/dbconnection');
@@ -35,13 +34,17 @@ else{
 });
 
 router.post('/delete-cart',function(request,response,next){
+  console.log("lalalalalalalalalalalalaalala");
+  if(request.session.loggedin){
   var reqID = request.session.reqID;
+  console.log(reqID);
   connection.query('USE AlexUni');
-  connection.query('DELETE FROM Requests WHERE ID = ?',[reqID]);
+  connection.query('DELETE FROM Requests WHERE ID = 2',[reqID]); //hardcoding id till front end is ready
   response.redirect('/cart');
 
-
-
-
+}
+else{
+  response.send("Please log in to view this page!");
+}
 
 });
