@@ -11,6 +11,7 @@ router.use(bodyParser.urlencoded({extended : true}));
 router.use(bodyParser.json());
 var connection = require('../controllers/dbconnection');
 var username ="";
+
 router.get('/chooseprog', function(request, response,next) {
   if (request.session.loggedin) {
     response.sendFile(__dirname+'/chooseprog.html');
@@ -90,17 +91,18 @@ router.post('/submitprog', function(request, response,next) {
     flag = 0;
   }
   if(flag == 1){
+    var date = dateFormat(new Date(), "yyyy-mm-dd");
+    info = {   studentID : username,
+               service : "Choose Program",
+               program : program,
+               Fee : "0",
+               Date : date
+             }
+    connection.query('USE AlexUni');
+    connection.query('INSERT INTO Requests (StudentID,ServiceName,Data,Amount) VALUES( ?,?,?,? ) ',[username,"Choose Program",JSON.stringify(info),info.Fee]);
     response.redirect('/cart');
   }
-  var date = dateFormat(new Date(), "yyyy-mm-dd");
-  exports.info =
-  {   studentID : username,
-      service : "Choose Program",
-      program : program,
-      Fee : "0",
-      Date : date
-    }
-  exports.flag = flag;
+
 }
 });
   } else {

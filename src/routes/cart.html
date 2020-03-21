@@ -37,9 +37,13 @@
 	</head>
 	<body>
 		<div class="login-form">
-			<h1>Choose Program</h1>
-			<form action="/payout">
-				  <input type="submit" value="Proceed to Payout">
+			<h1>Cart</h1>
+			<form action="/delete-cart" method="POST">
+				<input type="hidden" name ="reqID" value="1">
+				<button type="submit" value="Delete"></button>
+			</form>
+			<form action="/checkout">
+				  <input type="submit" value="Proceed to Checkout">
 			</form>
 		</div>
 
