@@ -5,16 +5,15 @@ module.exports = router;
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
-
-
+var info = {};
 router.use(bodyParser.urlencoded({extended : true}));
 router.use(bodyParser.json());
 var connection = require('../controllers/dbconnection');
-
+var username ="";
 router.get('/chooseprog', function(request, response,next) {
   if (request.session.loggedin) {
     response.sendFile(__dirname+'/chooseprog.html');
-    var username = request.session.username;
+    username = request.session.username;
     var facultyname=""; var ssp="";
     connection.query('USE AlexUni');
     connection.query('SELECT Faculty,SSP FROM Students WHERE Username = ? ', [username], function(error, results1, fields) {
@@ -46,7 +45,7 @@ router.get('/chooseprog', function(request, response,next) {
 router.post('/submitprog', function(request, response,next) {
   var currentprog="";
   if (request.session.loggedin) {
-    response.send('success');
+    var flag = 1;
     var username = request.session.username;
     var program = request.body.selectedprogram;
     connection.query('USE AlexUni');
@@ -57,7 +56,7 @@ router.post('/submitprog', function(request, response,next) {
           currentprog = row.Program;
         });
 
-    if(currentprog=="General" || currentprog=="General SSP"){
+    if(currentprog=="General"){
     connection.query('USE IntegratedData');
     connection.query('SELECT ReqGPA FROM Program WHERE Name = ? ', [program], function(error, results1, fields) {
 			if (results1.length>0) {
@@ -78,6 +77,7 @@ router.post('/submitprog', function(request, response,next) {
             }
             else {
               console.log('Your GPA doesn"t meet the minimum required grade for this program');
+              flag = 0;
             }
           }
         });
@@ -85,12 +85,29 @@ router.post('/submitprog', function(request, response,next) {
     });
   }
   else{
-    console.log("You have already chosen a program. Please Contact the secretary office for transfers.")
+    console.log("You have already chosen a program. Please Contact the secretary office for transfers.");
+    flag = 0;
   }
 }
 });
   } else {
-    response.send('Please login to view this page!');
+    console.log('Please login to view this page!');
+  }
+
+  if(flag == 1){
+    response.redirect('/cart');
   }
 
 });
+var date = new Date();
+console.log('kekf');
+module.exports = function(callback){
+  let info = {
+    studentID : username,
+    service : "Choose Program",
+    Fee : "0",
+    Date : date
+  }
+  callback(info);
+}
+console.log('kekf');

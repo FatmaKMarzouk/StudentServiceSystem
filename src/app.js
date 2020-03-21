@@ -10,6 +10,7 @@ var postpone = require("./routes/postpone");
 var homesec = require("./routes/homesec");
 var enrollement = require("./routes/enrollement");
 var chooseprog = require("./routes/chooseprog");
+var cart = require("./routes/cart");
 var certificateofenrollment = require("./routes/certificateofenrollment");
 app.use(login);
 app.use(homesec);
@@ -18,6 +19,7 @@ app.use(postpone);
 app.use(home);
 app.use(chooseprog);
 app.use(certificateofenrollment);
+app.use(cart);
 
 app.listen(port); //this function does http.createServer
 module.exports = app;
