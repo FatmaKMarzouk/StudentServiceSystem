@@ -21,8 +21,6 @@ router.get('/', function(request, response,next) {
 var connection = require('../controllers/dbconnection');
 
 router.post('/auth', function(request, response,next) {
-	console.log('its fatma');
-
 	var role = request.body.role;
 	var username = request.body.username;
 	var password = request.body.password;

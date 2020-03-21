@@ -1,7 +1,8 @@
 var mysql = require('mysql');
 var express = require('express');
 var router = express.Router();
-module.exports = router;
+var dateFormat = require('dateformat');
+exports.router = router;
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
@@ -85,29 +86,27 @@ router.post('/submitprog', function(request, response,next) {
     });
   }
   else{
-    console.log("You have already chosen a program. Please Contact the secretary office for transfers.");
+    response.send("You have already chosen a program. Please Contact the secretary office for transfers.");
     flag = 0;
   }
+  if(flag == 1){
+    response.redirect('/cart');
+  }
+  var date = dateFormat(new Date(), "yyyy-mm-dd");
+  exports.info =
+  {   studentID : username,
+      service : "Choose Program",
+      program : program,
+      Fee : "0",
+      Date : date
+    }
+  exports.flag = flag;
 }
 });
   } else {
     console.log('Please login to view this page!');
   }
 
-  if(flag == 1){
-    response.redirect('/cart');
-  }
+
 
 });
-var date = new Date();
-console.log('kekf');
-module.exports = function(callback){
-  let info = {
-    studentID : username,
-    service : "Choose Program",
-    Fee : "0",
-    Date : date
-  }
-  callback(info);
-}
-console.log('kekf');
