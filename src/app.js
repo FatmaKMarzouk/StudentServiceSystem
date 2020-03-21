@@ -12,6 +12,8 @@ var enrollement = require("./routes/enrollement");
 var chooseprog = require("./routes/chooseprog");
 var cart = require("./routes/cart");
 var certificateofenrollment = require("./routes/certificateofenrollment");
+var addsec = require("./routes/addsec");
+
 app.use(login);
 app.use(homesec);
 app.use(enrollement);
@@ -19,7 +21,7 @@ app.use(postpone);
 app.use(home);
 app.use(chooseprog);
 app.use(certificateofenrollment);
+app.use(addsec);
 app.use(cart);
-
 app.listen(port); //this function does http.createServer
 module.exports = app;

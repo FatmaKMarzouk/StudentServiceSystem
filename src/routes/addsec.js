@@ -2,24 +2,20 @@ var mysql = require('mysql');
 var express = require('express');
 var router = express.Router();
 module.exports = router;
-var path = require('path');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var nodemailer = require('nodemailer');
-var facultysec;
-var multer  = require('multer')
-var upload = multer({ dest: 'uploads/' })
 var request = require('request');
-var fs = require('fs');
-
+var facultysec;
+var adminsec;
+var nodemailer = require('nodemailer');
 
 router.use(bodyParser.urlencoded({extended : true}));
 router.use(bodyParser.json());
 
+var connection = require('../controllers/dbconnection');
 
-
-router.get('/enrollement', function(request, response,next) {
-	response.sendFile(__dirname+'/enrollement.html');
+router.get('/addsec', function(request, response,next) {
+	response.sendFile(__dirname+'/addsec.html');
 	//console.log('its anhoon11');
 
 	if (request.session.loggedin) {
@@ -36,59 +32,56 @@ router.get('/enrollement', function(request, response,next) {
 			else {
 			 	console.log("3aaaaaaaaaaaa");
 			   }
+        });
 
+        connection.query('SELECT admin FROM Secretary WHERE ID = ? ',[secusername] ,  function(error, results, fields){
 
-		});
+			if(results.length>0){
+				Object.keys(results).forEach(function(key){
+				  var row = results[key];
+				  adminsec = row.admin;
+			      console.log(adminsec); 
+				});}
+			else {
+			 	console.log("3aaaaaaaaaaaa");
+			   }
+        });
 	}
 
 });
 
-var connection = require('../controllers/dbconnection');
+router.post('/add',function(request, response) {
 
 
-router.post('/enroll',function(request, response) {
+    var name = request.body.name;
+    var email = request.body.email;
+    var admin = request.body.admin;
 
-	response.send('Student has been added successfully');
-
-	var nameen = request.body.nameen;
-	var namear = request.body.namear;
-	var ssn = request.body.ssn;
-	var emergencycontact = request.body.emergencycontact;	
-	var medicalcondition = request.body.medicalcondition;
-	var email = request.body.email;
-	var nationality = request.body.nationality;
-	var birthdate = request.body.birthdate;
-	var phonenumber = request.body.phonenumber;
-	var address = request.body.address;
-	var gender = request.body.gender;
-	var private = request.body.private;
-	var birthCerftificate = request.body.birthCerftificate;
-	var nationalid = request.body.nationalid;
-	var nominationCard = request.body.nominationCard;
-	var user='';
-
-	
-		connection.query('USE AlexUni');
+    connection.query('USE AlexUni');
 
 		var result           = '';
 		var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$/%&';
 		var charactersLength = characters.length;
 		for ( var i = 0; i < 10; i++ ) {
 		   result += characters.charAt(Math.floor(Math.random() * charactersLength));
-		}
+        }
+        
+        if(adminsec == 1){
 
-		connection.query('INSERT INTO Students (NameEn,NameAr,emergencyContact,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Password,Faculty,Program) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ',[nameen, namear, emergencycontact, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, result ,facultysec, 'General'] ,  function(error, results, fields){
+            response.send('Emplyee has been added successfully');
+            
+        connection.query('INSERT INTO Secretary (Name,email,FacultyName,Password) VALUES( ?, ?, ?, ?) ',[name, email, facultysec, result] ,  function(error, results, fields){
 
-			if(private == 'specialprogram'){
-				connection.query("UPDATE Students SET SSP = b'1' WHERE Email = ? ",[email], function(error, results,fields){
+			if(admin == 'admin'){
+				connection.query("UPDATE Secretary SET admin = b'1' WHERE email = ? ",[email], function(error, results,fields){
 
                });
 			}
 
-			connection.query("UPDATE Students SET Username = ID WHERE Email = ? ",[email], function(error, results,fields){
+			connection.query("UPDATE Secretary SET Username = ID WHERE email = ? ",[email], function(error, results,fields){
 			});
 
-			connection.query("SELECT Username FROM Students WHERE Email = ? ",[email], function(error, results1,fields){
+			connection.query("SELECT Username FROM Secretary WHERE email = ? ",[email], function(error, results1,fields){
 				if(results1.length>0){
 					Object.keys(results1).forEach(function(key){
 					  var row = results1[key];
@@ -97,7 +90,7 @@ router.post('/enroll',function(request, response) {
 					  return user;
 					});}
 					const output = `
-					<p>You have been accepted in Alexandria University</p>
+					<p>You have been accepted to work in Alexandria University</p>
 					<h3>Contact Details</h3>
 					<ul>  
 					<li>Username: ${user}</li>
@@ -143,6 +136,11 @@ router.post('/enroll',function(request, response) {
 			if (error) throw error;
 
 
-		});
+        });
+    }
+    else {
+        response.send('You are not allowed to add other employees');
+    }
+
 
 });
