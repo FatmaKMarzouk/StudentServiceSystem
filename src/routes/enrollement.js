@@ -49,7 +49,6 @@ var connection = require('../controllers/dbconnection');
 router.post('/enroll',function(request, response) {
 
 	response.send('Student has been added successfully');
-	const files = req.files;
 
 	var nameen = request.body.nameen;
 	var namear = request.body.namear;
@@ -122,7 +121,7 @@ router.post('/enroll',function(request, response) {
 				  });
 		
 				let mailOptions = {
-					from: '"Alexandria University" <hanaayman1997@gmail.com>', // sender address
+					from: '"Alexandria University" <alexandriauniversity7@gmail.com>', // sender address
 					to: email, // list of receivers
 					subject: 'Alexandria University', // Subject line
 					text: 'Hello world?', // plain text body
