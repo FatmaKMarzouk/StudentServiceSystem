@@ -31,6 +31,7 @@ router.get('/transcript', function (request, response, next) {
                 console.log(id, name, prog);
                 connection.query('USE IntegratedData');
                 connection.query('SELECT CourseName,Grade,Semester FROM EnrolledCourses WHERE StudentID = ?  ORDER BY SemesterNum ASC', [id], function (error, results2, fields) {
+                    
                     if (results2.length > 0) {
 
                         Object.keys(results2).forEach(function (key) {
@@ -40,10 +41,12 @@ router.get('/transcript', function (request, response, next) {
                             semester = row2.Semester
                             console.log(courseName, grade, semester);
                         });
+                    
                     } else {
                         response.send("no registered courses");
                     }
                 });
+            
             } else {
                 response.send("Not a registered student");
             }
