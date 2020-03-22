@@ -16,7 +16,7 @@ router.get('/certificateofenrollment', function(req,res,next)
     res.sendFile(__dirname+'/certificateofenrollment.html');
     var username = req.session.username;
     connection.query('Use AlexUni');
-    connection.query('SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.armypostpone, Students.Gender, Payment.Paid FROM Students RIGHT JOIN Payment ON Students.ID=Payment.ID WHERE Students.Username = ?', [username], function(err,results,field){
+    connection.query('SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.armypostpone, Students.Gender, Payment.Paid FROM Students RIGHT JOIN Payment ON Students.ID=Payment.StudentID WHERE Students.Username = ?', [username], function(err,results,field){
         if(results.length>0)
         {
             Object.keys(results).forEach(function(key) {
@@ -48,12 +48,13 @@ router.get('/certificateofenrollment', function(req,res,next)
 });
 router.get('/cart-test', function(req,res,next)
 {     if(req.session.loggedin){
+      var username = req.session.username;
       var flag =1;
                 if(allresults.Gender==='Male')
                 {
                     if(allresults.Paid && allresults.armypostpone)
                     {
-                        res.json(allresults);
+                        // res.json(allresults);
                     }
                     else
                     {
@@ -65,7 +66,7 @@ router.get('/cart-test', function(req,res,next)
                 {
                     if(allresults.Paid)
                     {
-                        res.json(allresults);
+                        // res.json(allresults);
                     }
                     else
                     {
@@ -74,19 +75,14 @@ router.get('/cart-test', function(req,res,next)
                     }
                 }
                 if(flag == 1){
-                  var date = dateFormat(new Date(), "yyyy-mm-dd");
-                  info = {   studentID : username,
-                             service : "Choose Program",
-                             program : program,
-                             Fee : "0",
-                             Date : date
-                           }
+
+
                   connection.query('USE AlexUni');
-                  connection.query('INSERT INTO Requests (StudentID,ServiceName,Data,Amount) VALUES( ?,?,?,? ) ',[username,"Choose Program",JSON.stringify(info),info.Fee]);
-                  response.redirect('/cart');
+                  connection.query('INSERT INTO Requests (StudentID,ServiceName,Data,Amount) VALUES( ?,?,?,? ) ',[username,"Certificate of Enrollment",JSON.stringify(allresults),"50"]);
+                  res.redirect('/cart');
                 }
 }
 else{
-  res.send("Please log in to view this page!")
+  console.log("Please log in to view this page!")
 }
 });
