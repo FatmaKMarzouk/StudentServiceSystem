@@ -5,7 +5,7 @@ module.exports = router;
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
-
+var  courses=[]
 
 router.use(bodyParser.urlencoded({
     extended: true
@@ -35,14 +35,31 @@ router.get('/transcript', function (request, response, next) {
                     if (results2.length > 0) {
 
                         Object.keys(results2).forEach(function (key) {
-                            var row2 = results2[key];
-                            courseName = row2.CourseName;
-                            grade = row2.Grade;
-                            semester = row2.Semester
-                            console.log(courseName, grade, semester);
+                            courses.push(results2[key]);
+                            
                         });
+                              console.log(courses)                 
+                              connection.query('USE IntegratedData');
+                              connection.query('SELECT Semester,GPA FROM Semesters WHERE StudentID = ?',[id],function (error, results4, fields) {
+                                    var termGpa = [];
+                                  if (results4.length > 0) {
+                          
+                                      Object.keys(results4).forEach(function (key) {
+                                          termGpa.push(results4[key]);
+                                          
+                                      });
+                                            console.log(termGpa) ;                
+                                  } 
+                          
+                          
+                          
+                              });
                     
-                    } else {
+                    
+                    
+                    
+                    
+                            } else {
                         response.send("no registered courses");
                     }
                 });
@@ -50,18 +67,21 @@ router.get('/transcript', function (request, response, next) {
             } else {
                 response.send("Not a registered student");
             }
-
-
+                
+               
 
 
         });
 
-
+        
 
     } else {
 
         response.send('Please login to view this page!');
     }
+    
+
+
 });
 router.get('/transcriptconfirm', function(request, response,fields) {
     if (request.session.loggedin){
