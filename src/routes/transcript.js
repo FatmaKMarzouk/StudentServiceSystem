@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var  courses=[]
 
+var masterobject="";
+
 router.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -36,20 +38,25 @@ router.get('/transcript', function (request, response, next) {
                     if (results2.length > 0) {
 
                         Object.keys(results2).forEach(function (key) {
-                            courses.push(results2[key]);
-
+                            //courses.push(results2[key]);
+                            masterobject = {...masterobject,...results2};
                         });
-                              console.log(courses)
+                              console.log('bada2t teba3a\n');
+                              console.log(masterobject);
+                              console.log('\n5allast teba3a\n');
                               connection.query('USE IntegratedData');
                               connection.query('SELECT Semester,GPA FROM Semesters WHERE StudentID = ?',[id],function (error, results4, fields) {
                                     var termGpa = [];
                                   if (results4.length > 0) {
 
                                       Object.keys(results4).forEach(function (key) {
-                                          termGpa.push(results4[key]);
+                                        //  termGpa.push(results4[key]);
+                                         masterobject = {...masterobject,...results4};
 
                                       });
-                                            console.log(termGpa) ;
+                                      console.log('bada2t teba3a tanyyy\n');
+                                      console.log(masterobject);
+                                      console.log('\n5allast teba3a tanyyy\n');
                                   }
                               });
                             } else {
