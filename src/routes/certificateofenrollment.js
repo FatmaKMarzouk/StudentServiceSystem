@@ -43,7 +43,7 @@ router.get('/certificateofenrollment', function(req,res,next)
         } 
     });   
 });
-router.get('/cart', function(req,res,next)
+router.get('/cart-test', function(req,res,next)
 {
                 if(allresults.Gender==='Male')
                 {
