@@ -1,20 +1,21 @@
 var mysql = require('mysql');
 var express = require('express');
 var router = express.Router();
-module.exports = router;
+var dateFormat = require('dateformat');
+exports.router = router;
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
-
-
+var info = {};
 router.use(bodyParser.urlencoded({extended : true}));
 router.use(bodyParser.json());
 var connection = require('../controllers/dbconnection');
+var username ="";
 
 router.get('/chooseprog', function(request, response,next) {
   if (request.session.loggedin) {
     response.sendFile(__dirname+'/chooseprog.html');
-    var username = request.session.username;
+    username = request.session.username;
     var facultyname=""; var ssp="";
     connection.query('USE AlexUni');
     connection.query('SELECT Faculty,SSP FROM Students WHERE Username = ? ', [username], function(error, results1, fields) {
@@ -27,7 +28,7 @@ router.get('/chooseprog', function(request, response,next) {
     connection.query('USE AlexUni');
     connection.query('SELECT Name FROM Program WHERE FacultyName = ? AND SSP = ?',[facultyname,ssp],function(error,results2,fields){
       if (results2.length>0){
-        console.log(results2);
+        console.log(results2);  //To be shown in drop down menu
       }
       else {
         console.log("no valid program available");
@@ -46,7 +47,7 @@ router.get('/chooseprog', function(request, response,next) {
 router.post('/submitprog', function(request, response,next) {
   var currentprog="";
   if (request.session.loggedin) {
-    response.send('success');
+    var flag = 1;
     var username = request.session.username;
     var program = request.body.selectedprogram;
     connection.query('USE AlexUni');
@@ -57,7 +58,7 @@ router.post('/submitprog', function(request, response,next) {
           currentprog = row.Program;
         });
 
-    if(currentprog=="General" || currentprog=="General SSP"){
+    if(currentprog=="General"){
     connection.query('USE IntegratedData');
     connection.query('SELECT ReqGPA FROM Program WHERE Name = ? ', [program], function(error, results1, fields) {
 			if (results1.length>0) {
@@ -78,6 +79,7 @@ router.post('/submitprog', function(request, response,next) {
             }
             else {
               console.log('Your GPA doesn"t meet the minimum required grade for this program');
+              flag = 0;
             }
           }
         });
@@ -85,12 +87,28 @@ router.post('/submitprog', function(request, response,next) {
     });
   }
   else{
-    console.log("You have already chosen a program. Please Contact the secretary office for transfers.")
+    response.send("You have already chosen a program. Please Contact the secretary office for transfers.");
+    flag = 0;
   }
+  if(flag == 1){
+    var date = dateFormat(new Date(), "yyyy-mm-dd");
+    info = {   studentID : username,
+               service : "Choose Program",
+               program : program,
+               Fee : "0",
+               Date : date
+             }
+    connection.query('USE AlexUni');
+    connection.query('INSERT INTO Requests (StudentID,ServiceName,Data,Amount) VALUES( ?,?,?,? ) ',[username,"Choose Program",JSON.stringify(info),info.Fee]);
+    response.redirect('/cart');
+  }
+
 }
 });
   } else {
-    response.send('Please login to view this page!');
+    console.log('Please login to view this page!');
   }
+
+
 
 });
