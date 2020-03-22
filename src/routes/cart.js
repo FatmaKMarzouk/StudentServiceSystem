@@ -18,6 +18,7 @@ router.get('/cart',function(request,response,next){
     if(results.length>0){
       Object.keys(results).forEach(function(key){
         requests.push(results[key]);
+
       });
       console.log(requests);
     }
@@ -34,7 +35,6 @@ else{
 });
 
 router.post('/delete-cart',function(request,response,next){
-  console.log("lalalalalalalalalalalalaalala");
   if(request.session.loggedin){
   var reqID = request.session.reqID;
   console.log(reqID);

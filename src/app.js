@@ -25,7 +25,7 @@ app.use(enrollement);
 app.use(postpone);
 app.use(home);
 
-app.use(chooseprog);
+
 app.use(transcript);
 
 
