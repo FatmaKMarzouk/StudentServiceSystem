@@ -18,6 +18,9 @@ var cart = require("./routes/cart");
 var certificateofenrollment = require("./routes/certificateofenrollment");
 var addsec = require("./routes/addsec");
 
+app.set('view engine', 'ejs');
+app.use(express.json());
+app.use(express.static('public'));
 
 app.use(login);
 app.use(homesec);
