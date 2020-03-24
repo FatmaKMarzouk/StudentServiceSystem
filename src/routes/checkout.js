@@ -37,6 +37,9 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
 
+var cart = require('./cart');  //fatma zawedet el satreen dool
+var total = cart.total;
+
 
 const { resolve } = require("path");
 // Replace if using a different env file or config
