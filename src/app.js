@@ -4,6 +4,7 @@ var mysql = require("mysql");
 var port = process.env.PORT || 3000;
 var path= require('path');
 var multer  = require('multer')
+var env = require("dotenv").config({ path: __dirname + "/.env" });
 var home = require("./routes/home")
 var login = require("./routes/login");
 var postpone = require("./routes/postpone");
@@ -17,10 +18,10 @@ var request = require('request');
 var cart = require("./routes/cart");
 var certificateofenrollment = require("./routes/certificateofenrollment");
 var addsec = require("./routes/addsec");
+var checkout = require("./routes/checkout");
 
-app.set('view engine', 'ejs');
+app.use(express.static(process.env.STATIC_DIR));
 app.use(express.json());
-app.use(express.static('public'));
 
 app.use(login);
 app.use(homesec);
@@ -36,6 +37,7 @@ app.use(chooseprog.router);
 app.use(certificateofenrollment);
 app.use(addsec);
 app.use(cart);
+app.use(checkout);
 
 app.listen(port); //this function does http.createServer
 module.exports = app;

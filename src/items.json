@@ -1,9 +1,0 @@
-{
-    "services": [
-        {
-            "id": 1,
-            "name": "Certificate of Enrollment",
-            "price": 3000 
-        }
-    ]
-}
