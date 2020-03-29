@@ -17,7 +17,8 @@ console.log("__dirname: "+ __dirname+"./.env");
 
 router.get("/checkout", (req, res) => {
   // Display checkout page
-  const path = resolve(process.env.STATIC_DIR + "/checkout.html");
+  const path = resolve("D:\Desktop\9th term\grad project 1\StudentServiceSystem\src\views\checkout-test\checkout.html");
+  //const path = resolve(process.env.STATIC_DIR + "/checkout.html");
   res.sendFile(path);
 });
 
