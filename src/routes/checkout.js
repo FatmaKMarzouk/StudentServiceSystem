@@ -6,18 +6,18 @@ const router = express.Router();
 module.exports = router;
 const { resolve } = require("path");
 // Replace if using a different env file or config
-const env = require("dotenv").config({ path: __dirname + "/.env" });
+const env = require("../app");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 console.log("da5alt el checkout.js: " + total);
 console.log(process.env.STATIC_DIR + "/checkout.html");
 console.log("KEY:  " + process.env.STRIPE_SECRET_KEY);
-console.log("__dirname: "+ __dirname+"./.env");
+console.log("__dirname: "+ __dirname+"/.env");
 
 
 router.get("/checkout", (req, res) => {
   // Display checkout page
-  const path = resolve("D:\Desktop\9th term\grad project 1\StudentServiceSystem\src\views\checkout-test\checkout.html");
+  const path = resolve(process.env.DEFAULT_PATH+process.env.STATIC_DIR + "/checkout.html");
   //const path = resolve(process.env.STATIC_DIR + "/checkout.html");
   res.sendFile(path);
 });

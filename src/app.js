@@ -40,5 +40,4 @@ app.use(cart);
 app.use(checkout);
 
 app.listen(port); //this function does http.createServer
-module.exports = app;
 module.exports = env;
