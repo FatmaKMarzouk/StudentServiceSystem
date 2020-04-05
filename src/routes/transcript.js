@@ -20,10 +20,10 @@ router.get('/transcript', function (request, response, next) {
         var id = "";
         var name = "";
         var flag = 1;
-        var totalReg= [];
-        var totalEarned= [];
+        var totalReg= "";
+        var totalEarned= "";
         connection.query('USE IntegratedData');
-        connection.query('SELECT ID,Name,ProgramName,TotalRegHours FROM Student WHERE ID = ? ', [username], function (error, results, fields) {
+        connection.query('SELECT ID,Name,ProgramName,TotalRegHours,TotalEarnedHours FROM Student WHERE ID = ? ', [username], function (error, results, fields) {
             var info = [];
             if (results.length > 0) {
                 
@@ -33,12 +33,12 @@ router.get('/transcript', function (request, response, next) {
                    id = row1.ID;
                     prog = row1.ProgramName;
                     name = row1.Name;
-                totalReg.push(row1.TotalRegHours)
-                totalEarned.push(row1.totalEarnedHours)
+                totalReg =row1.TotalRegHours
+                totalEarned = row1.TotalEarnedHours
                // console.log(info)    
             });
                
-                console.log(id, name, prog,totalReg);
+                console.log(id, name, prog,totalReg,totalEarned);
                connection.query('USE IntegratedData');
                 connection.query('SELECT CourseName,Grade,Semester FROM EnrolledCourses WHERE StudentID = ?  ORDER BY SemesterNum ASC', [id], function (error, results2, fields) {
 
@@ -77,7 +77,7 @@ router.get('/transcript', function (request, response, next) {
                 });
 
             } else {
-                console.log("Not a registered student");
+                response.send("Not a registered student");
                 flag=0;
             }
 
