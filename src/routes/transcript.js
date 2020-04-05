@@ -20,17 +20,26 @@ router.get('/transcript', function (request, response, next) {
         var id = "";
         var name = "";
         var flag = 1;
-        connection.query('USE AlexUni');
-        connection.query('SELECT ID,NameEn,Program FROM Students WHERE Username = ? ', [username], function (error, results, fields) {
+        var totalReg= [];
+        var totalEarned= [];
+        connection.query('USE IntegratedData');
+        connection.query('SELECT ID,Name,ProgramName,TotalRegHours FROM Student WHERE ID = ? ', [username], function (error, results, fields) {
+            var info = [];
             if (results.length > 0) {
+                
                 Object.keys(results).forEach(function (key) {
-                    var row1 = results[key];
-                    id = row1.ID;
-                    prog = row1.Program;
-                    name = row1.NameEn;
-                });
-                console.log(id, name, prog);
-                connection.query('USE IntegratedData');
+                   row1=results[key]
+                    // info.push(results[key]);
+                   id = row1.ID;
+                    prog = row1.ProgramName;
+                    name = row1.Name;
+                totalReg.push(row1.TotalRegHours)
+                totalEarned.push(row1.totalEarnedHours)
+               // console.log(info)    
+            });
+               
+                console.log(id, name, prog,totalReg);
+               connection.query('USE IntegratedData');
                 connection.query('SELECT CourseName,Grade,Semester FROM EnrolledCourses WHERE StudentID = ?  ORDER BY SemesterNum ASC', [id], function (error, results2, fields) {
 
                     if (results2.length > 0) {
@@ -41,7 +50,7 @@ router.get('/transcript', function (request, response, next) {
                         });
                               console.log(courses)
                               connection.query('USE IntegratedData');
-                              connection.query('SELECT Semester,GPA FROM Semesters WHERE StudentID = ?',[id],function (error, results4, fields) {
+                              connection.query('SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ?',[id],function (error, results4, fields) {
                                     var termGpa = [];
                                   if (results4.length > 0) {
 
@@ -51,9 +60,18 @@ router.get('/transcript', function (request, response, next) {
                                       });
                                             console.log(termGpa) ;
                                   }
+                                  else{
+                                  response.send('Wrong ID');
+                                  }
+                                  
                               });
+                                
+                            
+                            
+                            
+                            
                             } else {
-                        console.log("no registered courses");
+                        response.send("no registered courses");
                         flag =0;
                     }
                 });
@@ -92,10 +110,10 @@ router.get('/transcriptconfirm', function(request, response,fields) {
                     paid =row3.Paid ;
                      });
                       if (paid){
-                          console.log("Request confirmed");
+                          response.send("Request confirmed");
                       }
                     else {
-                        console.log("You haven't paid fees");
+                        response.send("You haven't paid fees");
                         flag = 0;
                     }
                     if (flag==1){

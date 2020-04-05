@@ -40,7 +40,7 @@ router.post('/uploaddoc',upload.single('armydoc'), function(req, response) {
         if (results.length>0) {
            
             fs.readFile(armydoc.path,function (err, data) {
-                console.log("iam heereee2")
+                
                 connection.query("UPDATE Students SET armypostpone = b'1', postponedoc = ? WHERE ID = ? ",[data,stdId], function(error, results,fields){
 
                     response.send('File Uploaded');
