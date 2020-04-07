@@ -22,7 +22,7 @@ function Login(props) {
         .then(response => {
             setLoading(false);
             setUserSession(response.data.token, response.data.user);
-            props.history.push('/dashboard');
+            props.history.push('/home');
         }).catch(error => {
             setLoading(false);
             if (error.response.status === 401) setError(error.response.data.message);
