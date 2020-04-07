@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
 import axios from 'axios';
 
-import Login from './Login';
+import Login from './components/login/Login';
 import Dashboard from './Dashboard';
-import Home from './Home';
 
 import PrivateRoute from './Utils/PrivateRoute';
 import PublicRoute from './Utils/PublicRoute';
@@ -35,12 +34,8 @@ if(authLoading && getToken()) {
   return (
     <div className="App">
       <BrowserRouter>
-        <div>
+        <div className="content">
           <div className="header">
-            <NavLink exact activeClassName="active" to="/">Login</NavLink><small>(Access without token only)</small>
-            <NavLink activeClassName="active" to="/dashboard">Dashboard</NavLink><small>(Access with token only)</small>
-          </div>
-          <div className="content">
             <Switch>
               <PublicRoute exact path="/" component={Login} />
               <PrivateRoute path="/dashboard" component={Dashboard} />
