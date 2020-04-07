@@ -24,7 +24,7 @@ router.use(bodyParser.json());
 const userData = {
 	userId: "789789",
 	password: "123456",
-	name: "Clue Mediator",
+	name: "Diaa Saber",
 	username: "1",
 	isAdmin: true
   };
@@ -56,7 +56,7 @@ const userData = {
   // request handlers
   router.get('/', (req, res) => {
 	if (!req.user) return res.status(401).json({ success: false, message: 'Invalid user to access it.' });
-	res.send('Welcome to the Node.js Tutorial! - ' + req.user.name);
+	res.send('Welcome - ' + req.user.name);
   });
    
    

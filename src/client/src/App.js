@@ -3,11 +3,11 @@ import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
 import axios from 'axios';
 
 import Login from './components/login/Login';
-import Dashboard from './Dashboard';
 
 import PrivateRoute from './Utils/PrivateRoute';
 import PublicRoute from './Utils/PublicRoute';
 import { getToken, setUserSession, removeUserSession } from './Utils/Common';
+import SecHome from './components/homepage-sec/pagesec';
 
 function App() {
 const [authLoading,setAuthLoading] = useState(true);
@@ -38,7 +38,7 @@ if(authLoading && getToken()) {
           <div className="header">
             <Switch>
               <PublicRoute exact path="/" component={Login} />
-              <PrivateRoute path="/dashboard" component={Dashboard} />
+              <PrivateRoute path="/home" component={SecHome} />
             </Switch>
           </div>
         </div>

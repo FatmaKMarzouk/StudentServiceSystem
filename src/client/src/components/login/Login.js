@@ -93,6 +93,7 @@ function Login(props) {
                   </label>
                 </div>
               </div>
+              {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}<br />
 
                 <Button
                 variant = "raised"
