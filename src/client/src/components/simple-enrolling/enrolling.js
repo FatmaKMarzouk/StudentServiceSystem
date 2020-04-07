@@ -1,34 +1,39 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { setUserSession } from '../../Utils/Common';
-import "./login.css";
+import "../login/login.css";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import { getUser, removeUserSession } from '../../Utils/Common';
 
-function Login(props) {
+function Enrolling(props) {
+    const user = getUser();
+
     const [loading, setLoading] = useState(false);
-    const username = useFormInput('');
-    const password = useFormInput('');
+    const nameen = useFormInput('');
+    const namear = useFormInput('');
+    const ssn = useFormInput('');
+    const email = useFormInput('');
+    const gender = useFormInput('');
+
+
     const [error, setError]= useState(null);
 
-    //handle button click of login form
-    const handleLogin = () => {
+    const handleLogout = () => {
+    props.history.push('/login');
+  }
+
+    //handle button click of Enroll form
+    const handleEnroll = () => {
         setError(null);
         setLoading(true);
-        axios.post('http://localhost:5000/users/signin', {username: username.value, password: password.value})
+        axios.post('http://localhost:5000/enroll', {nameen: nameen.value, namear: namear.value, ssn: ssn.value, email: email.value, gender: gender.value})
         .then(response => {
-            setLoading(false);
-            setUserSession(response.data.token, response.data.user);
             props.history.push('/home');
-        }).catch(error => {
-            setLoading(false);
-            if (error.response.status === 401) setError(error.response.data.message);
-            else setError("Something went wrong. Please try again later.");
-        }
-        );
+        });
     }
 
 
@@ -43,7 +48,7 @@ function Login(props) {
               variant="h4"
               style={{ fontWeight: "bold" }}
             >
-              تسجيل الدخول
+              تسجيل الطالب
             </Typography>
             <form className="login-form" noValidate>
               <TextField
@@ -51,10 +56,9 @@ function Login(props) {
                 margin="normal"
                 required
                 fullWidth
-                label="اسم المستخدم"
-                name="username"
-                {...username}
-                autoComplete="username"
+                label=" اسم الطالب بالانجليزية"
+                name="nameen"
+                {...nameen}
                 id="inputLabels"
               />
               <TextField
@@ -62,32 +66,60 @@ function Login(props) {
                 margin="normal"
                 required
                 fullWidth
-                name="password"
-                label="كلمة المرور"
-                type="password"
-                {...password}
-                autoComplete="current-password"
+                label="اسم الطالب بالعربية"
+                name="namear"
+                {...namear}
+                id="inputLabels"
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                label="الرقم القومي"
+                name="ssn"
+                {...ssn}
+                id="inputLabels"
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                label="البريد الالكتروني"
+                name="email"
+                {...email}
+                id="inputLabels"
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                label="النوع"
+                name="gender"
+                {...gender}
                 id="inputLabels"
               />
               <div className="form-radio">
                 <div>
                   <label id="radioBtns">
-                    شئون الطلبة
+                  برامج خاصة
                     <input
                       type="radio"
                       name="selection"
-                      value="student"
+                      value="private"
                       style={{ marginLeft: "10px" }}
                     />
                   </label>
                 </div>
                 <div>
                   <label id="radioBtns">
-                    طالب
+                  عام
                     <input
                       type="radio"
                       name="selection"
-                      value="secretary"
+                      value="general"
                       style={{ marginLeft: "10px" }}
                     />
                   </label>
@@ -103,11 +135,13 @@ function Login(props) {
                 style={{ fontWeight: "bold" }}
                 id="Btn"
                 value={loading ? 'Loading...' : 'Login'}
-                onClick={handleLogin}
+                onClick={handleEnroll}
                 disabled={loading}
               >
-                الدخول
+              تسجيل الطالب
               </Button>
+
+              <input type="button" onClick={handleLogout} value="Logout" />
 
             </form>
           </div>
@@ -129,4 +163,4 @@ const useFormInput = initialValue => {
     }
   }
 
-  export default Login;
+  export default Enrolling;

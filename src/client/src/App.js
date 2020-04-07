@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
 import axios from 'axios';
-
+import UserDetails from './components/mainform/UserDetails';
 import Login from './components/login/Login';
-
+import Enrolling from './components/simple-enrolling/enrolling';
 import PrivateRoute from './Utils/PrivateRoute';
 import PublicRoute from './Utils/PublicRoute';
 import { getToken, setUserSession, removeUserSession } from './Utils/Common';
@@ -18,7 +18,7 @@ useEffect(() => {
     return;
   }
 
-  axios.get(`http:/localhost:3000/verifyToken?token=${token}`).then(response => {
+  axios.get(`http:/localhost:5000/verifyToken?token=${token}`).then(response => {
     setUserSession(response.data.token, response.data.user);
     setAuthLoading(false);
   }).catch(error => {
@@ -39,6 +39,9 @@ if(authLoading && getToken()) {
             <Switch>
               <PublicRoute exact path="/" component={Login} />
               <PrivateRoute path="/home" component={SecHome} />
+              <PublicRoute path='/enroll' component={Enrolling}/>
+                <PublicRoute path='/userdetails' component={UserDetails}/>
+
             </Switch>
           </div>
         </div>
