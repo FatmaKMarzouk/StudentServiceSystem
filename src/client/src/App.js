@@ -40,7 +40,6 @@ if(authLoading && getToken()) {
               <PublicRoute exact path="/" component={Login} />
               <PrivateRoute path="/home" component={SecHome} />
               <PublicRoute path='/enroll' component={Enrolling}/>
-                <PublicRoute path='/userdetails' component={UserDetails}/>
 
             </Switch>
           </div>
