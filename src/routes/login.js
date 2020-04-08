@@ -23,11 +23,12 @@ router.use(bodyParser.json());
 
 // static user details
 const userData = {
-	userId: "789789",
-	password: "123456",
-	name: "Diaa Saber",
-	username: "1",
-	isAdmin: true
+	role: "",
+	userId: "",
+	password: "",
+	name: "",
+	username: "",
+	isAdmin: false
   };
    
    
@@ -65,6 +66,7 @@ const userData = {
   router.post('/users/signin', function (req, res) {
 	const user = req.body.username;
 	const pwd = req.body.password;
+	const role = req.body.role;
    
 	// return 400 status if username/password is not exist
 	if (!user || !pwd) {
@@ -74,13 +76,73 @@ const userData = {
 	  });
 	}
    
-	// return 401 status if the credential is not match.
-	if (user !== userData.username || pwd !== userData.password) {
-	  return res.status(401).json({
-		error: true,
-		message: "Username or Password is Wrong."
-	  });
+
+	if(user && pwd)
+	{
+		connection.query('Use AlexUni');
+		if(role=='student')
+		{
+			connection.query('SELECT * FROM Students WHERE Username = ? AND Password = ?', [user,pwd],function(error, results, fields)
+			{
+				if(results.length>0)
+				{
+					req.session.loggedin = true;
+					req.session.username = username;
+					Object.keys(results).forEach( function(key) 
+						{
+							userData.name=results[NameEN];
+							userData.username=results[Username];
+							userData.role=role;
+						});
+					return;
+					
+				} 
+				
+				// return 401 status if credential don't not match.
+				else
+					{		
+						return res.status(401).json(
+							{
+							error: true,
+							message: "Username or Password is Wrong."
+							});
+					}
+				
+			});
+		}
+		else if (role=='secretary')
+		{
+			connection.query('SELECT * FROM Secretary WHERE ID = ? AND Password = ?', [username, password], function(error, results, fields) 
+			{
+				if (results.length>0) 
+				{
+					request.session.loggedin = true;
+					request.session.username = username;
+					Object.keys(results).forEach( function(key) 
+						{
+							userData.name=results[Name];
+							userData.username=results[Username];
+							userData.role=role;
+						});
+						return;
+				} 
+				
+				// return 401 status if the credential is not match.
+				else
+					{		
+						return res.status(401).json(
+							{
+							error: true,
+							message: "Username or Password is Wrong."
+							});
+					}
+
+			});
+
+		}
 	}
+
+	// return 401 status if the credential is not match.
    
 	// generate token
 	const token = utils.generateToken(userData);
@@ -145,18 +207,23 @@ router.post('/auth', function(request, response,next) {
 	var role = request.body.role;
 	var username = request.body.username;
 	var password = request.body.password;
-	if (username && password) {
+	if (username && password) 
+	{
 		connection.query('USE AlexUni');
-	     if(role=='student'){
-		connection.query('SELECT * FROM Students WHERE Username = ? AND Password = ?', [username, password], function(error, results, fields) {
-			if (results.length>0) {
-				request.session.loggedin = true;
-				request.session.username = username;
-				response.redirect('/home');
-			} else {
-				response.send('Incorrect Username and/or Password!');
-			}
-		});
+		 if(role=='student')
+		 {
+			connection.query('SELECT * FROM Students WHERE Username = ? AND Password = ?', [username, password], function(error, results, fields) 
+			{
+				if (results.length>0) 
+				{
+					request.session.loggedin = true;
+					request.session.username = username;
+					response.redirect('/home');
+				} else 
+					{
+					response.send('Incorrect Username and/or Password!');
+				}
+			});
 		 }
 		 else if (role=='secretary'){
 			connection.query('SELECT * FROM Secretary WHERE ID = ? AND Password = ?', [username, password], function(error, results, fields) {

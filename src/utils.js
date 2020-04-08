@@ -12,6 +12,7 @@ function generateToken(user) {
   if (!user) return null;
 
   var u = {
+    role: user.role,
     userId: user.userId,
     name: user.name,
     username: user.username,
@@ -28,6 +29,7 @@ function getCleanUser(user) {
   if (!user) return null;
 
   return {
+    role: user.role,
     userId: user.userId,
     name: user.name,
     username: user.username,
