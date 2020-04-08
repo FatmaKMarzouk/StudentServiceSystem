@@ -30,16 +30,16 @@ const userData = {
 	username: "",
 	isAdmin: false
   };
-   
-   
-   
+
+
+
   //middleware that checks if JWT token exists and verifies it if it does exist.
   //In all future routes, this helps to know if the request is authenticated or not.
   router.use(function (req, res, next) {
 	// check header or url parameters or post parameters for token
 	var token = req.headers['authorization'];
 	if (!token) return next(); //if no token, continue
-   
+
 	token = token.replace('Bearer ', '');
 	jwt.verify(token, process.env.JWT_SECRET, function (err, user) {
 	  if (err) {
@@ -53,40 +53,36 @@ const userData = {
 	  }
 	});
   });
-   
-   
+
+
   // request handlers
   router.get('/', (req, res) => {
 	if (!req.user) return res.status(401).json({ success: false, message: 'Invalid user to access it.' });
 	res.send('Welcome - ' + req.user.name);
   });
-   
-   
+
+
   // validate the user credentials
   router.post('/users/signin', function (req, res) {
-	  console.log('alooooooo');
 	  console.log(req.body);
 	const user = req.body.username;
 	const pwd = req.body.password;
 	const role = req.body.role;
-   
-   
+
+
 
 	if(user && pwd && role)
 	{
-		console.log('aloooooo2');
 		connection.query('Use AlexUni');
 		if(role=='student')
 		{
 			connection.query('SELECT * FROM Students WHERE Username = ? AND Password = ?', [user,pwd],function(error, results, fields)
 			{
-				console.log('alooooooo3');
 				if(results.length>0)
 				{
-					console.log('alooooooo4');
 					req.session.loggedin = true;
 					req.session.username = user;
-					Object.keys(results).forEach( function(key) 
+					Object.keys(results).forEach( function(key)
 						{
 							var row=results[key];
 							userData.name=row.NameEn;
@@ -103,26 +99,25 @@ const userData = {
 				}
 				// return 401 status if credential don't not match.
 				else
-					{		
-						console.log('alooooooo4 test');
+					{
 						return res.status(401).json(
 							{
 							error: true,
 							message: "Username or Password is Wrong."
 							});
 					}
-				
+
 			});
 		}
 		else if (role=='secretary')
 		{
-			connection.query('SELECT * FROM Secretary WHERE ID = ? AND Password = ?', [user, pwd], function(error, results, fields) 
+			connection.query('SELECT * FROM Secretary WHERE ID = ? AND Password = ?', [user, pwd], function(error, results, fields)
 			{
-				if (results.length>0) 
+				if (results.length>0)
 				{
 					request.session.loggedin = true;
 					request.session.username = user;
-					Object.keys(results).forEach( function(key) 
+					Object.keys(results).forEach( function(key)
 						{
 							userData.name=results.Name;
 							userData.username=results.Username;
@@ -134,11 +129,11 @@ const userData = {
 						const userObj = utils.getCleanUser(userData);
 						// return the token along with user details
 						return res.json({ user: userObj, token });
-				} 
-				
+				}
+
 				// return 401 status if the credential is not match.
 				else
-					{		
+					{
 						return res.status(401).json(
 							{
 							error: true,
@@ -152,7 +147,7 @@ const userData = {
 	}
 	// return 401 status if the credential is not match.
 	else
-		{		
+		{
 			return res.status(401).json(
 				{
 				error: true,
@@ -160,10 +155,10 @@ const userData = {
 				});
 		}
 
-   
+
   });
-   
-   
+
+
   // verify the token and return it if it's valid
   router.get('/verifyToken', function (req, res) {
 	// check header or url parameters or post parameters for token
@@ -180,7 +175,7 @@ const userData = {
 		error: true,
 		message: "Invalid token."
 	  });
-   
+
 	  // return 401 status if the userId does not match.
 	  if (user.userId !== userData.userId) {
 		return res.status(401).json({
@@ -193,7 +188,6 @@ const userData = {
 	  return res.json({ user: userObj, token });
 	});
   });
-  
 
 
 
@@ -208,7 +202,8 @@ const userData = {
 
 
 
-/*router.get('/', function(request, response,next) {
+
+router.get('/login', function(request, response,next) {
 	response.sendFile(__dirname+'/login.html');
 
 });
@@ -218,19 +213,19 @@ router.post('/auth', function(request, response,next) {
 	var role = request.body.role;
 	var username = request.body.username;
 	var password = request.body.password;
-	if (username && password) 
+	if (username && password)
 	{
 		connection.query('USE AlexUni');
 		 if(role=='student')
 		 {
-			connection.query('SELECT * FROM Students WHERE Username = ? AND Password = ?', [username, password], function(error, results, fields) 
+			connection.query('SELECT * FROM Students WHERE Username = ? AND Password = ?', [username, password], function(error, results, fields)
 			{
-				if (results.length>0) 
+				if (results.length>0)
 				{
 					request.session.loggedin = true;
 					request.session.username = username;
 					response.redirect('/home');
-				} else 
+				} else
 					{
 					response.send('Incorrect Username and/or Password!');
 				}
@@ -255,4 +250,4 @@ router.post('/auth', function(request, response,next) {
 		response.send('Please enter Username and Password!');
 
 	}
-});*/
+});
