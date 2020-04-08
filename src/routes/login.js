@@ -95,7 +95,7 @@ const userData = {
 							userData.role=role;
 						});
 					return;
-					
+					console.log(userData);
 				} 
 				
 				// return 401 status if credential don't not match.
