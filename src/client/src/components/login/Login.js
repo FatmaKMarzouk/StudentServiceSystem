@@ -12,13 +12,14 @@ function Login(props) {
     const [loading, setLoading] = useState(false);
     const username = useFormInput('');
     const password = useFormInput('');
+    const role = useFormInput('');
     const [error, setError]= useState(null);
 
     //handle button click of login form
     const handleLogin = () => {
         setError(null);
         setLoading(true);
-        axios.post('http://localhost:5000/users/signin', {username: username.value, password: password.value})
+        axios.post('http://localhost:5000/users/signin', {username: username.value, password: password.value, role: role.value})
         .then(response => {
             setLoading(false);
             setUserSession(response.data.token, response.data.user);
@@ -75,8 +76,9 @@ function Login(props) {
                     شئون الطلبة
                     <input
                       type="radio"
+                      {...role}
                       name="selection"
-                      value="student"
+                      value="secretary"
                       style={{ marginLeft: "10px" }}
                     />
                   </label>
@@ -86,8 +88,9 @@ function Login(props) {
                     طالب
                     <input
                       type="radio"
+                      {...role}
                       name="selection"
-                      value="secretary"
+                      value="student"
                       style={{ marginLeft: "10px" }}
                     />
                   </label>

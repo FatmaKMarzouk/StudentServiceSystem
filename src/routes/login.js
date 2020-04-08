@@ -64,43 +64,47 @@ const userData = {
    
   // validate the user credentials
   router.post('/users/signin', function (req, res) {
+	  console.log('alooooooo');
+	  console.log(req.body);
 	const user = req.body.username;
 	const pwd = req.body.password;
 	const role = req.body.role;
    
-	// return 400 status if username/password is not exist
-	if (!user || !pwd) {
-	  return res.status(400).json({
-		error: true,
-		message: "Username or Password required."
-	  });
-	}
    
 
-	if(user && pwd)
+	if(user && pwd && role)
 	{
+		console.log('aloooooo2');
 		connection.query('Use AlexUni');
 		if(role=='student')
 		{
 			connection.query('SELECT * FROM Students WHERE Username = ? AND Password = ?', [user,pwd],function(error, results, fields)
 			{
+				console.log('alooooooo3');
 				if(results.length>0)
 				{
+					console.log('alooooooo4');
 					req.session.loggedin = true;
-					req.session.username = username;
+					req.session.username = user;
 					Object.keys(results).forEach( function(key) 
 						{
-							userData.name=results[NameEN];
-							userData.username=results[Username];
+							var row=results[key];
+							userData.name=row.NameEn;
+							userData.username=row.Username;
 							userData.role=role;
 						});
-					return;
 					console.log(userData);
-				} 
-				
+					// generate token
+					const token = utils.generateToken(userData);
+					// get basic user details
+					const userObj = utils.getCleanUser(userData);
+					// return the token along with user details
+					return res.json({ user: userObj, token });
+				}
 				// return 401 status if credential don't not match.
 				else
 					{		
+						console.log('alooooooo4 test');
 						return res.status(401).json(
 							{
 							error: true,
@@ -112,19 +116,24 @@ const userData = {
 		}
 		else if (role=='secretary')
 		{
-			connection.query('SELECT * FROM Secretary WHERE ID = ? AND Password = ?', [username, password], function(error, results, fields) 
+			connection.query('SELECT * FROM Secretary WHERE ID = ? AND Password = ?', [user, pwd], function(error, results, fields) 
 			{
 				if (results.length>0) 
 				{
 					request.session.loggedin = true;
-					request.session.username = username;
+					request.session.username = user;
 					Object.keys(results).forEach( function(key) 
 						{
-							userData.name=results[Name];
-							userData.username=results[Username];
+							userData.name=results.Name;
+							userData.username=results.Username;
 							userData.role=role;
 						});
-						return;
+						// generate token
+						const token = utils.generateToken(userData);
+						// get basic user details
+						const userObj = utils.getCleanUser(userData);
+						// return the token along with user details
+						return res.json({ user: userObj, token });
 				} 
 				
 				// return 401 status if the credential is not match.
@@ -141,15 +150,17 @@ const userData = {
 
 		}
 	}
-
 	// return 401 status if the credential is not match.
+	else
+		{		
+			return res.status(401).json(
+				{
+				error: true,
+				message: "Username, Password and Role are required."
+				});
+		}
+
    
-	// generate token
-	const token = utils.generateToken(userData);
-	// get basic user details
-	const userObj = utils.getCleanUser(userData);
-	// return the token along with user details
-	return res.json({ user: userObj, token });
   });
    
    
