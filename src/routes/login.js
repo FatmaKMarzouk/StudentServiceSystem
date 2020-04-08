@@ -115,8 +115,8 @@ const userData = {
 			{
 				if (results.length>0)
 				{
-					request.session.loggedin = true;
-					request.session.username = user;
+					req.session.loggedin = true;
+					req.session.username = user;
 					Object.keys(results).forEach( function(key)
 						{
 							userData.name=results.Name;

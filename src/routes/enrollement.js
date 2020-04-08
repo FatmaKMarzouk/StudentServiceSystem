@@ -54,15 +54,11 @@ router.post('/enroll',function(request, response) {
 	var nameen = request.body.nameen;
 	var namear = request.body.namear;
 	var ssn = request.body.ssn;
-<<<<<<< HEAD
 	var medicalcondition = request.body.medicalcondition || " ";
-=======
-	var parentphone = request.body.parentphone;	
-	var parentname = request.body.parentname;	
-	var parentssn = request.body.parentssn;	
-	var parentrelation = request.body.parentrelation;	
-	var medicalcondition = request.body.medicalcondition;
->>>>>>> master
+	// var parentphone = request.body.parentphone;
+	// var parentname = request.body.parentname;
+	// var parentssn = request.body.parentssn;
+	// var parentrelation = request.body.parentrelation;
 	var email = request.body.email;
 	var nationality = request.body.nationality || " ";
 	var birthdate = request.body.birthdate || " ";
@@ -84,12 +80,9 @@ router.post('/enroll',function(request, response) {
 		for ( var i = 0; i < 10; i++ ) {
 		   result += characters.charAt(Math.floor(Math.random() * charactersLength));
 		}
-
-<<<<<<< HEAD
 		connection.query('INSERT INTO Students (NameEn,NameAr,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Password,Faculty,Program) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ',[nameen, namear, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, result ,'Faculty of Engineering', 'General'] ,  function(error, results, fields){
-=======
-		connection.query('INSERT INTO Students (NameEn,NameAr,ParentPhone,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Password,Faculty,Program,ParentName,ParentSSN,ParentRelation) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ',[nameen, namear, parentphone, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, result ,facultysec, 'General',parentname,parentssn,parentrelation] ,  function(error, results, fields){
->>>>>>> master
+	//	connection.query('INSERT INTO Students (NameEn,NameAr,ParentPhone,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Password,Faculty,Program,ParentName,ParentSSN,ParentRelation) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ',[nameen, namear, parentphone, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, result ,facultysec, 'General',parentname,parentssn,parentrelation] ,  function(error, results, fields){
+
 
 			if(selection == 'private'){
 				connection.query("UPDATE Students SET SSP = b'1' WHERE Email = ? ",[email], function(error, results,fields){
