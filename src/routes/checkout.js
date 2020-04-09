@@ -9,10 +9,6 @@ const { resolve } = require("path");
 const env = require("../app");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-console.log("da5alt el checkout.js: " + total);
-console.log(process.env.STATIC_DIR + "/checkout.html");
-console.log("KEY:  " + process.env.STRIPE_SECRET_KEY);
-console.log("__dirname: "+ __dirname+"/.env");
 
 
 router.get("/checkout", (req, res) => {
@@ -90,4 +86,3 @@ const generateResponse = intent => {
       return { clientSecret: intent.client_secret };
   }
 };
-
