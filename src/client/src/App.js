@@ -32,10 +32,10 @@ if(authLoading && getToken()) {
 }
 
   return (
-    <div className="App">
+    <div>
       <BrowserRouter>
-        <div className="content">
-          <div className="header">
+        <div>
+          <div>
             <Switch>
               <PublicRoute exact path="/" component={Login} />
               <PrivateRoute path="/home" component={SecHome} />

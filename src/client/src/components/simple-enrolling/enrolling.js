@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { setUserSession } from '../../Utils/Common';
 import "../login/login.css";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { getUser, removeUserSession } from '../../Utils/Common';
+import { getUser, removeUserSession, setUserSession } from '../../Utils/Common';
 
 function Enrolling(props) {
     const user = getUser();
@@ -33,7 +32,12 @@ function Enrolling(props) {
         axios.post('http://localhost:5000/enroll', {nameen: nameen.value, namear: namear.value, ssn: ssn.value, email: email.value, gender: gender.value})
         .then(response => {
             props.history.push('/home');
-        });
+        }).catch(error => {
+          setLoading(false);
+          if (error.response.status === 401) setError(error.response.data.message);
+          else setError("Something went wrong. Please try again later.");
+      }
+      );
     }
 
 
