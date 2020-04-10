@@ -22,7 +22,7 @@ function Enrolling(props) {
     const [error, setError]= useState(null);
 
     const handleLogout = () => {
-    props.history.push('/login');
+    props.history.push('/');
   }
 
     //handle button click of Enroll form
