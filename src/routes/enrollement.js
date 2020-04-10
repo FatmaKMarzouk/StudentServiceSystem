@@ -22,6 +22,14 @@ router.get('/enrollement', function(request, response,next) {
 	response.sendFile(__dirname+'/enrollement.html');
 	//console.log('its anhoon11');
 
+});
+
+var connection = require('../controllers/dbconnection');
+
+
+router.post('/enroll',function(request, response) {
+	console.log("frontend connected");
+
 	if (request.session.loggedin) {
 		var secusername = request.session.username;
 
@@ -40,15 +48,7 @@ router.get('/enrollement', function(request, response,next) {
 
 		});
 	}
-
-});
-
-var connection = require('../controllers/dbconnection');
-
-
-router.post('/enroll',function(request, response) {
-	console.log("frontend connected");
-
+	
 	response.send('Student has been added successfully');
 
 	var nameen = request.body.nameen;
@@ -102,14 +102,15 @@ router.post('/enroll',function(request, response) {
 					  return user;
 					});}
 					const output = `
-					<p>You have been accepted in Alexandria University</p>
+					<p>Congratulations! You have been accepted in Alexandria University.</p>
 					<h3>Contact Details</h3>
 					<ul>
+					<li>Faculty: ${facultysec}</li>
 					<li>Username: ${user}</li>
 					<li>Password: ${result}</li>
 					</ul>
-					<h3>Message</h3>
-					<p>Please login and change your password</p>
+					<h3>Note:</h3>
+					<p>Please login and change your password.</p>
 				`;
 
 				let transporter = nodemailer.createTransport({
