@@ -22,7 +22,8 @@ function Enrolling(props) {
     const [error, setError]= useState(null);
 
     const handleLogout = () => {
-    props.history.push('/login');
+      removeUserSession();
+    props.history.push('/');
   }
 
     //handle button click of Enroll form
@@ -31,7 +32,9 @@ function Enrolling(props) {
         setLoading(true);
         axios.post('http://localhost:5000/enroll', {nameen: nameen.value, namear: namear.value, ssn: ssn.value, email: email.value, gender: gender.value})
         .then(response => {
-            props.history.push('/home');
+          setLoading(false);
+          setUserSession(response.data.token, response.data.user);
+          props.history.push('/home');
         }).catch(error => {
           setLoading(false);
           if (error.response.status === 401) setError(error.response.data.message);
