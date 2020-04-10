@@ -28,7 +28,7 @@ router.get('/transcript', function (request, response, next) {
         connection.query('SELECT ID,Name,ProgramName,TotalRegHours,TotalEarnedHours FROM Student WHERE ID = ? ', [username], function (error, results, fields) {
             var info = [];
             if (results.length > 0) {
-                
+
                 Object.keys(results).forEach(function (key) {
                    row1=results[key]
                     // info.push(results[key]);
@@ -37,9 +37,9 @@ router.get('/transcript', function (request, response, next) {
                     name = row1.Name;
                 totalReg =row1.TotalRegHours
                 totalEarned = row1.TotalEarnedHours
-               // console.log(info)    
+               // console.log(info)
             });
-               
+
                 console.log(id, name, prog,totalReg,totalEarned);
                connection.query('USE IntegratedData');
                 connection.query('SELECT CourseName,Grade,Semester FROM EnrolledCourses WHERE StudentID = ?  ORDER BY SemesterNum ASC', [id], function (error, results2, fields) {
@@ -70,13 +70,13 @@ router.get('/transcript', function (request, response, next) {
                                   else{
                                   response.send('Wrong ID');
                                   }
-                                  
+
                               });
-                                
-                            
-                            
-                            
-                            
+
+
+
+
+
                             } else {
                         response.send("no registered courses");
                         flag =0;
@@ -117,18 +117,18 @@ router.get('/transcriptconfirm', function(request, response,fields) {
                     paid =row3.Paid ;
                      });
                       if (paid){
-                          response.send("Request confirmed");
+                        if (flag==1){
+
+                          connection.query('USE AlexUni');
+                          connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount) VALUES( ?,?,? ) ',[username,"Request Transcript","50"]);
+                          response.redirect('/cart');
+                        }
                       }
                     else {
                         response.send("You haven't paid fees");
                         flag = 0;
                     }
-                    if (flag==1){
 
-                      connection.query('USE AlexUni');
-                      connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount) VALUES( ?,?,? ) ',[username,"Request Transcript","50"]);
-                      response.redirect('/cart');
-                    }
                     }
                     else {
 
