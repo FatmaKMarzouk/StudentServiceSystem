@@ -39,7 +39,7 @@ if(authLoading && getToken()) {
             <Switch>
               <PublicRoute exact path="/" component={Login} />
               <PrivateRoute path="/home" component={SecHome} />
-              <PrivateRoute path='/enroll' component={Enrolling}/>
+              <PublicRoute path='/enroll' component={Enrolling}/>
 
             </Switch>
           </div>
