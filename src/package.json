@@ -3,29 +3,37 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon node app.js"
+    "start": "nodemon node app.js",
+    "server": "node app.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {
-    "aws-sdk": "^2.637.0",
+    "aws-sdk": "^2.653.0",
     "body-parser": "^1.19.0",
     "consolidate": "^0.15.1",
-    "cookie-parser": "~1.4.4",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
     "dateformat": "^3.0.3",
     "debug": "~2.6.9",
-    "ejs": "^3.0.1",
+    "ejs": "^3.0.2",
     "express": "^4.17.1",
     "express-generator": "^4.16.1",
     "express-session": "^1.17.0",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "~1.9.1",
     "multer": "^1.4.2",
     "mysql": "^2.18.1",
-    "nodemailer": "^6.4.5",
-    "request": "^2.88.2"
+    "nodemailer": "^6.4.6",
+    "request": "^2.88.2",
+    "stripe": "^8.39.0"
   },
   "main": "app.js",
   "devDependencies": {
+    "concurrently": "^5.1.0",
+    "dotenv": "^8.2.0",
     "nodemon": "^1.18.10"
   },
   "author": "",
