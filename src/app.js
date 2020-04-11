@@ -11,7 +11,7 @@ var postpone = require("./routes/postpone");
 var homesec = require("./routes/homesec");
 var enrollement = require("./routes/enrollement");
 var chooseprog = require("./routes/chooseprog");
-
+var docx = require("docx");
 var transcript = require("./routes/transcript");
 var request = require('request');
 
