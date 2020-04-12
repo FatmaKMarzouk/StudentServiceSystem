@@ -198,7 +198,7 @@ pObj = docx.createP()
  
 // We can even add images:
 
- 
+pObj.addImage('some-image.png')
 // Let's generate the Word document into a file:
  
 let out = fs.createWriteStream('example.docx')
