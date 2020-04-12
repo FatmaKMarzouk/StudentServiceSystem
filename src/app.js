@@ -14,7 +14,8 @@ var chooseprog = require("./routes/chooseprog");
 var docx = require("docx");
 var transcript = require("./routes/transcript");
 var request = require('request');
-
+var officegen = require('officegen')
+var fs = require('fs')
 var cart = require("./routes/cart");
 var certificateofenrollment = require("./routes/certificateofenrollment");
 var addsec = require("./routes/addsec");
