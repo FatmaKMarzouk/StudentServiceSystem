@@ -8,7 +8,8 @@ var path = require('path');
 var courses = []
 const officegen = require('officegen')
 const fs = require('fs')
-var masterobject = "";
+var masterobject1 = "";
+var masterobject2="";
 var name = "";
 var id = ""
 var flag = 1;
@@ -52,13 +53,13 @@ router.get('/transcript', function (request, response, next) {
 
                         Object.keys(results2).forEach(function (key) {
                             //courses.push(results2[key]);
-                            masterobject = {
-                                ...masterobject,
+                            masterobject1 = {
+                                ...1,
                                 ...results2
                             };
                         });
                         console.log('bada2t teba3a\n');
-                        console.log(masterobject);
+                        console.log(masterobject1);
                         console.log('\n5allast teba3a\n');
                         connection.query('USE IntegratedData');
                         connection.query('SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ?', [id], function (error, results4, fields) {
@@ -67,14 +68,14 @@ router.get('/transcript', function (request, response, next) {
 
                                 Object.keys(results4).forEach(function (key) {
                                     //  termGpa.push(results4[key]);
-                                    masterobject = {
-                                        ...masterobject,
+                                    masterobject2 = {
+                                        ...masterobject2,
                                         ...results4
                                     };
 
                                 });
                                 console.log('bada2t teba3a tanyyy\n');
-                                console.log(masterobject);
+                                console.log(masterobject2);
                                 console.log('\n5allast teba3a tanyyy\n');
                             } else {
                                 response.send('Wrong ID');
@@ -172,7 +173,11 @@ router.get('/transcriptconfirm', function (request, response, fields) {
                     pObj.addLineBreak()
                     pObj.addText("Student's total earned hours : "+totalEarned)
                     pObj.addLineBreak()
-                    pObj.addText("Subject's objects :")
+                   var myobj1=JSON.stringify(masterobject1);
+                    pObj.addText("Subject's taken :")
+
+                    pObj.addLineBreak()
+                    pObj.addText(myobj1,{color:'0000A0'})
                     
                     
                     //pObj = docx.createP()
