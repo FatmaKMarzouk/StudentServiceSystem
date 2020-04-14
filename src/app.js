@@ -19,6 +19,9 @@ var cart = require("./routes/cart");
 var certificateofenrollment = require("./routes/certificateofenrollment");
 var addsec = require("./routes/addsec");
 var checkout = require("./routes/checkout");
+var allRequests = require("./routes/allRequests");
+var todaysRequests = require("./routes/todaysRequests");
+var doneRequests = require("./routes/doneRequests");
 
 app.use(express.static(process.env.STATIC_DIR));
 app.use(express.json());
@@ -38,6 +41,9 @@ app.use(certificateofenrollment);
 app.use(addsec);
 app.use(cart);
 app.use(checkout);
+app.use(allRequests);
+app.use(doneRequests);
+app.use(todaysRequests);
 
 app.listen(port); //this function does http.createServer
 module.exports = env;

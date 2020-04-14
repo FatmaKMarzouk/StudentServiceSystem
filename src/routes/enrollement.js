@@ -47,7 +47,7 @@ router.post('/enroll',function(request, response) {
 
 
 		});
-	}
+	
 	
 	response.send('Student has been added successfully');
 
@@ -150,5 +150,5 @@ router.post('/enroll',function(request, response) {
 
 
 		});
-
+	}
 });
