@@ -124,6 +124,7 @@ router.get('/transcriptconfirm', function (request, response, fields) {
             if (results3.length > 0) {
                 Object.keys(results3).forEach(function (key) {
                     var row3 = results3[key];
+
                     paid = row3.Paid;
                 });
                 if (paid) {
@@ -205,6 +206,23 @@ router.get('/transcriptconfirm', function (request, response, fields) {
                         connection.query('USE AlexUni');
                         connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount) VALUES( ?,?,? ) ', [username, "Request Transcript", "50"]);
                         response.redirect('/cart');
+
+                    paid =row3.Paid ;
+                     });
+                      if (paid){
+                        if (flag==1){
+
+                          connection.query('USE AlexUni');
+                          connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount,FacultyName) VALUES( ?,?,?,? ) ',[username,"Request Transcript","50","Faculty of Engineering"]);
+                          response.redirect('/cart');
+                        }
+                      }
+                    else {
+                        response.send("You haven't paid fees");
+                        flag = 0;
+                    }
+
+ 
                     }
                 } else {
                     response.send("You haven't paid fees");
