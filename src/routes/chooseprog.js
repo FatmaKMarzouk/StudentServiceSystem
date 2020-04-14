@@ -99,7 +99,7 @@ router.post('/submitprog', function(request, response,next) {
                Date : date
              }
     connection.query('USE AlexUni');
-    connection.query('INSERT INTO Requests (StudentID,ServiceName,Data,Amount) VALUES( ?,?,?,? ) ',[username,"Choose Program",JSON.stringify(info),info.Fee]);
+    connection.query('INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName) VALUES( ?,?,?,?,? ) ',[username,"Choose Program",JSON.stringify(info),info.Fee,"Faculty of Engineering"]);
     response.redirect('/cart');
   }
 
