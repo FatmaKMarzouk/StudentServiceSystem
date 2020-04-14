@@ -11,7 +11,7 @@ var postpone = require("./routes/postpone");
 var homesec = require("./routes/homesec");
 var enrollement = require("./routes/enrollement");
 var chooseprog = require("./routes/chooseprog");
-
+var annualfees = require("./routes/annualfees");
 var transcript = require("./routes/transcript");
 var request = require('request');
 
@@ -28,7 +28,7 @@ app.use(homesec);
 app.use(enrollement);
 app.use(postpone);
 app.use(home);
-
+app.use(annualfees);
 
 app.use(transcript);
 
