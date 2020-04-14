@@ -120,7 +120,7 @@ router.get('/transcriptconfirm', function(request, response,fields) {
                         if (flag==1){
 
                           connection.query('USE AlexUni');
-                          connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount) VALUES( ?,?,? ) ',[username,"Request Transcript","50"]);
+                          connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount,FacultyName) VALUES( ?,?,?,? ) ',[username,"Request Transcript","50","Faculty of Engineering"]);
                           response.redirect('/cart');
                         }
                       }

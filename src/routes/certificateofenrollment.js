@@ -78,7 +78,7 @@ router.get('/cart-test', function(req,res,next)
 
 
                   connection.query('USE AlexUni');
-                  connection.query('INSERT INTO Requests (StudentID,ServiceName,Data,Amount) VALUES( ?,?,?,? ) ',[username,"Certificate of Enrollment",JSON.stringify(allresults),"50"]);
+                  connection.query('INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName) VALUES( ?,?,?,?,? ) ',[username,"Certificate of Enrollment",JSON.stringify(allresults),"50","Faculty of Engineering"]);
                   res.redirect('/cart');
                 }
 }
