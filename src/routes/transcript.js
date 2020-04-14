@@ -5,7 +5,7 @@ module.exports = router;
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
-var courses = []
+var courses = ""
 const officegen = require('officegen')
 const fs = require('fs')
 var masterobject1 = "";
@@ -16,7 +16,17 @@ var flag = 1;
 var totalReg = "";
 var totalEarned = "";
 var prog = "";
-
+var row3
+var grades=""
+var semesters=""
+var grade= ""
+var info1 = []
+var info1sep=[]
+var sems=""
+var gpa=""
+var regH=""
+var info2=[]
+var info2sep=[]
 
 router.use(bodyParser.urlencoded({
     extended: true
@@ -52,14 +62,23 @@ router.get('/transcript', function (request, response, next) {
                     if (results2.length > 0) {
 
                         Object.keys(results2).forEach(function (key) {
-                            //courses.push(results2[key]);
+                            row2=results2[key];
+                            courses=row2.CourseName;
+                            grade = row2.Grade
+                            semesters = row2.Semester
+                            info1.push(courses + " ,Grade: " + grade + " ,Semester: " + semesters)
+                            info1sep = info1.join("\n")
+                            console.log(courses+" "+grade+" "+semesters+"\n")
+                           
                             masterobject1 = {
                                 ...1,
                                 ...results2
                             };
+                    
                         });
+                        
                         console.log('bada2t teba3a\n');
-                        console.log(masterobject1);
+                        //console.log(row2.CourseName);
                         console.log('\n5allast teba3a\n');
                         connection.query('USE IntegratedData');
                         connection.query('SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ?', [id], function (error, results4, fields) {
@@ -68,6 +87,12 @@ router.get('/transcript', function (request, response, next) {
 
                                 Object.keys(results4).forEach(function (key) {
                                     //  termGpa.push(results4[key]);
+                                    row4 = results4[key]
+                                    sems = row4.Semester
+                                    gpa = row4.GPA
+                                    regH = row4.regHours
+                                    info2.push(sems + " ,GPA: " + gpa + " ,Registered Hours: " + regH)
+                                    info2sep = info2.join("\n")
                                     masterobject2 = {
                                         ...masterobject2,
                                         ...results4
@@ -75,6 +100,7 @@ router.get('/transcript', function (request, response, next) {
 
                                 });
                                 console.log('bada2t teba3a tanyyy\n');
+                                var obj2
                                 console.log(masterobject2);
                                 console.log('\n5allast teba3a tanyyy\n');
                             } else {
@@ -174,13 +200,19 @@ router.get('/transcriptconfirm', function (request, response, fields) {
                         pObj.addLineBreak()
                         pObj.addText("Student's total earned hours : " + totalEarned)
                         pObj.addLineBreak()
+                        
                         var myobj1 = JSON.stringify(masterobject1);
                         pObj.addText("Subject's taken :")
 
                         pObj.addLineBreak()
-                        pObj.addText(myobj1, {
+                        pObj.addText(info1sep.toString(), {
                             color: '0000A0'
                         })
+                        pObj.addLineBreak()
+                        pObj.addText("Semester GPA and registered hours :")
+                        pObj.addLineBreak()
+
+                        pObj.addText(info2sep.toString())
 
 
                         //pObj = docx.createP()
@@ -196,21 +228,14 @@ router.get('/transcriptconfirm', function (request, response, fields) {
                         //docx.putPageBreak()
 
                         // Let's generate the Word document into a file:
-                        let out = fs.createWriteStream('example.docx')
+                        let out = fs.createWriteStream('example2.docx')
                         out.on('error', function (err) {
                             console.log(err)
                         })
                         // Async call to generate the output file:
                         docx.generate(out)
 
-                        if (flag == 1) {
-
-                            connection.query('USE AlexUni');
-                            connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount) VALUES( ?,?,? ) ', [username, "Request Transcript", "50"]);
-                            response.redirect('/cart');
-
-                            paid = row3.Paid;
-                        };
+                        
                         if (paid) {
                             if (flag == 1) {
 
