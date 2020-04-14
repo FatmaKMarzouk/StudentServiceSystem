@@ -28,14 +28,23 @@ router.get('/annualfees',function(request,response,next){
       myDate.setDate(myDate.getDate() + 366);
       var date = new Date();
       var diff = date.getTime()-myDate.getTime();
-      diff = diff / (1000 * 3600 * 24)/365 + 1;
+      diff = diff / (1000 * 3600 * 24);
+      diff = parseInt(diff/365) +1;
+      if(diff<=0){
+        response.send("You have paid your annual fees");
+      }
+      else{
+      console.log("You have to pay for " +diff+" academic years");
+    }
+
+
+
     }
     else {
-      console.log('You have no requested services in your cart');
+
     }
   });
 
-  response.sendFile(__dirname+'/cart.html');
 }
 else{
   response.send("Please log in to view this page!");
