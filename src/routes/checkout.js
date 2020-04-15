@@ -1,8 +1,15 @@
 var cart = require('./cart');  //fatma zawedet el satreen dool
-var total = cart.total;
-
+var session = require('express-session');
 const express = require("express");
 const router = express.Router();
+var bodyParser = require('body-parser');
+var dateFormat = require('dateformat');
+var total = cart.total;
+router.use(bodyParser.urlencoded({extended : true}));
+router.use(bodyParser.json());
+var connection = require('../controllers/dbconnection');
+
+
 module.exports = router;
 const { resolve } = require("path");
 // Replace if using a different env file or config
@@ -26,10 +33,12 @@ const calculateOrderAmount = items => {
   // Replace this constant with a calculation of the order's amount
   // You should always calculate the order total on the server to prevent
   // people from directly manipulating the amount on the client
-  return 222;
+  return total;
 };
 
 router.post("/pay", async (req, res) => {
+  if(request.session.loggedin){
+  var username = request.session.username;
   const { paymentMethodId, paymentIntentId, items, currency, useStripeSdk } = req.body;
 
   const orderAmount = calculateOrderAmount(items);
@@ -61,6 +70,10 @@ router.post("/pay", async (req, res) => {
     // See https://stripe.com/docs/declines/codes for more
     res.send({ error: e.message });
   }
+}
+else{
+  response.send("Please log in to view this page!");
+}
 });
 
 const generateResponse = intent => {
@@ -80,6 +93,9 @@ const generateResponse = intent => {
         error: "Your card was denied, please provide a new payment method"
       };
     case "succeeded":
+      var date = dateFormat(new Date(),"yyyy-mm-dd");
+      connection.query('USE AlexUni');
+      connection.query('UPDATE Requests SET Paid = "1", DatePaid =? WHERE ID =?',[date,username]);
       // Payment is complete, authentication not required
       // To cancel the payment after capture you will need to issue a Refund (https://stripe.com/docs/api/refunds)
       console.log("💰 Payment received!");

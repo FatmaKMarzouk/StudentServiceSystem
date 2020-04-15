@@ -5,7 +5,8 @@ module.exports = router;
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
-var  courses=[]
+var  courses=[];
+var fees ="";
 
 var masterobject="";
 
@@ -24,6 +25,7 @@ router.get('/transcript', function (request, response, next) {
         var flag = 1;
         var totalReg= "";
         var totalEarned= "";
+
         connection.query('USE IntegratedData');
         connection.query('SELECT ID,Name,ProgramName,TotalRegHours,TotalEarnedHours FROM Student WHERE ID = ? ', [username], function (error, results, fields) {
             var info = [];
@@ -117,12 +119,26 @@ router.get('/transcriptconfirm', function(request, response,fields) {
                     paid =row3.Paid ;
                      });
                       if (paid){
-                        if (flag==1){
-
+                        if(flag == 1){
                           connection.query('USE AlexUni');
-                          connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount,FacultyName) VALUES( ?,?,?,? ) ',[username,"Request Transcript","50","Faculty of Engineering"]);
-                          response.redirect('/cart');
-                        }
+                          connection.query('SELECT * FROM Services WHERE Name = "Request Transcript" ',function(error,results4,fields){
+                            if(results4.length>0){
+                              Object.keys(results4).forEach(function(key){
+                                var row = results4[key];
+                                fees = row.Fees;
+                              });
+                            connection.query('USE AlexUni');
+                            connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount,FacultyName) VALUES( ?,?,?,? ) ',[username,"Request Transcript",fees,"Faculty of Engineering"]);
+                            response.redirect('/cart');
+
+
+                            }
+                            else {
+                              console.log('No such service');
+                            }
+
+                        });
+                      }
                       }
                     else {
                         response.send("You haven't paid fees");

@@ -7,11 +7,16 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var dateFormat = require('dateformat');
 var requests =[];
-var total = 0;
+var connection = require('../controllers/dbconnection');
+var lastPayment="";
 router.use(bodyParser.urlencoded({extended : true}));
 router.use(bodyParser.json());
 var connection = require('../controllers/dbconnection');
-var lastPayment="";
+var myDate = " ";
+var fees = 0;
+var total = 0;
+var faculty = "";
+
 router.get('/annualfees',function(request,response,next){
   if(request.session.loggedin){
   var username = request.session.username;
@@ -19,27 +24,63 @@ router.get('/annualfees',function(request,response,next){
   connection.query('SELECT * FROM Payment WHERE StudentID = ?',[username],function(error,results,fields){
     if(results.length>0){
       Object.keys(results).forEach(function(key){
-        requests.push(results[key]);
         var row = results[key];
-        lastPayment=row.last_payment;
+        myDate = row.last_payment;
+
       });
-      var myDate = new Date(lastPayment);
+      myDate = new Date(myDate);
       myDate.setDate(myDate.getDate() + 366);
-      myDate = new Date(dateFormat(myDate,"yyyy-mm-dd"));
-      var date = new Date(dateFormat(new Date(), "yyyy-mm-dd"));
-      var diff = date.getTime() - myDate.getTime();
-      diff = diff / (1000 * 3600 * 24)/365 + 1;
-      diff = Math.floor(diff)
+      var date = new Date();
+      var diff = date.getTime()-myDate.getTime();
+      diff = diff / (1000 * 3600 * 24);
+      diff = parseInt(diff/365) +1;
 
-      console.log(diff);
+      if(diff<=0){
+        response.send("You have paid your annual fees");
+      }
+      else{
+      connection.query('USE AlexUni');
+      connection.query('SELECT * FROM Services WHERE Name = "Annual Fees" ',function(error,results1,fields){
+        if(results1.length>0){
+          Object.keys(results1).forEach(function(key){
+            var row = results1[key];
+            fees = row.Fees;
+          });
+          total = fees * diff;
+          response.send("You have to pay "+total+" for " +diff+" academic years");
 
+
+      }
+
+      });
 
     }
-    else {
-      console.log('Something went wrong');
+
     }
+
   });
 
+}
+else{
+  response.send("Please log in to view this page!");
+}
+});
+
+router.get('/confirmannualfees',function(request,response,next){
+  if(request.session.loggedin){
+  var username = request.session.username;
+  connection.query('USE AlexUni');
+  connection.query('SELECT Faculty FROM Students WHERE Username = ? ', [username], function(error, results2, fields) {
+    if (results2.length>0) {
+    Object.keys(results2).forEach(function(key) {
+    var row = results2[key];
+    faculty = row.Faculty;
+    });
+  connection.query('USE AlexUni');
+  connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount,done,FacultyName) VALUES( ?,?,?,?,? ) ',[username,"Annual Fees",total,"1",faculty]);
+  response.redirect('/cart');
+}
+});
 }
 else{
   response.send("Please log in to view this page!");
