@@ -17,20 +17,20 @@ var totalReg = "";
 var totalEarned = "";
 var prog = "";
 var row3
-var grades=""
-var semesters=""
-var grade= ""
+var grades = ""
+var semesters = ""
+var grade = ""
 var info1 = []
-var info1sep=[]
-var sems=""
-var gpa=""
-var regH=""
-var info2=[]
-var info2sep=[]
-var  courses=[];
-var fees ="";
+var info1sep = []
+var sems = ""
+var gpa = ""
+var regH = ""
+var info2 = []
+var info2sep = []
+var courses = [];
+var fees = "";
 
-var masterobject="";
+var masterobject = "";
 
 router.use(bodyParser.urlencoded({
     extended: true
@@ -66,26 +66,26 @@ router.get('/transcript', function (request, response, next) {
                     if (results2.length > 0) {
 
                         Object.keys(results2).forEach(function (key) {
-                            row2=results2[key];
-                            courses=row2.CourseName;
+                            row2 = results2[key];
+                            courses = row2.CourseName;
                             grade = row2.Grade
                             semesters = row2.Semester
                             info1.push(courses + " ,Grade: " + grade + " ,Semester: " + semesters)
                             info1sep = info1.join("\n")
-                            console.log(courses+" "+grade+" "+semesters+"\n")
-                           
+                            console.log(courses + " " + grade + " " + semesters + "\n")
+
                             masterobject1 = {
                                 ...1,
                                 ...results2
                             };
-                    
+
                         });
-                        
+
                         console.log('bada2t teba3a\n');
                         //console.log(row2.CourseName);
                         console.log('\n5allast teba3a\n');
                         connection.query('USE IntegratedData');
-                        connection.query('SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ?', [id], function (error, results4, fields) {
+                        connection.query('SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ? ORDER BY Semester ASC', [id], function (error, results4, fields) {
                             var termGpa = [];
                             if (results4.length > 0) {
 
@@ -151,115 +151,107 @@ router.get('/transcriptconfirm', function (request, response, fields) {
         var flag = 1;
         connection.query('USE AlexUni');
         connection.query('SELECT Paid FROM Payment WHERE StudentID = ? ', [username], function (error, results3, fields) {
-                if (results3.length > 0) {
-                    Object.keys(results3).forEach(function (key) {
-                        var row3 = results3[key];
+            if (results3.length > 0) {
+                Object.keys(results3).forEach(function (key) {
+                    var row3 = results3[key];
 
-                        paid = row3.Paid;
-                    });
+                    paid = row3.Paid;
+                });
+                if (paid) {
+                    // Create an empty Word object:
+                    let docx = officegen('docx')
+
+                    // Officegen calling this function after finishing to generate the docx document:
+                    docx.on('finalize', function (written) {
+                        console.log(
+                            'Finish to create a Microsoft Word document.'
+                        )
+                    })
+
+                    // Officegen calling this function to report errors:
+                    docx.on('error', function (err) {
+                        console.log(err)
+                    })
+
+                    // Create a new paragraph:
+
+
+                    pObj = docx.createP({
+                        align: 'center'
+                    })
+
+                    // We can even add images:
+                    pObj.addImage(path.resolve(__dirname, 'uni_logoo.png'), {
+                        cx: 120,
+                        cy: 120
+                    })
+
+
+                    pObj = docx.createP({
+                        align: 'left'
+                    })
+                    pObj.addText("Studnet's name :" + name)
+                    //pObj.addText(name,{color : '0000A0', bold: true, underline: true})
+                    pObj.addLineBreak()
+                    pObj.addText("Student's ID : " + id)
+
+                    pObj.addLineBreak()
+                    pObj.addText("Student's program: " + prog)
+
+                    pObj.addLineBreak()
+                    pObj.addText("Student's total registered hours : " + totalReg)
+
+                    pObj.addLineBreak()
+                    pObj.addText("Student's total earned hours : " + totalEarned)
+                    pObj.addLineBreak()
+
+                    //var myobj1 = JSON.stringify(masterobject1);
+                    pObj.addText("Subject's taken :")
+
+                    pObj.addLineBreak()
+                    pObj.addText(info1sep.toString())
+                    pObj.addLineBreak()
+                    pObj.addText("Semester GPA and registered hours :")
+                    pObj.addLineBreak()
+
+                    pObj.addText(info2sep.toString())
+
+                    docx.putPageBreak()
+
+
+
+                    // Let's generate the Word document into a file:
+                    let out = fs.createWriteStream('transcript.docx')
+                    out.on('error', function (err) {
+                        console.log(err)
+                    })
+                    // Async call to generate the output file:
+                    docx.generate(out)
+
+                    info1 = []
+                    info1sep = []
+                    info2 = []
+                    info2sep = []
                     if (paid) {
-                        // Create an empty Word object:
-                        let docx = officegen('docx')
+                        if (flag == 1) {
 
-                        // Officegen calling this function after finishing to generate the docx document:
-                        docx.on('finalize', function (written) {
-                            console.log(
-                                'Finish to create a Microsoft Word document.'
-                            )
-                        })
-
-                        // Officegen calling this function to report errors:
-                        docx.on('error', function (err) {
-                            console.log(err)
-                        })
-
-                        // Create a new paragraph:
-
-
-                        pObj = docx.createP({
-                            align: 'center'
-                        })
-
-                        // We can even add images:
-                        pObj.addImage(path.resolve(__dirname, 'uni_logoo.png'), {
-                            cx: 120,
-                            cy: 120
-                        })
-
-
-                        pObj = docx.createP({
-                            align: 'left'
-                        })
-                        pObj.addText("Studnet's name :" + name)
-                        //pObj.addText(name,{color : '0000A0', bold: true, underline: true})
-                        pObj.addLineBreak()
-                        pObj.addText("Student's ID : " + id)
-
-                        pObj.addLineBreak()
-                        pObj.addText("Student's program: " + prog)
-
-                        pObj.addLineBreak()
-                        pObj.addText("Student's total registered hours : " + totalReg)
-
-                        pObj.addLineBreak()
-                        pObj.addText("Student's total earned hours : " + totalEarned)
-                        pObj.addLineBreak()
-                        
-                        var myobj1 = JSON.stringify(masterobject1);
-                        pObj.addText("Subject's taken :")
-
-                        pObj.addLineBreak()
-                        pObj.addText(info1sep.toString(), {
-                            color: '0000A0'
-                        })
-                        pObj.addLineBreak()
-                        pObj.addText("Semester GPA and registered hours :")
-                        pObj.addLineBreak()
-
-                        pObj.addText(info2sep.toString())
-
-
-                        //pObj = docx.createP()
-                        //pObj.addText('Bold + underline', { bold: true, underline: true })
-                        //pObj = docx.createP()
-                        //pObj.addText('Those two lines are in the same paragraph,')
-                        //pObj.addLineBreak()
-                        //pObj.addText('but they are separated by a line break.')
-                        // docx.putPageBreak()
-                        //pObj = docx.createP()
-                        //pObj.addText('Fonts face only.', { font_face: 'Arial' })
-                        //pObj.addText(' Fonts face and size.', { font_face: 'Arial', font_size: 40 })
-                        //docx.putPageBreak()
-
-                        // Let's generate the Word document into a file:
-                        let out = fs.createWriteStream('example2.docx')
-                        out.on('error', function (err) {
-                            console.log(err)
-                        })
-                        // Async call to generate the output file:
-                        docx.generate(out)
-
-                        
-                        if (paid) {
-                            if (flag == 1) {
-
-                                connection.query('USE AlexUni');
-                                connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount,FacultyName) VALUES( ?,?,?,? ) ', [username, "Request Transcript", "50", "Faculty of Engineering"]);
-                                response.redirect('/cart');
-                            }
-                        } else {
-                            response.send("You haven't paid fees");
-                            flag = 0;
+                            connection.query('USE AlexUni');
+                            connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount,FacultyName) VALUES( ?,?,?,? ) ', [username, "Request Transcript", "50", "Faculty of Engineering"]);
+                            response.redirect('/cart');
                         }
+                    } else {
+                        response.send("You haven't paid fees");
+                        flag = 0;
+                    }
 
 
-                    
+
                 } else {
                     response.send("You haven't paid fees");
                     flag = 0;
                 }
 
-            }else {
+            } else {
 
 
             }
@@ -267,13 +259,13 @@ router.get('/transcriptconfirm', function (request, response, fields) {
 
 
 
-       
-       
+
+
         });
 
-    
-    
-    }else {
+
+
+    } else {
         response.send('Please log in')
     }
 
