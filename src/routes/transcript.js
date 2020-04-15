@@ -27,6 +27,10 @@ var gpa=""
 var regH=""
 var info2=[]
 var info2sep=[]
+var  courses=[];
+var fees ="";
+
+var masterobject="";
 
 router.use(bodyParser.urlencoded({
     extended: true
