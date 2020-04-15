@@ -36,16 +36,16 @@
 
 		<div>
 			<h1>Requests</h1>
-			<form action="/todaysrequests" method = "POST">
-				<input type="hidden" name ="reqID" value="1">
-				<input type="submit" value="Today's Requests">
-			</form>
-			<form action="/donerequests">
-				  <input type="submit" value="Done requests">
+			<form action="/undonerequests">
+				  <input type="submit" value="Not Done requests">
             </form>
             <form action="/allrequests">
                 <input type="submit" value="All requests">
-          </form>
+		  </form>
+		  <form action="/searchrequests">
+			<input type="text" name="search" placeholder="search">
+			<input type="submit" value="Search">
+	     </form>
 		</div>
 
 		<br>

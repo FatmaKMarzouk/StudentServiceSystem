@@ -12,11 +12,8 @@ var upload = multer({ dest: 'uploads/' })
 var request = require('request');
 var fs = require('fs');
 
-
 router.use(bodyParser.urlencoded({extended : true}));
 router.use(bodyParser.json());
-
-
 
 router.get('/enrollement', function(request, response,next) {
 	response.sendFile(__dirname+'/enrollement.html');
@@ -25,7 +22,6 @@ router.get('/enrollement', function(request, response,next) {
 });
 
 var connection = require('../controllers/dbconnection');
-
 
 router.post('/enroll',function(request, response) {
 	console.log("frontend connected");
@@ -45,9 +41,7 @@ router.post('/enroll',function(request, response) {
 			 	console.log("3aaaaaaaaaaaa");
 			   }
 
-
 		});
-	
 	
 	response.send('Student has been added successfully');
 
@@ -147,8 +141,6 @@ router.post('/enroll',function(request, response) {
 			});
 
 			if (error) throw error;
-
-
 		});
 	}
 });
