@@ -57,10 +57,12 @@ router.get('/cart-test1', function(req,res,next)
             if(allresults.Paid)
             {
                 res.json(allresults);
+                console.log(allresults);
             }
             else
             {
                 res.send('You are not eligible for extracting certificate of enrollment as fees are not paid.');
+                console.log('You are not eligible for extracting certificate of enrollment as fees are not paid.');
                 flag=0;
             }
         
