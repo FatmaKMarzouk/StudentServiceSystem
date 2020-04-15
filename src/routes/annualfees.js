@@ -12,6 +12,7 @@ var connection = require('../controllers/dbconnection');
 var myDate = " ";
 var fees = 0;
 var total = 0;
+var faculty = "";
 
 router.get('/annualfees',function(request,response,next){
   if(request.session.loggedin){
@@ -45,21 +46,38 @@ router.get('/annualfees',function(request,response,next){
           total = fees * diff;
           response.send("You have to pay "+total+" for " +diff+" academic years");
 
-        }
-        else {
-          console.log('No such service');
-        }
+
+      }
 
       });
 
     }
 
     }
-    else {
 
-    }
   });
 
+}
+else{
+  response.send("Please log in to view this page!");
+}
+});
+
+router.get('/confirmannualfees',function(request,response,next){
+  if(request.session.loggedin){
+  var username = request.session.username;
+  connection.query('USE AlexUni');
+  connection.query('SELECT Faculty FROM Students WHERE Username = ? ', [username], function(error, results2, fields) {
+    if (results2.length>0) {
+    Object.keys(results2).forEach(function(key) {
+    var row = results2[key];
+    faculty = row.Faculty;
+    });
+  connection.query('USE AlexUni');
+  connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount,done,FacultyName) VALUES( ?,?,?,?,? ) ',[username,"Annual Fees",total,"1",faculty]);
+  response.redirect('/cart');
+}
+});
 }
 else{
   response.send("Please log in to view this page!");
