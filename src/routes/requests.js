@@ -35,9 +35,9 @@ router.get('/allrequests',function(request, response) {
 				   console.log("ana hena");
 				   console.log(results);
 			    }
-			    // else {
-			    // 	console.log("No new requests");
-			    // }
+			    else {
+			    	response.send("No requests");
+			    }
 		      });
              }
 			else {
@@ -78,9 +78,9 @@ router.get('/undonerequests',function(request, response) {
 					});
 					console.log(array);
 				}
-			// } else {
-			// 	console.log("No undone requests");
-			// }
+			 else {
+				response.send("No undone requests");
+			}
 
 			});
 		});
@@ -111,6 +111,8 @@ router.post('/searchrequests',function(request, response) {
 				});
 				console.log("ana hena3");
 				console.log(array2);
+			}else{
+				response.send("No request with this ID");
 			}
         });
 
