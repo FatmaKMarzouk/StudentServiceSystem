@@ -19,7 +19,7 @@ router.get('/allrequests',function(request, response) {
 	//console.log("hiiiiiiiiiiiiiiiii");
     if (request.session.loggedin) {
 		var secusername = request.session.username;
-    connection.query('USE AlexUni');
+        connection.query('USE AlexUni');
 		connection.query('SELECT FacultyName FROM Secretary WHERE ID = ? ',[secusername] ,  function(error, results, fields){
 
 			if(results.length>0){
@@ -28,27 +28,22 @@ router.get('/allrequests',function(request, response) {
 				  facultysec = row.FacultyName;
 				 // console.log("helloooo");
 				});
-        connection.query('USE AlexUni');
-        connection.query('SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received FROM Requests WHERE FacultyName = ? && Paid = ?',[facultysec,'1'] ,  function(error, results, fields){
+            connection.query('USE AlexUni');
+            connection.query('SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received FROM Requests WHERE FacultyName = ? && Paid = ?',[facultysec,'1'] ,  function(error, results, fields){
 
-			if(results.length>0){
-				// Object.keys(results).forEach(function(key){
-				//   var row = results[key];
-				//   resultall=row;
-				// });
-				console.log("ana hena");
-				console.log(results);
-			}
-			// else {
-			// 	console.log("No new requests");
-			// }
-		});
-      }
+			    if(results.length>0){
+				   console.log("ana hena");
+				   console.log(results);
+			    }
+			    // else {
+			    // 	console.log("No new requests");
+			    // }
+		      });
+             }
 			else {
 			 	console.log("3aaaaaaaaaaaa");
 			   }
         });
-
 
 	} else{
 		response.send("Please log in to view this page!");
@@ -59,7 +54,8 @@ router.get('/undonerequests',function(request, response) {
     if (request.session.loggedin) {
 		var secusername = request.session.username;
 		var array = [];
-
+		
+		connection.query('USE AlexUni');
 		connection.query('SELECT FacultyName FROM Secretary WHERE ID = ?',[secusername] ,  function(error, results, fields){
 
 			if(results.length>0){
@@ -71,33 +67,32 @@ router.get('/undonerequests',function(request, response) {
 			 	console.log("3aaaaaaaaaaaa");
 			   }
 
-        });
+	     	connection.query('USE AlexUni');
+      	    connection.query('SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received FROM Requests WHERE FacultyName = ? && done = ? && Paid = ?',[facultysec,'0','1'] ,  function(error, results, fields){
 
-        connection.query('SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received FROM Requests WHERE FacultyName = ? && done = ? && Paid = ?',[facultysec,'0','1'] ,  function(error, results, fields){
-
-			if(results.length > 0){
-				console.log("ana hena2");
-				Object.keys(results).forEach(function(key){
-				  var row = results[key];
-				  array.push(results[key]);
-				});
-
-				console.log(array);
-			}
+				if(results.length > 0){
+					console.log("ana hena2");
+					Object.keys(results).forEach(function(key){
+					  var row = results[key];
+					  array.push(results[key]);
+					});
+					console.log(array);
+				}
 			// } else {
 			// 	console.log("No undone requests");
 			// }
 
-        });
+			});
+		});
 
 	} else{
 		response.send("Please log in to view this page!");
 	  }
+	  
 });
 
 router.get('/search', function(request, response,next) {
 	response.sendFile(__dirname+'/searchrequest.html');
-	//console.log('its anhoon11');
 
 });
 router.post('/searchrequests',function(request, response) {
