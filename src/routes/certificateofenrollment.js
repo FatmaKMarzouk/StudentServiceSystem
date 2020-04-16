@@ -10,6 +10,7 @@ var path = require('path');
 var resultobject1='';
 var resultobject2='';
 var allresults='';
+var faculty='';
 
 router.get('/certificateofenrollment', function(req,res,next)
 {  if(req.session.loggedin){
@@ -22,6 +23,7 @@ router.get('/certificateofenrollment', function(req,res,next)
             Object.keys(results).forEach(function(key) {
                 var row = results[key];
                 resultobject1=row;
+                faculty = row.Faculty;
                 });
                 return;
         }
@@ -75,12 +77,25 @@ router.get('/cart-test', function(req,res,next)
                     }
                 }
                 if(flag == 1){
-
-
                   connection.query('USE AlexUni');
-                  connection.query('INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName) VALUES( ?,?,?,?,? ) ',[username,"Certificate of Enrollment",JSON.stringify(allresults),"50","Faculty of Engineering"]);
-                  res.redirect('/cart');
-                }
+                  connection.query('SELECT * FROM Services WHERE Name = "Certificate of Enrollment" ',function(error,results1,fields){
+                    if(results1.length>0){
+                      Object.keys(results1).forEach(function(key){
+                        var row = results1[key];
+                        fees = row.Fees;
+                      });
+                    connection.query('USE AlexUni');
+                    connection.query('INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName) VALUES( ?,?,?,?,? ) ',[username,"Certificate of Enrollment",JSON.stringify(allresults),fees,faculty]);
+                    res.redirect('/cart');
+
+
+                    }
+                    else {
+                      console.log('No such service');
+                    }
+
+                });
+              }
 }
 else{
   console.log("Please log in to view this page!")
