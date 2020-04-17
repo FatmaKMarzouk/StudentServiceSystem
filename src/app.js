@@ -19,6 +19,7 @@ var cart = require("./routes/cart");
 var certificateofenrollment = require("./routes/certificateofenrollment");
 var addsec = require("./routes/addsec");
 var checkout = require("./routes/checkout");
+var card = require("./routes/card");
 var requests = require("./routes/requests");
 
 app.use(express.static(process.env.STATIC_DIR));
@@ -35,6 +36,7 @@ app.use(transcript);
 
 app.use(chooseprog.router);
 app.use(certificateofenrollment);
+app.use(card);
 app.use(addsec);
 app.use(cart);
 app.use(checkout);
