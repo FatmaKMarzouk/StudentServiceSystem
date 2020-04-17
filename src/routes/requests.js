@@ -29,11 +29,11 @@ router.get('/allrequests',function(request, response) {
 				 // console.log("helloooo");
 				});
             connection.query('USE AlexUni');
-            connection.query('SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received FROM Requests WHERE FacultyName = ? && Paid = ?',[facultysec,'1'] ,  function(error, results, fields){
+            connection.query('SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received,document FROM Requests WHERE FacultyName = ? && Paid = ?',[facultysec,'1'] ,  function(error, results, fields){
 
 			    if(results.length>0){
 				   console.log("ana hena");
-				   console.log(results);
+				   response.json(results);
 			    }
 			    else {
 			    	response.send("No requests");
@@ -68,7 +68,7 @@ router.get('/undonerequests',function(request, response) {
 			   }
 
 	     	connection.query('USE AlexUni');
-      	    connection.query('SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received FROM Requests WHERE FacultyName = ? && done = ? && Paid = ?',[facultysec,'0','1'] ,  function(error, results, fields){
+      	    connection.query('SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received,document FROM Requests WHERE FacultyName = ? && done = ? && Paid = ?',[facultysec,'0','1'] ,  function(error, results, fields){
 
 				if(results.length > 0){
 					console.log("ana hena2");
@@ -76,7 +76,7 @@ router.get('/undonerequests',function(request, response) {
 					  var row = results[key];
 					  array.push(results[key]);
 					});
-					console.log(array);
+					response.json(array);
 				}
 			 else {
 				response.send("No undone requests");
@@ -102,7 +102,7 @@ router.post('/searchrequests',function(request, response) {
     if (request.session.loggedin) {
 		var secusername = request.session.username;
 
-        connection.query('SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received FROM Requests WHERE StudentID = ?',[studentid] ,  function(error, results, fields){
+        connection.query('SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received,document FROM Requests WHERE StudentID = ? && Paid=1',[studentid] ,  function(error, results, fields){
 
 			if(results.length > 0){
 				Object.keys(results).forEach(function(key){
@@ -110,7 +110,7 @@ router.post('/searchrequests',function(request, response) {
 				  array2.push(results[key]);
 				});
 				console.log("ana hena3");
-				console.log(array2);
+				response.json(array2);
 			}else{
 				response.send("No request with this ID");
 			}
