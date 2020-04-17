@@ -26,8 +26,9 @@ var sems = ""
 var gpa = ""
 var regH = ""
 var info2 = []
-var info2sep = []
-var courses = [];
+var info2sep =[]
+var multer  = require('multer')
+var upload = multer({ dest: 'uploads/' })
 var fees = "";
 
 var masterobject = "";
@@ -85,7 +86,7 @@ router.get('/transcript', function (request, response, next) {
                         //console.log(row2.CourseName);
                         console.log('\n5allast teba3a\n');
                         connection.query('USE IntegratedData');
-                        connection.query('SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ? ORDER BY Semester ASC', [id], function (error, results4, fields) {
+                        connection.query('SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ? ', [id], function (error, results4, fields) {
                             var termGpa = [];
                             if (results4.length > 0) {
 
@@ -107,58 +108,7 @@ router.get('/transcript', function (request, response, next) {
                                 var obj2
                                 console.log(masterobject2);
                                 console.log('\n5allast teba3a tanyyy\n');
-                            } else {
-                                response.send('Wrong ID');
-                            }
-
-                        });
-
-
-
-
-
-                    } else {
-                        response.send("no registered courses");
-                        flag = 0;
-                    }
-                });
-
-            } else {
-                response.send("Not a registered student");
-                flag = 0;
-            }
-
-
-
-
-        });
-
-
-
-    } else {
-
-        response.send('Please login to view this page!');
-    }
-
-
-
-});
-router.get('/transcriptconfirm', function (request, response, fields) {
-    if (request.session.loggedin) {
-
-        var username = request.session.username;
-        var paid = "";
-        var flag = 1;
-        connection.query('USE AlexUni');
-        connection.query('SELECT Paid FROM Payment WHERE StudentID = ? ', [username], function (error, results3, fields) {
-            if (results3.length > 0) {
-                Object.keys(results3).forEach(function (key) {
-                    var row3 = results3[key];
-
-                    paid = row3.Paid;
-                });
-                if (paid) {
-                    // Create an empty Word object:
+                             // Create an empty Word object:
                     let docx = officegen('docx')
 
                     // Officegen calling this function after finishing to generate the docx document:
@@ -213,31 +163,162 @@ router.get('/transcriptconfirm', function (request, response, fields) {
                     pObj.addLineBreak()
                     pObj.addText("Semester GPA and registered hours :")
                     pObj.addLineBreak()
-
-                    pObj.addText(info2sep.toString())
-
-                    docx.putPageBreak()
-
-
-
+                    pObj.addText(info2sep.toString(),{color : '0000FF'})
+                    
                     // Let's generate the Word document into a file:
                     let out = fs.createWriteStream('transcript.docx')
-                    out.on('error', function (err) {
-                        console.log(err)
+                         out.on('error', function (err) {
+                      console.log(err)
                     })
+                    
                     // Async call to generate the output file:
-                    docx.generate(out)
-
+                   docx.generate(out)
+                   
+                   
+                   
+                  
                     info1 = []
                     info1sep = []
                     info2 = []
                     info2sep = []
+                            } else {
+                                response.send('Wrong ID');
+                            }
+
+                        });
+
+
+
+
+
+                    } else {
+                        response.send("no registered courses");
+                        flag = 0;
+                    }
+                });
+
+            } else {
+                response.send("Not a registered student");
+                flag = 0;
+            }
+
+
+
+
+        });
+
+
+
+    } else {
+
+        response.send('Please login to view this page!');
+    }
+
+
+
+});
+router.get('/transcriptconfirm', function (request, response, fields) {
+    if (request.session.loggedin) {
+
+        var username = request.session.username;
+        var paid = "";
+        var flag = 1;
+        connection.query('USE AlexUni');
+        connection.query('SELECT Paid FROM Payment WHERE StudentID = ? ', [username], function (error, results3, fields) {
+            if (results3.length > 0) {
+                Object.keys(results3).forEach(function (key) {
+                    var row3 = results3[key];
+
+                    paid = row3.Paid;
+                });
+                if (paid) {
+                   /* // Create an empty Word object:
+                    let docx = officegen('docx')
+
+                    // Officegen calling this function after finishing to generate the docx document:
+                    docx.on('finalize', function (written) {
+                        console.log(
+                            'Finish to create a Microsoft Word document.'
+                        )
+                    })
+
+                    // Officegen calling this function to report errors:
+                    docx.on('error', function (err) {
+                        console.log(err)
+                    })
+
+                    // Create a new paragraph:
+
+
+                    pObj = docx.createP({
+                        align: 'center'
+                    })
+
+                    // We can even add images:
+                    pObj.addImage(path.resolve(__dirname, 'uni_logoo.png'), {
+                        cx: 120,
+                        cy: 120
+                    })
+
+
+                    pObj = docx.createP({
+                        align: 'left'
+                    })
+                    pObj.addText("Studnet's name :" + name)
+                    //pObj.addText(name,{color : '0000A0', bold: true, underline: true})
+                    pObj.addLineBreak()
+                    pObj.addText("Student's ID : " + id)
+
+                    pObj.addLineBreak()
+                    pObj.addText("Student's program: " + prog)
+
+                    pObj.addLineBreak()
+                    pObj.addText("Student's total registered hours : " + totalReg)
+
+                    pObj.addLineBreak()
+                    pObj.addText("Student's total earned hours : " + totalEarned)
+                    pObj.addLineBreak()
+
+                    //var myobj1 = JSON.stringify(masterobject1);
+                    pObj.addText("Subject's taken :")
+
+                    pObj.addLineBreak()
+                    pObj.addText(info1sep.toString())
+                    pObj.addLineBreak()
+                    pObj.addText("Semester GPA and registered hours :")
+                    pObj.addLineBreak()
+                    pObj.addText(info2sep.toString(),{color : '0000FF'})
+                    
+                    // Let's generate the Word document into a file:
+                    let out = fs.createWriteStream('transcript.docx')
+                         out.on('error', function (err) {
+                      console.log(err)
+                    })
+                    
+                    // Async call to generate the output file:
+                   docx.generate(out)
+                   
+                   
+                   
+                  
+                    info1 = []
+                    info1sep = []
+                    info2 = []
+                    info2sep = []
+                    */
                     if (paid) {
                         if (flag == 1) {
-
+                            fs.readFile('./transcript.docx', function read(err, data) {
+                                if (err) {
+                                    throw err;
+                               
                             connection.query('USE AlexUni');
-                            connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount,FacultyName) VALUES( ?,?,?,? ) ', [username, "Request Transcript", "50", "Faculty of Engineering"]);
+                            connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount,FacultyName,document) VALUES( ?,?,?,?,? ) ', [username, "Request Transcript", "50", "Faculty of Engineering",data]);
                             response.redirect('/cart');
+                        }
+                                 
+                    })
+                        
                         }
                     } else {
                         response.send("You haven't paid fees");
@@ -253,7 +334,7 @@ router.get('/transcriptconfirm', function (request, response, fields) {
 
             } else {
 
-
+response.send('No data Retrieved')
             }
 
 

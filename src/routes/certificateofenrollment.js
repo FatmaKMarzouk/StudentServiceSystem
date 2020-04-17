@@ -6,7 +6,8 @@ module.exports = router;
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
-
+var officegen = require('officegen')
+var fs = require('fs')
 var resultobject1='';
 var resultobject2='';
 var allresults='';
@@ -42,7 +43,70 @@ router.get('/certificateofenrollment', function(req,res,next)
                 allresults = { ...resultobject1, ...resultobject2 };
                 console.log(allresults);
         }
-    });
+          // Create an empty Word object:
+          let docx = officegen('docx')
+
+          // Officegen calling this function after finishing to generate the docx document:
+          docx.on('finalize', function (written) {
+              console.log(
+                  'Finish to create a Microsoft Word document.'
+              )
+          })
+
+          // Officegen calling this function to report errors:
+          docx.on('error', function (err) {
+              console.log(err)
+          })
+
+          // Create a new paragraph:
+
+
+          pObj = docx.createP({
+              align: 'right'
+          })
+
+          // We can even add images:
+          pObj.addImage(path.resolve(__dirname, 'uni_logoo.png'), {
+              cx: 120,
+              cy: 120
+          })
+          pObj.addLineBreak()
+          pObj = docx.createP({
+            align: 'center'
+        })
+        pObj.addText("(شهادة قيد)")
+          pObj = docx.createP({
+              align: 'right'
+          })
+          pObj.addText(allresults.Faculty)
+          pObj.addText("تشهد كلية")  
+          
+           
+          pObj.addLineBreak()
+          pObj.addText("   بأن الطالب/الطالبة")
+          pObj.addText (allresults.NameAr)
+  
+          
+          // Let's generate the Word document into a file:
+          let out = fs.createWriteStream('enrollment.docx')
+               out.on('error', function (err) {
+            console.log(err)
+          })
+          
+          // Async call to generate the output file:
+         docx.generate(out)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      });
   }
   else{
     res.send("Please log in to view this page!");
