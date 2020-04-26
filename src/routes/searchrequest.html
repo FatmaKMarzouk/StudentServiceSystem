@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Login Form Tutorial</title>
+		<title>Login</title>
 		<style>
 		.login-form {
 			width: 300px;
@@ -37,42 +37,20 @@
 	</head>
 	<body>
 		<div class="login-form">
-			<h1>Student Homepage</h1>
-			<form action="/chooseprog">
-				  <input type="submit" value="Select Program">
+			<h1>Search Request</h1>
+			<form action="/searchrequests" method="POST">
+                <input type="text" name="studentid" placeholder="studentid" >
+                <br>
+                <br>
+
+				<input type="submit" value="Search">
 			</form>
-			<form action="/certificateofenrollment">
-				  <input type="submit" value="Certificate of Enrollment">
+			<br>
+			<form action="/">
+				<input type="submit" value="Log out">
 			</form>
-			<form action="/card">
-				  <input type="submit" value="Card">
-			</form>
+
+            
 		</div>
-
-		<br>
-		<div class="login-form">
-
-			<form action="/transcript">
-				  <input type="submit" value="Request a transcript">
-			</form>
-			<form action="/annualfees">
-					<input type="submit" value="Pay annual basic fees">
-			</form>
-		</div>
-
-
-		<br>
-		<form action="/">
-			<input type="submit" value="Log out">
-		</form>
-
-
- <body>
-
-
-
- </body>
-
-  </html>
 	</body>
 </html>
