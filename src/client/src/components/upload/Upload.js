@@ -136,12 +136,11 @@ class Upload extends Component {
               float: "right",
               marginRight: "5%",
               marginTop: "2%",
-              marginBottom: "5%"
+              marginBottom: "2%"
             }}
           >
             يرجى تحميل {this.props.value}
           </h4>
-          <br />
           <Divider id="divider-upload" />
           <br />
           <div id="inside-upload-container">

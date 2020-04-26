@@ -1,156 +1,172 @@
 .func-list {
-    float: right;
-  }
-  
-  /*Progress Bar Styles*/
-  
-  .progress-bar {
-    background-color: rgb(255, 255, 255, 0.5);
-    border-radius: 30px;
-    box-shadow: 10px 10px 32px 0px rgba(0, 0, 0, 0.71);
-    font-size: 24px;
-    width: 80%;
-    margin: 0 auto;
-  }
-  
-  .main-form {
-    margin-right: 5%;
-    display: flex;
-    font-weight: bold;
-    color: #003366;
-    margin-left: 40%;
-    width: 80%;
-    background-color: rgb(255, 255, 255, 0.8);
-    box-shadow: 0px 0px 50px 5px rgba(0, 0, 0, 0.71);
-    border-radius: 30px;
-    padding: 1%;
-    padding-bottom: 80px;
-    margin: 0 auto;
-    margin-top: 2%;
-    justify-content: center;
-    position: relative;
-    align-items: center;
-  }
-  
-  .progress-bar-labels {
-    font-weight: bold;
-    color: #003366;
-    font-size: 16px;
-  }
-  
-  .Card {
-    align-items: center;
-    text-align: center;
-    color: #003366;
-    font-weight: bold;
-    font-size: 24px;
-  }
-  
-  /*input::placeholder {
-    text-align: left;
-    padding: 6px;
-    font-size: 12px;
-  }
-  
-      input {
-        width: 270px;
-      }*/
-  
-  #userDetails-label {
-    margin-left: 10px;
-    display: block;
-    margin-right: 10px;
-    text-align: right;
-    margin-bottom: -8px;
-    margin-top: 10px;
-  }
-  
-  .progress-button {
-    border-radius: 10px;
-    background-color: #003366;
-    color: whitesmoke;
-    font-size: 14px;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    margin-left: 3%;
-    margin-bottom: 2%;
-  }
-  
-  .column {
-    float: right;
-    padding: 15px;
-    width: 100%;
-    text-align: center;
-  }
-  
-  #divider {
-    color: #003366;
-    background-color: #003366;
-    margin-bottom: 3%;
-    margin-top: -2%;
-    height: 2px;
-    width: 60%;
-    margin-right: auto;
-    margin-left: auto;
-  }
-  
-  #form-labels {
-    display: flex;
-    margin-right: 1%;
-    margin-bottom: 3%;
-  }
-  
-  #form-labels-column {
-    float: right;
-    margin-right: 14%;
-  }
-  
-  #filled-required {
-    font-size: 14px;
-    width: 230px;
-    padding-top: 20px;
-    color: #003366;
-    text-align: left;
-    direction: ltr;
-  }
-  
-  .floating-labels {
-    color: #003366;
-  }
-  
-  .confirm-form {
-    margin-right: 5%;
-    display: flex;
-    flex-direction: column;
-    font-weight: bold;
-    color: #003366;
-    margin-left: 40%;
-    width: 80%;
-    background-color: rgb(255, 255, 255, 0.8);
-    box-shadow: 0px 0px 50px 5px rgba(0, 0, 0, 0.71);
-    border-radius: 30px;
-    padding: 5%;
-    padding-bottom: 80px;
-    margin: 0 auto;
-    margin-top: 2%;
-    justify-content: center;
-    position: relative;
-    text-align: center;
-  }
-  
-  .confirm-form-details {
-    float: right;
-  }
-  
-  #confirm-divider {
-    color: #003366;
-    background-color: #003366;
-    margin-bottom: 5%;
-    margin-top: 5%;
-    height: 2px;
-    width: 100%;
-    margin-right: auto;
-    margin-left: auto;
-  }
-  
+  float: right;
+}
+
+/*Progress Bar Styles*/
+
+#progress-bar {
+  background-color: rgb(255, 255, 255, 0.8);
+  border-radius: 30px;
+  box-shadow: 10px 10px 32px 0px rgba(0, 0, 0, 0.71);
+  font-size: 24px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.progress-bar-labels {
+  font-weight: bold;
+  color: #003366;
+  font-size: 13px;
+  font-family: "Cairo";
+}
+
+.main-form {
+  margin-right: 5%;
+  display: flex;
+  font-weight: bold;
+  font-family: "Cairo";
+  font-size: 14px;
+  color: #003366;
+  margin-left: 40%;
+  width: 80%;
+  background-color: rgb(255, 255, 255, 0.8);
+  box-shadow: 0px 0px 50px 5px rgba(0, 0, 0, 0.71);
+  border-radius: 30px;
+  padding: 1%;
+  padding-bottom: 80px;
+  margin: 0 auto;
+  margin-top: 2%;
+  justify-content: center;
+  position: relative;
+  align-items: center;
+}
+
+.Card {
+  align-items: center;
+  text-align: center;
+  color: #003366;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+#userDetails-label {
+  margin-left: 10px;
+  display: block;
+  margin-right: 10px;
+  text-align: right;
+  margin-bottom: -8px;
+  margin-top: 10px;
+}
+
+#progress-bar-buttons {
+  float: left;
+  background-color: #003366;
+  font-family: "Cairo";
+  border-radius: 10px;
+}
+
+#progress-bar-buttons:disabled {
+  background-color: #babbbd;
+}
+
+#progress-button {
+  border-radius: 10px;
+  background-color: #003366;
+  color: whitesmoke;
+  font-size: 14px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin-left: 3%;
+  margin-bottom: 2%;
+  font-family: "Cairo";
+}
+
+.column {
+  float: right;
+  padding: 15px;
+  width: 100%;
+  text-align: center;
+}
+
+#divider {
+  color: #003366;
+  background-color: #003366;
+  margin-bottom: 3%;
+  margin-top: 1%;
+  height: 2px;
+  width: 60%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#form-labels {
+  display: flex;
+  margin-right: 1%;
+  margin-bottom: 3%;
+}
+
+#form-labels-column {
+  float: right;
+  margin-right: 14%;
+}
+
+#filled-required {
+  font-size: 14px;
+  width: 230px;
+  padding-top: 20px;
+  color: #003366;
+  text-align: left;
+  direction: ltr;
+}
+
+.floating-labels {
+  color: #003366;
+}
+
+#confirm-form {
+  margin-right: 5%;
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  color: #003366;
+  margin-left: 40%;
+  width: 80%;
+  background-color: rgb(255, 255, 255, 0.8);
+  box-shadow: 0px 0px 50px 5px rgba(0, 0, 0, 0.71);
+  border-radius: 30px;
+  padding: 5%;
+  padding-bottom: 80px;
+  margin: 0 auto;
+  margin-top: 2%;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  font-family: "Cairo";
+}
+
+#confirm-form-details {
+  float: right;
+}
+
+#confirm-form-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#confirm-divider {
+  color: #003366;
+  background-color: #003366;
+  margin-bottom: 5%;
+  margin-top: 5%;
+  height: 2px;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#confirmation-list-item {
+  padding: 5px;
+}

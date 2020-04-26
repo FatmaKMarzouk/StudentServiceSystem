@@ -271,28 +271,31 @@ export default function CustomizedSteppers() {
 
   return (
     <div className={classes.root}>
-      <div className="progress-bar">
-        <Stepper
-          alternativeLabel
-          activeStep={activeStep}
-          connector={<ColorlibConnector />}
-        >
-          {steps.map(label => (
-            <Step key={label}>
-              <StepLabel StepIconComponent={ColorlibStepIcon}>
-                <span className="progress-bar-labels">{label}</span>
-              </StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-      </div>
+      <Stepper
+        alternativeLabel
+        activeStep={activeStep}
+        connector={<ColorlibConnector />}
+        id="progress-bar"
+      >
+        {steps.map(label => (
+          <Step key={label}>
+            <StepLabel StepIconComponent={ColorlibStepIcon}>
+              <span className="progress-bar-labels">{label}</span>
+            </StepLabel>
+          </Step>
+        ))}
+      </Stepper>
       <div>
         {activeStep === steps.length ? (
           <div>
             <Typography className={classes.instructions}>
               تمت إضافة طالب جديد بنجاح
             </Typography>
-            <Button onClick={handleReset} className={classes.button}>
+            <Button
+              onClick={handleReset}
+              className={classes.button}
+              id="progress-bar-buttons"
+            >
               إعادة
             </Button>
           </div>
@@ -305,6 +308,7 @@ export default function CustomizedSteppers() {
               disabled={activeStep === 0}
               onClick={handleBack}
               className={classes.button}
+              id="progress-bar-buttons"
             >
               رجوع
             </Button>
@@ -313,6 +317,7 @@ export default function CustomizedSteppers() {
               color="primary"
               onClick={handleNext}
               className={classes.button}
+              id="progress-bar-buttons"
             >
               {activeStep === steps.length - 1 ? "حفظ" : "استمرار"}
             </Button>
