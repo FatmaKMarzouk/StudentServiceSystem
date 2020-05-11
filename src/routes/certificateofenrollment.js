@@ -14,7 +14,7 @@ var faculty='';
 
 router.get('/certificateofenrollment', function(req,res,next)
 {  if(req.session.loggedin){
-    res.sendFile(__dirname+'/certificateofenrollment.html');
+    //res.sendFile(__dirname+'/certificateofenrollment.html');
     var username = req.session.username;
     connection.query('Use AlexUni');
     connection.query('SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.armypostpone, Students.Gender, Payment.Paid FROM Students RIGHT JOIN Payment ON Students.ID=Payment.StudentID WHERE Students.Username = ?', [username], function(err,results,field){
@@ -43,20 +43,11 @@ router.get('/certificateofenrollment', function(req,res,next)
                 console.log(allresults);
         }
     });
-  }
-  else{
-    res.send("Please log in to view this page!");
-  }
-});
-router.get('/cart-test', function(req,res,next)
-{     if(req.session.loggedin){
-      var username = req.session.username;
-      var flag =1;
-                if(allresults.Gender==='Male')
+    if(allresults.Gender==='Male')
                 {
                     if(allresults.Paid && allresults.armypostpone)
                     {
-                        // res.json(allresults);
+                        res.json(allresults);
                     }
                     else
                     {
@@ -76,6 +67,16 @@ router.get('/cart-test', function(req,res,next)
                         flag=0;
                     }
                 }
+  }
+  else{
+    res.send("Please log in to view this page!");
+  }
+});
+router.get('/cart-test', function(req,res,next)
+{     if(req.session.loggedin){
+      var username = req.session.username;
+      var flag =1;
+                
                 if(flag == 1){
                   connection.query('USE AlexUni');
                   connection.query('SELECT * FROM Services WHERE Name = "Certificate of Enrollment" ',function(error,results1,fields){
