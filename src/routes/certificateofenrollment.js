@@ -51,7 +51,6 @@ router.get('/certificateofenrollment', function(req,res,next)
                     }
                     else
                     {
-                         res.send('You are not eligible for extracting certificate of enrollment as fees are not paid or your army postponing papers are not done.');
                       flag =0;
                       return res.json(
                         {
