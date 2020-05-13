@@ -48,6 +48,8 @@ const userData = {
 		  message: "Invalid user."
 		});
 	  } else {
+		console.log("FLAG");
+		  console.log(user);
 		req.user = user; //set the user to req so other routes can use it
 		next();
 	  }
