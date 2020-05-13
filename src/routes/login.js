@@ -48,6 +48,8 @@ const userData = {
 		  message: "Invalid user."
 		});
 	  } else {
+		console.log("FLAG");
+		  console.log(user);
 		req.user = user; //set the user to req so other routes can use it
 		next();
 	  }
@@ -64,7 +66,7 @@ const userData = {
 
   // validate the user credentials
   router.post('/users/signin', function (req, res) {
-	  console.log(req.body);
+	//  console.log(req.body);
 	const user = req.body.username;
 	const pwd = req.body.password;
 	const role = req.body.role;
@@ -89,9 +91,12 @@ const userData = {
 							userData.username=row.Username;
 							userData.role=role;
 						});
+						console.log("userData FLAG");
 					console.log(userData);
 					// generate token
 					const token = utils.generateToken(userData);
+					console.log("token FLAG");
+					console.log(token);
 					// get basic user details
 					const userObj = utils.getCleanUser(userData);
 					// return the token along with user details
