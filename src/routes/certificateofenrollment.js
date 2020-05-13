@@ -13,11 +13,7 @@ var allresults = "";
 var faculty = "";
 
 router.get("/certificateofenrollment", function (req, res, next) {
-  console.log("Request session in cert");
-  console.log(req.session.loggedin);
-  //if (req.session.loggedin) {
   //res.sendFile(__dirname+'/certificateofenrollment.html');
-  //var username = req.session.username;
   var username = 1;
   connection.query("Use AlexUni");
   connection.query(
@@ -48,48 +44,35 @@ router.get("/certificateofenrollment", function (req, res, next) {
         });
 
         allresults = { ...resultobject1, ...resultobject2 };
-        console.log("allresults");
         console.log(allresults);
+        res.send(allresults);
       }
     }
   );
-  if (allresults.Gender === "Male") {
-    if (allresults.Paid && allresults.armypostpone) {
-      res.json(allresults);
-    } else {
-      flag = 0;
-      return res.json({
-        error: true,
-        message:
-          "You are not eligible for extracting certificate of enrollment as fees are not paid or your army postponing papers are not done.",
-      });
-    }
-  } else {
-    console.log("allresults.Paid");
-    console.log(allresults.Paid);
-    if (allresults.Paid) {
-      res.json(allresults);
-    } else {
-      flag = 0;
-      return res.json({
-        error: true,
-        message:
-          "You are not eligible for extracting certificate of enrollment as fees are not paid.",
-      });
-    }
-  }
-  /* } else {
-    return res.json({
-      error: true,
-      message: "Please log in to view this page!",
-    });
-  }*/
 });
 router.get("/cart-test", function (req, res, next) {
   if (req.session.loggedin) {
     var username = req.session.username;
     var flag = 1;
-
+    if (allresults.Gender === "Male") {
+      if (allresults.Paid && allresults.armypostpone) {
+        // res.json(allresults);
+      } else {
+        res.send(
+          "You are not eligible for extracting certificate of enrollment as fees are not paid or your army postponing papers are not done."
+        );
+        flag = 0;
+      }
+    } else {
+      if (allresults.Paid) {
+        // res.json(allresults);
+      } else {
+        res.send(
+          "You are not eligible for extracting certificate of enrollment as fees are not paid."
+        );
+        flag = 0;
+      }
+    }
     if (flag == 1) {
       connection.query("USE AlexUni");
       connection.query(
@@ -111,20 +94,14 @@ router.get("/cart-test", function (req, res, next) {
                 faculty,
               ]
             );
-            //res.redirect('/cart');
+            res.redirect("/cart");
           } else {
-            return res.json({
-              error: true,
-              message: "No such service",
-            });
+            console.log("No such service");
           }
         }
       );
     }
   } else {
-    return res.json({
-      error: true,
-      message: "Please log in to view this page!",
-    });
+    console.log("Please log in to view this page!");
   }
 });
