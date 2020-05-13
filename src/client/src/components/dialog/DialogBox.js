@@ -152,7 +152,10 @@ export default function CustomizedDialogs(props) {
             console.log(response.data);
             console.log("body");
             console.log(response.body);
-            setUserData(response.body);
+            setUserData(response.data);
+            console.log("user data");
+            console.log(userData);
+
             handleClickOpen();
 
             //props.history.push("/home");
