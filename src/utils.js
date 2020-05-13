@@ -11,13 +11,7 @@ function generateToken(user) {
   //2. Use the information that are useful in other parts
   if (!user) return null;
 
-  var u = {
-    role: user.role,
-    userId: user.userId,
-    name: user.name,
-    username: user.username,
-    isAdmin: user.isAdmin
-  };
+  var u = user;
 
   return jwt.sign(u, process.env.JWT_SECRET, {
     expiresIn: 60 * 60 * 24 // expires in 24 hours
@@ -27,14 +21,10 @@ function generateToken(user) {
 // return basic user details
 function getCleanUser(user) {
   if (!user) return null;
-
-  return {
-    role: user.role,
-    userId: user.userId,
-    name: user.name,
-    username: user.username,
-    isAdmin: user.isAdmin
-  };
+  delete user["password"];
+  console.log("getCleanUser user FLAAAAG");
+  console.log(user);
+  return user;
 }
 
 module.exports = {
