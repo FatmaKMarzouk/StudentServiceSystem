@@ -2,14 +2,17 @@
 import React, { Component } from "react";
 import { Button, List, Form } from "semantic-ui-react";
 import Divider from "@material-ui/core/Divider";
+import TextField from "@material-ui/core/TextField";
+import TranscriptTable from "../tables/TranscriptTable";
+import { Card, Image } from "semantic-ui-react";
 
 class Confirmation extends Component {
-  saveAndContinue = e => {
+  saveAndContinue = (e) => {
     e.preventDefault();
     this.props.nextStep();
   };
 
-  back = e => {
+  back = (e) => {
     e.preventDefault();
     this.props.prevStep();
   };
@@ -38,8 +41,8 @@ class Confirmation extends Component {
         enrollmentStatus,
         gpa,
         enrollmentDestination,
-        courses
-      }
+        courses,
+      },
     } = this.props;
     {
       console.log(`confirmation id ${this.props.id}`);
@@ -54,7 +57,7 @@ class Confirmation extends Component {
                   float: "right",
                   fontWeight: "bold",
                   marginBottom: "0",
-                  marginTop: "1%"
+                  marginTop: "1%",
                 }}
               >
                 يرجى التأكد من صحة البيانات المدخلة
@@ -163,7 +166,7 @@ class Confirmation extends Component {
             </div>
           </div>
         );
-        case 1:
+      case 1:
         return (
           <div /*className="dialog-confirm-form"*/>
             {/*<div className="service-title-container">
@@ -182,7 +185,7 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
               <List
                 style={{
                   textAlign: "right",
-                  float: "right"
+                  float: "right",
                 }}
               >
                 {/*<h3 style={{ fontWeight: "bold" }}>بيانات الطالب الشخصية</h3>*/}
