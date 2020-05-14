@@ -13,9 +13,9 @@ var allresults='';
 var faculty='';
 
 router.get('/certificateofenrollment', function(req,res,next)
-{  if(req.session.loggedin){
+{
     //res.sendFile(__dirname+'/certificateofenrollment.html');
-    var username = req.session.username;
+    var username = 1;
     connection.query('Use AlexUni');
     connection.query('SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.armypostpone, Students.Gender, Payment.Paid FROM Students RIGHT JOIN Payment ON Students.ID=Payment.StudentID WHERE Students.Username = ?', [username], function(err,results,field){
         if(results.length>0)
@@ -41,22 +41,25 @@ router.get('/certificateofenrollment', function(req,res,next)
 
                 allresults = { ...resultobject1, ...resultobject2 };
                 console.log(allresults);
+                res.send(allresults);
         }
     });
-    if(allresults.Gender==='Male')
+
+});
+router.get('/cart-test', function(req,res,next)
+{     if(req.session.loggedin){
+      var username = req.session.username;
+      var flag =1;
+                if(allresults.Gender==='Male')
                 {
                     if(allresults.Paid && allresults.armypostpone)
                     {
-                        res.json(allresults);
+                        // res.json(allresults);
                     }
                     else
                     {
-                      flag =0;
-                      return res.json(
-                        {
-                        error: true,
-                        message: "You are not eligible for extracting certificate of enrollment as fees are not paid or your army postponing papers are not done."
-                        });
+                         res.send('You are not eligible for extracting certificate of enrollment as fees are not paid or your army postponing papers are not done.');
+                         flag =0;
                     }
                 }
                 else
@@ -67,28 +70,10 @@ router.get('/certificateofenrollment', function(req,res,next)
                     }
                     else
                     {
-                      flag =0;
-                      return res.json(
-                        {
-                        error: true,
-                        message: "You are not eligible for extracting certificate of enrollment as fees are not paid."
-                        });
+                        res.send('You are not eligible for extracting certificate of enrollment as fees are not paid.');
+                        flag=0;
                     }
                 }
-  }
-  else{
-    return res.json(
-      {
-      error: true,
-      message: "Please log in to view this page!"
-      });
-  }
-});
-router.get('/cart-test', function(req,res,next)
-{     if(req.session.loggedin){
-      var username = req.session.username;
-      var flag =1;
-                
                 if(flag == 1){
                   connection.query('USE AlexUni');
                   connection.query('SELECT * FROM Services WHERE Name = "Certificate of Enrollment" ',function(error,results1,fields){
@@ -99,26 +84,18 @@ router.get('/cart-test', function(req,res,next)
                       });
                     connection.query('USE AlexUni');
                     connection.query('INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName) VALUES( ?,?,?,?,? ) ',[username,"Certificate of Enrollment",JSON.stringify(allresults),fees,faculty]);
-                    //res.redirect('/cart');
+                    res.redirect('/cart');
 
 
                     }
                     else {
-                      return res.json(
-                        {
-                        error: true,
-                        message: "No such service"
-                        });
+                      console.log('No such service');
                     }
 
                 });
               }
 }
 else{
-  return res.json(
-    {
-    error: true,
-    message: "Please log in to view this page!"
-    });
+  console.log("Please log in to view this page!")
 }
 });
