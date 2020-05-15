@@ -19,6 +19,8 @@ class Confirmation extends Component {
       EnrollmentStatus: "طالبة في كلية الهندسة جامعة الأسكندرية",
       GPA: "",
     },
+    semsterDetails = [],
+    courses = []
   };
   saveAndContinue = (e) => {
     e.preventDefault();
@@ -31,35 +33,54 @@ class Confirmation extends Component {
   };
 
   loadUserData = (username, token) => {
-    readCertOfEnrollData(username, token).then((data) => {
-      if (data.error) {
-        console.log("IN ERORRR :: ");
-        console.log(data.error);
-      } else {
-        console.log("IN ELSEEE DATA:: ");
-        console.log(data);
-        /*const { NameAr, Faculty, Program, GPA } = data;
-        this.userCertOfEnrollInfo = { NameAr, Faculty, Program, GPA };
-*/
-        //const { NameAr, Faculty, Program, GPA } = data;
-        this.setState({
-          userCertOfEnrollInfo: {
-            ...data,
-            CollegeName: "جامعة الأسكندرية",
-            CollegeYear: "سنة رابعة",
-            EnrollmentStatus: "طالبة في كلية الهندسة جامعة الأسكندرية",
-          },
-        });
-        console.log("userCertOfEnrollInfo!!!!!!!");
-        console.log(this.userCertOfEnrollInfo);
+    switch (this.props.id) {
+      case 1:
+        readCertOfEnrollData(username, token).then((data) => {
+          if (data.error) {
+            console.log("IN ERORRR :: ");
+            console.log(data.error);
+          } else {
+            console.log("IN ELSEEE DATA:: ");
+            console.log(data);
+            /*const { NameAr, Faculty, Program, GPA } = data;
+            this.userCertOfEnrollInfo = { NameAr, Faculty, Program, GPA };
+    */
+            //const { NameAr, Faculty, Program, GPA } = data;
+            this.setState({
+              userCertOfEnrollInfo: {
+                ...data,
+                CollegeName: "جامعة الأسكندرية",
+                CollegeYear: "سنة رابعة",
+                EnrollmentStatus: "طالبة في كلية الهندسة جامعة الأسكندرية",
+              },
+            });
+            console.log("userCertOfEnrollInfo!!!!!!!");
+            console.log(this.state.userCertOfEnrollInfo);
 
-        //console.log("user data before");
-        //console.log(userData);
-        //setUserData({ NameAr, Faculty, Program, GPA });
-        //console.log("user data after");
-        //console.log(userData);
-      }
-    });
+            //console.log("user data before");
+            //console.log(userData);
+            //setUserData({ NameAr, Faculty, Program, GPA });
+            //console.log("user data after");
+            //console.log(userData);
+          }
+        });
+      case 2:
+        getStudentTranscript(username, token).then((data) => {
+          if (data.error) {
+            console.log(data.error);
+          } else {
+            this.setState({
+              semsterDetails = [],
+              courses = []
+            });
+            console.log("semsterDetails");
+            console.log(this.state.semsterDetails);
+
+            console.log("courses");
+            console.log(this.state.courses);
+          }
+        });
+    }
   };
 
   /*  componentDidUpdate(prevProps) {
