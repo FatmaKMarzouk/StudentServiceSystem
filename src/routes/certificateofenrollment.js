@@ -12,9 +12,12 @@ var resultobject2 = "";
 var allresults = "";
 var faculty = "";
 
-router.get("/certificateofenrollment", function (req, res, next) {
+router.get("/certificateofenrollment/:username", function (req, res, next) {
   //res.sendFile(__dirname+'/certificateofenrollment.html');
-  var username = 1;
+  //var username = 1;
+  var username = req.params.username;
+  console.log("THE USERNAME REACHED TO API:");
+  console.log(username);
   connection.query("Use AlexUni");
   connection.query(
     "SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.armypostpone, Students.Gender, Payment.Paid FROM Students RIGHT JOIN Payment ON Students.ID=Payment.StudentID WHERE Students.Username = ?",
@@ -44,8 +47,9 @@ router.get("/certificateofenrollment", function (req, res, next) {
         });
 
         allresults = { ...resultobject1, ...resultobject2 };
+        console.log("All resultsssssssss");
         console.log(allresults);
-        res.send(allresults);
+        res.json(allresults);
       }
     }
   );

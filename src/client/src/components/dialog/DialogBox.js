@@ -13,6 +13,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Confirmation from "../mainform/Confirmation";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Zoom from "@material-ui/core/Zoom";
+import { readCertOfEnrollData } from "../../core/apis";
+import { getUser, getToken } from "../../Utils/Common";
 import axios from "axios";
 import Upload from "../upload/Upload";
 import { Hidden } from "@material-ui/core";
@@ -131,41 +133,19 @@ export default function CustomizedDialogs(props) {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [userData, setUserData] = useState();
-
-  //const userData = handleUserData();
-
-  /*useEffect(() => {
-    setUserData(values1);
-  }, [open]);
+  /*const [userData, setUserData] = useState({
+    NameAr: "",
+    Faculty: "",
+    CollegeName: "جامعة الأسكندرية",
+    CollegeYear: "سنة رابعة",
+    Program: "",
+    EnrollmentStatus: "طالبة في كلية الهندسة جامعة الأسكندرية",
+    GPA: "",
+  });
 */
 
-  /*const handleUserData = (val) => {
-    console.log("val");
-    console.log(val);
-    console.log("before");
-    console.log(userData);
-    setUserData(val);
-    console.log("after");
-    console.log(userData);
-  };
-*/
-  /*const handleUserData = initialValue => {
-    const [value, setValue] = useState(initialValue);
-  
-    const handleChange = e => {
-      setValue(e.target.value);
-    };
-    return {
-      value,
-      onChange: handleChange
-    };
-  };*/
-  //variables that we need
-  //const username = useFormInput("");
-  //const password = useFormInput("");
-  //const role = useFormInput("");
-
+  //-------------------------------------------------------------------------------
+  /*
   useEffect(function getValues() {
     setError(null);
     setLoading(true);
@@ -197,7 +177,7 @@ export default function CustomizedDialogs(props) {
         else setError("Something went wrong. Please try again later.");
       });
   }, []);
-
+*/
   /*const getValues = () => {
     //cases l kol id
     switch (props.id) {
@@ -258,6 +238,7 @@ export default function CustomizedDialogs(props) {
     enrollmentStatus: "طالبة في كلية الهندسة جامعة الأسكندرية",
     gpa: "٤.٠",
     enrollmentDestination: "السفارة اليونانية",
+
     courses: [
       {
         semester: "Fall 2015-2016",
