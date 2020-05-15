@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./dialog.css";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -131,14 +131,74 @@ export default function CustomizedDialogs(props) {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState();
 
+  //const userData = handleUserData();
+
+  /*useEffect(() => {
+    setUserData(values1);
+  }, [open]);
+*/
+
+  /*const handleUserData = (val) => {
+    console.log("val");
+    console.log(val);
+    console.log("before");
+    console.log(userData);
+    setUserData(val);
+    console.log("after");
+    console.log(userData);
+  };
+*/
+  /*const handleUserData = initialValue => {
+    const [value, setValue] = useState(initialValue);
+  
+    const handleChange = e => {
+      setValue(e.target.value);
+    };
+    return {
+      value,
+      onChange: handleChange
+    };
+  };*/
   //variables that we need
   //const username = useFormInput("");
   //const password = useFormInput("");
   //const role = useFormInput("");
 
-  const getValues = () => {
+  useEffect(function getValues() {
+    setError(null);
+    setLoading(true);
+    axios
+      .get("http://localhost:5000/certificateofenrollment")
+      .then((response) => {
+        response.json();
+        setLoading(false);
+        console.log("data");
+        console.log(response.data);
+
+        //userData = username.value,
+        //handleUserData(response.data);
+        //setUserData(response.data);
+
+        //console.log("user data");
+        //console.log(userData);
+        //handleClickOpen();
+      })
+      .then(({ data: userData }) => {
+        console.log("user Data 1");
+        setUserData(userData);
+        console.log("user Data 2");
+      })
+      .catch((error) => {
+        setLoading(false);
+        if (error.response.status === 401)
+          setError(error.response.data.message);
+        else setError("Something went wrong. Please try again later.");
+      });
+  }, []);
+
+  /*const getValues = () => {
     //cases l kol id
     switch (props.id) {
       case 1:
@@ -150,12 +210,12 @@ export default function CustomizedDialogs(props) {
             setLoading(false);
             console.log("data");
             console.log(response.data);
-            console.log("body");
-            console.log(response.body);
-            setUserData(response.data);
+            
+            //userData = username.value,
+            //handleUserData(response.data);
+            //setUserData(response.data);
             console.log("user data");
             console.log(userData);
-
             handleClickOpen();
 
             //props.history.push("/home");
@@ -168,7 +228,7 @@ export default function CustomizedDialogs(props) {
           });
     }
   };
-
+*/
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -288,7 +348,7 @@ export default function CustomizedDialogs(props) {
 
   return (
     <div>
-      <Button id="inside-paper-button" onClick={getValues}>
+      <Button id="inside-paper-button" onClick={handleClickOpen}>
         المزيد
       </Button>
       <div id="dialog-background">
