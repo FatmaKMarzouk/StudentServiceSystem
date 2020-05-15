@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./dialog.css";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -13,6 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Confirmation from "../mainform/Confirmation";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Zoom from "@material-ui/core/Zoom";
+import axios from "axios";
 import Upload from "../upload/Upload";
 import { Hidden } from "@material-ui/core";
 
@@ -20,16 +21,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Zoom in="checked" ref={ref} {...props} />;
 });
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     margin: 0,
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
   closeButton: {
     position: "absolute",
     right: theme.spacing(1),
     top: theme.spacing(1),
-    color: theme.palette.grey[500]
+    color: theme.palette.grey[500],
   },
 
   paper: {
@@ -41,7 +42,7 @@ const styles = theme => ({
     bottom: 0,
     marginRight: "4%",
     marginBottom: "4%",
-    marginTop: "10%"
+    marginTop: "10%",
   },
   dialogButton: {
     position: "absolute",
@@ -49,11 +50,11 @@ const styles = theme => ({
     bottom: 0,
     marginRight: "4%",
     marginBottom: "4%",
-    marginTop: "10%"
-  }
+    marginTop: "10%",
+  },
 });
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(5),
     textAlign: "center",
@@ -61,15 +62,15 @@ const useStyles = makeStyles(theme => ({
     height: 150,
     width: 250,
     margin: "0 auto",
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   paperWidth: {
     maxWidth: "800px",
-    width: "auto"
-  }
+    width: "auto",
+  },
 }));
 
-const DialogTitle = withStyles(styles)(props => {
+const DialogTitle = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
@@ -87,17 +88,17 @@ const DialogTitle = withStyles(styles)(props => {
   );
 });
 
-const DialogContent = withStyles(theme => ({
+const DialogContent = withStyles((theme) => ({
   root: {
-    padding: theme.spacing(2)
-  }
+    padding: theme.spacing(2),
+  },
 }))(MuiDialogContent);
 
-const DialogActions = withStyles(theme => ({
+const DialogActions = withStyles((theme) => ({
   root: {
     margin: 0,
-    padding: theme.spacing(1)
-  }
+    padding: theme.spacing(1),
+  },
 }))(MuiDialogActions);
 
 function getConfirmationTitle(num) {
@@ -128,6 +129,106 @@ function getConfirmationTitle(num) {
 export default function CustomizedDialogs(props) {
   const [open, setOpen] = React.useState(false);
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [userData, setUserData] = useState();
+
+  //const userData = handleUserData();
+
+  /*useEffect(() => {
+    setUserData(values1);
+  }, [open]);
+*/
+
+  /*const handleUserData = (val) => {
+    console.log("val");
+    console.log(val);
+    console.log("before");
+    console.log(userData);
+    setUserData(val);
+    console.log("after");
+    console.log(userData);
+  };
+*/
+  /*const handleUserData = initialValue => {
+    const [value, setValue] = useState(initialValue);
+  
+    const handleChange = e => {
+      setValue(e.target.value);
+    };
+    return {
+      value,
+      onChange: handleChange
+    };
+  };*/
+  //variables that we need
+  //const username = useFormInput("");
+  //const password = useFormInput("");
+  //const role = useFormInput("");
+
+  useEffect(function getValues() {
+    setError(null);
+    setLoading(true);
+    axios
+      .get("http://localhost:5000/certificateofenrollment")
+      .then((response) => {
+        response.json();
+        setLoading(false);
+        console.log("data");
+        console.log(response.data);
+
+        //userData = username.value,
+        //handleUserData(response.data);
+        //setUserData(response.data);
+
+        //console.log("user data");
+        //console.log(userData);
+        //handleClickOpen();
+      })
+      .then(({ data: userData }) => {
+        console.log("user Data 1");
+        setUserData(userData);
+        console.log("user Data 2");
+      })
+      .catch((error) => {
+        setLoading(false);
+        if (error.response.status === 401)
+          setError(error.response.data.message);
+        else setError("Something went wrong. Please try again later.");
+      });
+  }, []);
+
+  /*const getValues = () => {
+    //cases l kol id
+    switch (props.id) {
+      case 1:
+        setError(null);
+        setLoading(true);
+        axios
+          .get("http://localhost:5000/certificateofenrollment")
+          .then((response) => {
+            setLoading(false);
+            console.log("data");
+            console.log(response.data);
+            
+            //userData = username.value,
+            //handleUserData(response.data);
+            //setUserData(response.data);
+            console.log("user data");
+            console.log(userData);
+            handleClickOpen();
+
+            //props.history.push("/home");
+          })
+          .catch((error) => {
+            setLoading(false);
+            if (error.response.status === 401)
+              setError(error.response.data.message);
+            else setError("Something went wrong. Please try again later.");
+          });
+    }
+  };
+*/
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -163,86 +264,86 @@ export default function CustomizedDialogs(props) {
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "A+"
+        grade: "A+",
       },
       {
         semester: "Fall 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "B+"
+        grade: "B+",
       },
       {
         semester: "Fall 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "C+"
+        grade: "C+",
       },
       {
         semester: "Fall 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "A+"
+        grade: "A+",
       },
       {
         semester: "Fall 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "B+"
+        grade: "B+",
       },
       {
         semester: "Fall 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "A-"
+        grade: "A-",
       },
       {
         semester: "Spring 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "D+"
+        grade: "D+",
       },
       {
         semester: "Spring 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "C+"
+        grade: "C+",
       },
       {
         semester: "Spring 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "A+"
+        grade: "A+",
       },
       {
         semester: "Spring 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "B-"
+        grade: "B-",
       },
       {
         semester: "Spring 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "A+"
+        grade: "A+",
       },
       {
         semester: "Spring 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "D-"
-      }
-    ]
+        grade: "D-",
+      },
+    ],
   };
 
   return (
@@ -267,14 +368,14 @@ export default function CustomizedDialogs(props) {
               {getConfirmationTitle(props.id)}
               <span
                 style={{
-                  fontSize: "12px"
+                  fontSize: "12px",
                 }}
               >
                 يرجى التأكد من صحة البيانات المدخلة
               </span>
               <span
                 style={{
-                  fontSize: "12px"
+                  fontSize: "12px",
                 }}
               >
                 ( ثم أضف إلى العربة )

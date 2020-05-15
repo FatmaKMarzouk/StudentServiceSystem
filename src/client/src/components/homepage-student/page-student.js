@@ -30,14 +30,14 @@ import ItemsCarousel from "../items-carousel/items-carousel";
 import ShoppingCart2 from "../shopping-cart/shopping-cart2";
 import Link from "@material-ui/core/Link";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     position: "auto",
     bottom: theme.spacing(2),
     right: theme.spacing(2),
     flexGrow: 1,
     marginTop: "2%",
-    textAlign: "right"
+    textAlign: "right",
   },
   content: {
     flexGrow: 1,
@@ -46,13 +46,13 @@ const useStyles = makeStyles(theme => ({
     backgroundImage: "url(bg.jpg)",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-    position: "relative"
+    position: "relative",
   },
   studentMain: {
     height: "auto",
     width: "100%",
     margin: "0 auto",
-    marginTop: "2%"
+    marginTop: "2%",
   },
   paper: {
     padding: theme.spacing(2),
@@ -60,16 +60,16 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.secondary,
     height: 320,
     width: 250,
-    position: "relative"
+    position: "relative",
   },
   control: {
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
 
   contain: {
     backgroundColor: "white",
     opacity: 0.5,
-    marginTop: "2%"
+    marginTop: "2%",
   },
   container: {
     paddingTop: "0",
@@ -79,7 +79,7 @@ const useStyles = makeStyles(theme => ({
     boxShadow: "0px 0px 50px 5px rgba(0, 0, 0, 0.71)",
     width: "auto",
     paddingLeft: "0",
-    paddingRight: "0"
+    paddingRight: "0",
   },
   appBar: {
     backgroundColor: "#002346",
@@ -87,7 +87,7 @@ const useStyles = makeStyles(theme => ({
     height: "auto",
     color: "white",
     padding: "1%",
-    width: "100%"
+    width: "100%",
   },
   dialogButton: {
     position: "absolute",
@@ -95,8 +95,8 @@ const useStyles = makeStyles(theme => ({
     bottom: 0,
     marginRight: "4%",
     marginBottom: "4%",
-    marginTop: "10%"
-  }
+    marginTop: "10%",
+  },
 }));
 
 function FormRow() {
@@ -186,7 +186,7 @@ export default function StudentHome(props) {
   }
 
   const handleToggle = () => {
-    setOpenM(prevOpenM => !prevOpenM);
+    setOpenM((prevOpenM) => !prevOpenM);
   };
 
   const handleCart = () => {
@@ -197,7 +197,7 @@ export default function StudentHome(props) {
     setActiveFunc(0);
   };
 
-  const handleClose = event => {
+  const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
@@ -241,7 +241,7 @@ export default function StudentHome(props) {
               fontWeight: "bold",
               color: "white",
               fontFamily: "Cairo",
-              fontSize: "18px"
+              fontSize: "18px",
             }}
             className={classes.title}
             underline="none"
@@ -261,7 +261,7 @@ export default function StudentHome(props) {
                 {...TransitionProps}
                 style={{
                   transformOrigin:
-                    placement === "bottom" ? "center top" : "center bottom"
+                    placement === "bottom" ? "center top" : "center bottom",
                 }}
               >
                 <Paper>
