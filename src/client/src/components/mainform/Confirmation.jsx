@@ -5,8 +5,23 @@ import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import TranscriptTable from "../tables/TranscriptTable";
 import { Card, Image } from "semantic-ui-react";
+import { getUser, getToken } from "../../Utils/Common";
+import {getStudentTranscript,readCertOfEnrollData} from "../../core/Apis";
 
 class Confirmation extends Component {
+  state = {
+    userCertOfEnrollInfo: {
+      NameAr: "",
+      Faculty: "",
+      CollegeName: "جامعة الأسكندرية",
+      CollegeYear: "سنة رابعة",
+      Program: "",
+      EnrollmentStatus: "طالبة في كلية الهندسة جامعة الأسكندرية",
+      GPA: "",
+    },
+      semsterDetails : [], 
+      courses : []
+  };
   saveAndContinue = (e) => {
     e.preventDefault();
     this.props.nextStep();
@@ -17,7 +32,94 @@ class Confirmation extends Component {
     this.props.prevStep();
   };
 
+  loadUserData = (username, token) => {
+    switch (this.props.id) {
+      case 1:
+        readCertOfEnrollData(username, token).then((data) => {
+          if (data.error) {
+            console.log("IN ERORRR :: ");
+            console.log(data.error);
+          } else {
+            console.log("IN ELSEEE DATA:: ");
+            console.log(data);
+            /*const { NameAr, Faculty, Program, GPA } = data;
+            this.userCertOfEnrollInfo = { NameAr, Faculty, Program, GPA };
+    */
+            //const { NameAr, Faculty, Program, GPA } = data;
+            this.setState({
+              userCertOfEnrollInfo: {
+                ...data,
+                CollegeName: "جامعة الأسكندرية",
+                CollegeYear: "سنة رابعة",
+                EnrollmentStatus: "طالبة في كلية الهندسة جامعة الأسكندرية",
+              },
+            });
+            console.log("userCertOfEnrollInfo!!!!!!!");
+            console.log(this.state.userCertOfEnrollInfo);
+
+            //console.log("user data before");
+            //console.log(userData);
+            //setUserData({ NameAr, Faculty, Program, GPA });
+            //console.log("user data after");
+            //console.log(userData);
+          }
+        });
+      case 2:
+        getStudentTranscript(username, token).then((data) => {
+          if (data.error) {
+            console.log(data.error);
+          } else {
+            this.setState({
+              semsterDetails : [],
+              courses : []
+            });
+            console.log("semsterDetails");
+            console.log(this.state.semsterDetails);
+
+            console.log("courses");
+            console.log(this.state.courses);
+          }
+        });
+    }
+  };
+
+  /*  componentDidUpdate(prevProps) {
+    if (prevProps.id !== this.props.id) {
+      const username = getUser().username;
+      console.log("username in useEffect");
+      console.log(username);
+      const token = getToken();
+      console.log("token in useEffect");
+      console.log(token);
+      //const username = props.match.params.username;
+      this.loadUserData(username, token);
+    }
+  }
+*/
+  componentWillMount() {
+    const username = getUser().username;
+    console.log("username in useEffect");
+    console.log(username);
+    const token = getToken();
+    console.log("token in useEffect");
+    console.log(token);
+    //const username = props.match.params.username;
+    this.loadUserData(username, token);
+  }
+
+  /*useEffect(() => {
+    const username = getUser().username;
+    console.log("username in useEffect");
+    console.log(username);
+    const token = getToken();
+    console.log("token in useEffect");
+    console.log(token);
+    //const username = props.match.params.username;
+    loadUserData(username, token);
+  }, [props.id]);
+*/
   render() {
+    //-----------------------------------------------------------------------------
     const {
       values: {
         collegeId = "٢٣٤٥",
@@ -193,7 +295,9 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                   <List.Icon name="users" />
                   <List.Content>
                     <div className="list-content-block">
-                      <span id="list-attribute-content">{fullName}</span>
+                      <span id="list-attribute-content">
+                        {this.state.userCertOfEnrollInfo.NameAr}
+                      </span>
                       <span id="list-attribute-name"> : الاسم الرباعي </span>
                     </div>
                   </List.Content>
@@ -202,7 +306,9 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                   <List.Icon name="users" />
                   <List.Content>
                     <div className="list-content-block">
-                      <span id="list-attribute-content">{facultyName}</span>
+                      <span id="list-attribute-content">
+                        {this.state.userCertOfEnrollInfo.Faculty}
+                      </span>
                       <span id="list-attribute-name"> : الكلية </span>
                     </div>
                   </List.Content>
@@ -211,7 +317,9 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                   <List.Icon name="Email" />
                   <List.Content>
                     <div className="list-content-block">
-                      <span id="list-attribute-content">{collegeName}</span>
+                      <span id="list-attribute-content">
+                        {this.state.userCertOfEnrollInfo.CollegeName}
+                      </span>
                       <span id="list-attribute-name"> : الجامعة </span>
                     </div>
                   </List.Content>
@@ -220,7 +328,9 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                   <List.Icon name="users" />
                   <List.Content>
                     <div className="list-content-block">
-                      <span id="list-attribute-content">{collegeYear}</span>
+                      <span id="list-attribute-content">
+                        {this.state.userCertOfEnrollInfo.CollegeYear}
+                      </span>
                       <span id="list-attribute-name"> : الفرقة </span>
                     </div>
                   </List.Content>
@@ -229,7 +339,9 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                   <List.Icon name="users" />
                   <List.Content>
                     <div className="list-content-block">
-                      <span id="list-attribute-content">{collegeProgram}</span>
+                      <span id="list-attribute-content">
+                        {this.state.userCertOfEnrollInfo.Program}
+                      </span>
                       <span id="list-attribute-name"> : الشعبة/التخصص </span>
                     </div>
                   </List.Content>
@@ -239,7 +351,7 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                   <List.Content>
                     <div className="list-content-block">
                       <span id="list-attribute-content">
-                        {enrollmentStatus}
+                        {this.state.userCertOfEnrollInfo.EnrollmentStatus}
                       </span>
                       <span id="list-attribute-name"> : حالة القيد </span>
                     </div>
@@ -249,7 +361,9 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                   <List.Icon name="users" />
                   <List.Content>
                     <div className="list-content-block">
-                      <span id="list-attribute-content">{gpa}</span>
+                      <span id="list-attribute-content">
+                        {this.state.userCertOfEnrollInfo.GPA}
+                      </span>
                       <span id="list-attribute-name"> : التقدير العام </span>
                     </div>
                   </List.Content>

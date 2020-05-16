@@ -81,10 +81,11 @@ router.post("/users/signin", function (req, res) {
         "SELECT * FROM Students WHERE Username = ? AND Password = ?",
         [user, pwd],
         function (error, results, fields) {
+          console.log(results);
           if (results.length > 0) {
-            req.session.loggedin = true;
-            console.log("Request session in login b3d el definition");
-            console.log(req.session.loggedin);
+            //req.session.loggedin = true;
+            //console.log("Request session in login b3d el definition");
+            //console.log(req.session.loggedin);
             req.session.username = user;
             Object.keys(results).forEach(function (key) {
               var row = results[key];

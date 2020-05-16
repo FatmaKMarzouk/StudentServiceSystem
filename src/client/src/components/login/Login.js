@@ -23,14 +23,18 @@ function Login(props) {
       .post("http://localhost:5000/users/signin", {
         username: username.value,
         password: password.value,
-        role: role.value
+        role: role.value,
       })
-      .then(response => {
+      .then((response) => {
         setLoading(false);
+        console.log("response.data.token");
+        console.log(response.data.token);
+        console.log("response.data.user");
+        console.log(response.data.user);
         setUserSession(response.data.token, response.data.user);
         props.history.push("/home");
       })
-      .catch(error => {
+      .catch((error) => {
         setLoading(false);
         if (error.response.status === 401)
           setError(error.response.data.message);
@@ -129,15 +133,15 @@ function Login(props) {
   );
 }
 
-const useFormInput = initialValue => {
+const useFormInput = (initialValue) => {
   const [value, setValue] = useState(initialValue);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setValue(e.target.value);
   };
   return {
     value,
-    onChange: handleChange
+    onChange: handleChange,
   };
 };
 
