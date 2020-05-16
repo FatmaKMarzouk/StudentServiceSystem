@@ -5,8 +5,8 @@ import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import TranscriptTable from "../tables/TranscriptTable";
 import { Card, Image } from "semantic-ui-react";
-import { readCertOfEnrollData } from "../../core/apis";
 import { getUser, getToken } from "../../Utils/Common";
+import {getStudentTranscript,readCertOfEnrollData} from "../../core/Apis";
 
 class Confirmation extends Component {
   state = {
@@ -19,8 +19,8 @@ class Confirmation extends Component {
       EnrollmentStatus: "طالبة في كلية الهندسة جامعة الأسكندرية",
       GPA: "",
     },
-    semsterDetails = [],
-    courses = []
+      semsterDetails : [], 
+      courses : []
   };
   saveAndContinue = (e) => {
     e.preventDefault();
@@ -70,8 +70,8 @@ class Confirmation extends Component {
             console.log(data.error);
           } else {
             this.setState({
-              semsterDetails = [],
-              courses = []
+              semsterDetails : [],
+              courses : []
             });
             console.log("semsterDetails");
             console.log(this.state.semsterDetails);
