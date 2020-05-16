@@ -12,10 +12,13 @@ var resultobject2 = "";
 var allresults = "";
 var faculty = "";
 
-router.get("/certificateofenrollment/:username", function (req, res, next) {
+router.get("/certificateofenrollment", function (req, res, next) {
   //res.sendFile(__dirname+'/certificateofenrollment.html');
   //var username = 1;
-  var username = req.params.username;
+  var username = req.user.username;
+  console.log("REQ.USER TEST");
+  console.log(req.user);
+  console.log("REQ.USER TEST END");
   console.log("THE USERNAME REACHED TO API:");
   console.log(username);
   connection.query("Use AlexUni");

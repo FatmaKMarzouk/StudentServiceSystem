@@ -8,6 +8,8 @@ var path = require("path");
 var courses = [];
 var fees = "";
 
+var resultobject1 = "";
+var resultobject2 = "";
 var masterobject = "";
 
 router.use(
@@ -19,9 +21,9 @@ router.use(bodyParser.json());
 var connection = require("../controllers/dbconnection");
 
 router.get("/transcript", function (request, response, next) {
-  if (request.session.loggedin) {
-    response.sendFile(__dirname + "/transcript.html");
-    var username = request.session.username;
+  if (request.user) {
+    //response.sendFile(__dirname + "/transcript.html");
+    var username = request.user.username;
     var id = "";
     var name = "";
     var flag = 1;
@@ -55,11 +57,11 @@ router.get("/transcript", function (request, response, next) {
               if (results2.length > 0) {
                 Object.keys(results2).forEach(function (key) {
                   //courses.push(results2[key]);
-                  masterobject = { ...masterobject, ...results2 };
+                  resultobject1 =results2 ;
                 });
-                console.log("bada2t teba3a\n");
-                console.log(masterobject);
-                console.log("\n5allast teba3a\n");
+                // console.log("bada2t teba3a\n");
+                // console.log(masterobject);
+                // console.log("\n5allast teba3a\n");
                 connection.query("USE IntegratedData");
                 connection.query(
                   "SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ?",
@@ -69,11 +71,23 @@ router.get("/transcript", function (request, response, next) {
                     if (results4.length > 0) {
                       Object.keys(results4).forEach(function (key) {
                         //  termGpa.push(results4[key]);
-                        masterobject = { ...masterobject, ...results4 };
+                        resultobject2 =results4 ;
                       });
-                      console.log("bada2t teba3a tanyyy\n");
-                      console.log(masterobject);
-                      console.log("\n5allast teba3a tanyyy\n");
+                      // resultobject1 = JSON.stringify(resultobject1);
+                      // resultobject2 = JSON.stringify(resultobject2);
+                      // masterobject = { ...resultobject1, FLAG :"0", ...resultobject2 };
+                      //masterobject = JSON.stringify(masterobject);
+                      response.json(resultobject1,resultobject2);
+                      // console.log("New teba3a");
+                      // console.log("resultobject1");
+                      // console.log(resultobject1);
+                      // console.log("resultobject1 ENDDDD");
+                      // console.log("resultobject2");
+                      // console.log(resultobject2);
+                      // console.log("resultobject2 ENDDDD");
+                      // console.log("bada2t teba3a masterobject tanyyy\n");
+                      // console.log(masterobject);
+                      // console.log("\n5allast teba3a masterobject tanyyy\n");
                     } else {
                       response.send("Wrong ID");
                     }
