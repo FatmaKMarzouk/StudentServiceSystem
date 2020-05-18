@@ -70,8 +70,8 @@ class Confirmation extends Component {
             console.log(data.error);
           } else {
             this.setState({
-              semsterDetails : [],
-              courses : []
+              semsterDetails : data.termGpa,
+              courses : data.resultobject1
             });
             console.log("semsterDetails");
             console.log(this.state.semsterDetails);

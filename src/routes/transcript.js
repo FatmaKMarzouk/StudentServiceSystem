@@ -63,26 +63,38 @@ router.get("/transcript", function (request, response, next) {
                       Object.keys(results4).forEach(function (key) {
                         termGpa =results4 ;
                       });
-                      response.send({resultobject1,termGpa});
+                      response.status(200).send({resultobject1,termGpa});
                     } else {
-                      response.send("Wrong ID");
+                      response.status(400).send({
+                        error:true,
+                        message:"Wrong ID"
+                      });
                     }
                   }
                 );
               } else {
-                response.send("no registered courses");
+                response.status(400).send({
+                  error:true,
+                  message:"no registered courses"
+                });
                 flag = 0;
               }
             }
           );
         } else {
-          response.send("Not a registered student");
+          response.status(400).send({
+            error:true,
+            message:"Not a registered student"
+          });
           flag = 0;
         }
       }
     );
   } else {
-    response.send("Please login to view this page!");
+    response.send({
+      error:true,
+      message:"Please login to view this page!"
+    });
   }
 });
 router.get("/transcriptconfirm", function (request, response, fields) {
