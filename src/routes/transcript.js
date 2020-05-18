@@ -56,12 +56,8 @@ router.get("/transcript", function (request, response, next) {
             function (error, results2, fields) {
               if (results2.length > 0) {
                 Object.keys(results2).forEach(function (key) {
-                  //courses.push(results2[key]);
                   resultobject1 =results2 ;
                 });
-                // console.log("bada2t teba3a\n");
-                // console.log(masterobject);
-                // console.log("\n5allast teba3a\n");
                 connection.query("USE IntegratedData");
                 connection.query(
                   "SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ?",
@@ -73,21 +69,7 @@ router.get("/transcript", function (request, response, next) {
                         //  termGpa.push(results4[key]);
                         resultobject2 =results4 ;
                       });
-                      // resultobject1 = JSON.stringify(resultobject1);
-                      // resultobject2 = JSON.stringify(resultobject2);
-                      // masterobject = { ...resultobject1, FLAG :"0", ...resultobject2 };
-                      //masterobject = JSON.stringify(masterobject);
                       response.send({resultobject1,resultobject2});
-                      // console.log("New teba3a");
-                      // console.log("resultobject1");
-                      // console.log(resultobject1);
-                      // console.log("resultobject1 ENDDDD");
-                      // console.log("resultobject2");
-                      // console.log(resultobject2);
-                      // console.log("resultobject2 ENDDDD");
-                      // console.log("bada2t teba3a masterobject tanyyy\n");
-                      // console.log(masterobject);
-                      // console.log("\n5allast teba3a masterobject tanyyy\n");
                     } else {
                       response.send("Wrong ID");
                     }
