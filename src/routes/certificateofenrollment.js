@@ -58,25 +58,28 @@ router.get("/certificateofenrollment", function (req, res, next) {
   );
 });
 router.get("/cart-test", function (req, res, next) {
-  if (req.session.loggedin) {
-    var username = req.session.username;
+  if (req.user) {
+    var username = req.user.username;
     var flag = 1;
     if (allresults.Gender === "Male") {
-      if (allresults.Paid && allresults.armypostpone) {
-        // res.json(allresults);
-      } else {
-        res.send(
-          "You are not eligible for extracting certificate of enrollment as fees are not paid or your army postponing papers are not done."
-        );
+      if (!allresults.Paid && allresults.armypostpone) {
+      //   // res.json(allresults);
+      // } else {
         flag = 0;
+        res.status(400).send({
+          error:true,
+          message:"You are not eligible for extracting certificate of enrollment as fees are not paid or your army postponing papers are not done."
+        });
       }
+      
     } else {
       if (allresults.Paid) {
-        // res.json(allresults);
-      } else {
-        res.send(
-          "You are not eligible for extracting certificate of enrollment as fees are not paid."
-        );
+      //   // res.json(allresults);
+      // } else {
+        res.status(400).send({
+          error:true,
+          message:"You are not eligible for extracting certificate of enrollment as fees are not paid."
+        });
         flag = 0;
       }
     }
@@ -101,14 +104,22 @@ router.get("/cart-test", function (req, res, next) {
                 faculty,
               ]
             );
-            res.redirect("/cart");
+            // res.redirect("/cart");
           } else {
+            res.status(400).send({
+              error:true,
+              message:"No such service"
+            });
             console.log("No such service");
           }
         }
       );
     }
   } else {
+    res.status(400).send({
+      error:true,
+      message:"Please log in to view this page!"
+    });
     console.log("Please log in to view this page!");
   }
 });
