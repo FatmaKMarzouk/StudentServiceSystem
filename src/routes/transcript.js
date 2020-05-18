@@ -98,8 +98,8 @@ router.get("/transcript", function (request, response, next) {
   }
 });
 router.get("/transcriptconfirm", function (request, response, fields) {
-  if (request.session.loggedin) {
-    var username = request.session.username;
+  if (request.user) {
+    var username = request.user.username;
     var paid = "";
     var flag = 1;
     connection.query("USE AlexUni");
@@ -133,22 +133,29 @@ router.get("/transcriptconfirm", function (request, response, fields) {
                         "Faculty of Engineering",
                       ]
                     );
-                    response.redirect("/cart");
+                    response.status(200).send("transcript test");
+                  //  response.redirect("/cart");
                   } else {
-                    console.log("No such service");
+                    response.status(400).send({
+                      error:true,
+                      message:"No such service"});
                   }
                 }
               );
             }
           } else {
-            response.send("You haven't paid fees");
             flag = 0;
+            response.status(400).send({
+              error:true,
+              message:"You haven't paid fees"});
           }
         } else {
         }
       }
     );
   } else {
-    response.send("Please log in");
+    response.status(400).send({
+      error:true,
+      message:"Please log in"});
   }
 });
