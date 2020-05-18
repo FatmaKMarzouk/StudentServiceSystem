@@ -52,7 +52,7 @@ router.get("/certificateofenrollment", function (req, res, next) {
         allresults = { ...resultobject1, ...resultobject2 };
         console.log("All resultsssssssss");
         console.log(allresults);
-        res.json(allresults);
+        res.status(200).json(allresults);
       }
     }
   );
@@ -73,7 +73,7 @@ router.get("/cart-test", function (req, res, next) {
       }
       
     } else {
-      if (allresults.Paid) {
+      if (!allresults.Paid) {
       //   // res.json(allresults);
       // } else {
         res.status(400).send({
@@ -104,6 +104,7 @@ router.get("/cart-test", function (req, res, next) {
                 faculty,
               ]
             );
+            res.status(200).send();
             // res.redirect("/cart");
           } else {
             res.status(400).send({
