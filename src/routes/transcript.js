@@ -9,8 +9,7 @@ var courses = [];
 var fees = "";
 
 var resultobject1 = "";
-var resultobject2 = "";
-var masterobject = "";
+var termGpa = "";
 
 router.use(
   bodyParser.urlencoded({
@@ -22,7 +21,6 @@ var connection = require("../controllers/dbconnection");
 
 router.get("/transcript", function (request, response, next) {
   if (request.user) {
-    //response.sendFile(__dirname + "/transcript.html");
     var username = request.user.username;
     var id = "";
     var name = "";
@@ -39,13 +37,11 @@ router.get("/transcript", function (request, response, next) {
         if (results.length > 0) {
           Object.keys(results).forEach(function (key) {
             row1 = results[key];
-            // info.push(results[key]);
             id = row1.ID;
             prog = row1.ProgramName;
             name = row1.Name;
             totalReg = row1.TotalRegHours;
             totalEarned = row1.TotalEarnedHours;
-            // console.log(info)
           });
 
           console.log(id, name, prog, totalReg, totalEarned);
@@ -63,13 +59,11 @@ router.get("/transcript", function (request, response, next) {
                   "SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ?",
                   [id],
                   function (error, results4, fields) {
-                    var termGpa = [];
                     if (results4.length > 0) {
                       Object.keys(results4).forEach(function (key) {
-                        //  termGpa.push(results4[key]);
-                        resultobject2 =results4 ;
+                        termGpa =results4 ;
                       });
-                      response.send({resultobject1,resultobject2});
+                      response.send({resultobject1,termGpa});
                     } else {
                       response.send("Wrong ID");
                     }
