@@ -77,7 +77,7 @@ router.get("/transcript", function (request, response, next) {
                       // resultobject2 = JSON.stringify(resultobject2);
                       // masterobject = { ...resultobject1, FLAG :"0", ...resultobject2 };
                       //masterobject = JSON.stringify(masterobject);
-                      response.json(resultobject1,resultobject2);
+                      response.send({resultobject1,resultobject2});
                       // console.log("New teba3a");
                       // console.log("resultobject1");
                       // console.log(resultobject1);
