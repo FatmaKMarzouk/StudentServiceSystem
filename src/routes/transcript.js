@@ -9,8 +9,7 @@ var courses = [];
 var fees = "";
 
 var resultobject1 = "";
-var resultobject2 = "";
-var masterobject = "";
+var termGpa = "";
 
 router.use(
   bodyParser.urlencoded({
@@ -22,7 +21,6 @@ var connection = require("../controllers/dbconnection");
 
 router.get("/transcript", function (request, response, next) {
   if (request.user) {
-    //response.sendFile(__dirname + "/transcript.html");
     var username = request.user.username;
     var id = "";
     var name = "";
@@ -39,13 +37,11 @@ router.get("/transcript", function (request, response, next) {
         if (results.length > 0) {
           Object.keys(results).forEach(function (key) {
             row1 = results[key];
-            // info.push(results[key]);
             id = row1.ID;
             prog = row1.ProgramName;
             name = row1.Name;
             totalReg = row1.TotalRegHours;
             totalEarned = row1.TotalEarnedHours;
-            // console.log(info)
           });
 
           console.log(id, name, prog, totalReg, totalEarned);
@@ -56,62 +52,54 @@ router.get("/transcript", function (request, response, next) {
             function (error, results2, fields) {
               if (results2.length > 0) {
                 Object.keys(results2).forEach(function (key) {
-                  //courses.push(results2[key]);
                   resultobject1 =results2 ;
                 });
-                // console.log("bada2t teba3a\n");
-                // console.log(masterobject);
-                // console.log("\n5allast teba3a\n");
                 connection.query("USE IntegratedData");
                 connection.query(
                   "SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ?",
                   [id],
                   function (error, results4, fields) {
-                    var termGpa = [];
                     if (results4.length > 0) {
                       Object.keys(results4).forEach(function (key) {
-                        //  termGpa.push(results4[key]);
-                        resultobject2 =results4 ;
+                        termGpa =results4 ;
                       });
-                      // resultobject1 = JSON.stringify(resultobject1);
-                      // resultobject2 = JSON.stringify(resultobject2);
-                      // masterobject = { ...resultobject1, FLAG :"0", ...resultobject2 };
-                      //masterobject = JSON.stringify(masterobject);
-                      response.json(resultobject1,resultobject2);
-                      // console.log("New teba3a");
-                      // console.log("resultobject1");
-                      // console.log(resultobject1);
-                      // console.log("resultobject1 ENDDDD");
-                      // console.log("resultobject2");
-                      // console.log(resultobject2);
-                      // console.log("resultobject2 ENDDDD");
-                      // console.log("bada2t teba3a masterobject tanyyy\n");
-                      // console.log(masterobject);
-                      // console.log("\n5allast teba3a masterobject tanyyy\n");
+                      response.status(200).send({resultobject1,termGpa});
                     } else {
-                      response.send("Wrong ID");
+                      response.status(400).send({
+                        error:true,
+                        message:"Wrong ID"
+                      });
                     }
                   }
                 );
               } else {
-                response.send("no registered courses");
+                response.status(400).send({
+                  error:true,
+                  message:"no registered courses"
+                });
                 flag = 0;
               }
             }
           );
         } else {
-          response.send("Not a registered student");
+          response.status(400).send({
+            error:true,
+            message:"Not a registered student"
+          });
           flag = 0;
         }
       }
     );
   } else {
-    response.send("Please login to view this page!");
+    response.send({
+      error:true,
+      message:"Please login to view this page!"
+    });
   }
 });
 router.get("/transcriptconfirm", function (request, response, fields) {
-  if (request.session.loggedin) {
-    var username = request.session.username;
+  if (request.user) {
+    var username = request.user.username;
     var paid = "";
     var flag = 1;
     connection.query("USE AlexUni");
@@ -145,22 +133,29 @@ router.get("/transcriptconfirm", function (request, response, fields) {
                         "Faculty of Engineering",
                       ]
                     );
-                    response.redirect("/cart");
+                    response.status(200).send("transcript test");
+                  //  response.redirect("/cart");
                   } else {
-                    console.log("No such service");
+                    response.status(400).send({
+                      error:true,
+                      message:"No such service"});
                   }
                 }
               );
             }
           } else {
-            response.send("You haven't paid fees");
             flag = 0;
+            response.status(400).send({
+              error:true,
+              message:"You haven't paid fees"});
           }
         } else {
         }
       }
     );
   } else {
-    response.send("Please log in");
+    response.status(400).send({
+      error:true,
+      message:"Please log in"});
   }
 });

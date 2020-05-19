@@ -123,8 +123,9 @@ router.post("/users/signin", function (req, res) {
             req.session.loggedin = true;
             req.session.username = user;
             Object.keys(results).forEach(function (key) {
-              userData.name = results.Name;
-              userData.username = results.Username;
+              var row = results[key];
+              userData.name = row.Name;
+              userData.username = row.Username;
               userData.role = role;
             });
             // generate token
