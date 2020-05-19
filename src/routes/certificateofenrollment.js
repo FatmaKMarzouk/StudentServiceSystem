@@ -148,10 +148,12 @@ router.get('/cart-test', function(req,res,next)
                         var row = results1[key];
                         fees = row.Fees;
                       });
-                    connection.query('USE AlexUni');
-                    connection.query('INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName) VALUES( ?,?,?,?,? ) ',[username,"Certificate of Enrollment",JSON.stringify(allresults),fees,faculty]);
+                    
+                      fs.readFile('./enrollment.docx', function (err, data) {
+                      connection.query('USE AlexUni');
+                    connection.query('INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName,document) VALUES( ?,?,?,?,?,? ) ',[username,"Certificate of Enrollment",JSON.stringify(allresults),fees,faculty,data]);
                     res.redirect('/cart');
-
+                      })
 
                     }
                     else {

@@ -308,16 +308,15 @@ router.get('/transcriptconfirm', function (request, response, fields) {
                     */
                     if (paid) {
                         if (flag == 1) {
-                            fs.readFile('./transcript.docx', function read(err, data) {
-                                if (err) {
-                                    throw err;
-                               
-                            connection.query('USE AlexUni');
+                            fs.readFile('./transcript.docx', function (err, data) {
+                                
+                                connection.query('USE AlexUni');
                             connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount,FacultyName,document) VALUES( ?,?,?,?,? ) ', [username, "Request Transcript", "50", "Faculty of Engineering",data]);
                             response.redirect('/cart');
-                        }
-                                 
-                    })
+                            })
+                            
+                            
+                       
                         
                         }
                     } else {
