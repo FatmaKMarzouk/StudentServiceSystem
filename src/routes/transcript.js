@@ -43,8 +43,10 @@ router.use(bodyParser.urlencoded({
 router.use(bodyParser.json());
 var connection = require('../controllers/dbconnection');
 
-router.get('/transcript', function (request, response, next) {
-    if (request.user) {
+router.get('/transcript', function (request, response, next) 
+{
+  if (request.user) 
+    {
         //response.sendFile(__dirname + '/transcript.html');
         var username = request.user.username;
 
@@ -91,9 +93,11 @@ router.get('/transcript', function (request, response, next) {
                         //console.log(row2.CourseName);
                         console.log('\n5allast teba3a\n');
                         connection.query('USE IntegratedData');
-                        connection.query('SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ? ', [id], function (error, results4, fields) {
+                        connection.query('SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ? ', [id], function (error, results4, fields) 
+                        {
                             var termGpa = [];
-                            if (results4.length > 0) {
+                            if (results4.length > 0) 
+                            {
 
                                 Object.keys(results4).forEach(function (key) {
                                     //  termGpa.push(results4[key]);
@@ -115,82 +119,82 @@ router.get('/transcript', function (request, response, next) {
                                 // console.log('\n5allast teba3a tanyyy\n');
                                 response.status(200).send({row1,row2,row4});
                              // Create an empty Word object:
-                    let docx = officegen('docx')
+                                let docx = officegen('docx')
 
-                    // Officegen calling this function after finishing to generate the docx document:
-                    docx.on('finalize', function (written) {
-                        console.log(
-                            'Finish to create a Microsoft Word document.'
-                        )
-                    })
+                                // Officegen calling this function after finishing to generate the docx document:
+                                docx.on('finalize', function (written) {
+                                    console.log(
+                                        'Finish to create a Microsoft Word document.'
+                                    )
+                                })
 
-                    // Officegen calling this function to report errors:
-                    docx.on('error', function (err) {
-                        console.log(err)
-                    })
+                                // Officegen calling this function to report errors:
+                                docx.on('error', function (err) {
+                                    console.log(err)
+                                })
 
-                    // Create a new paragraph:
-
-
-                    pObj = docx.createP({
-                        align: 'center'
-                    })
-
-                    // We can even add images:
-                    pObj.addImage(path.resolve(__dirname, 'uni_logoo.png'), {
-                        cx: 120,
-                        cy: 120
-                    })
+                                // Create a new paragraph:
 
 
-                    pObj = docx.createP({
-                        align: 'left'
-                    })
-                    pObj.addText("Studnet's name :" + name)
-                    //pObj.addText(name,{color : '0000A0', bold: true, underline: true})
-                    pObj.addLineBreak()
-                    pObj.addText("Student's ID : " + id)
+                                pObj = docx.createP({
+                                    align: 'center'
+                                })
 
-                    pObj.addLineBreak()
-                    pObj.addText("Student's program: " + prog)
+                                // We can even add images:
+                                pObj.addImage(path.resolve(__dirname, 'uni_logoo.png'), {
+                                    cx: 120,
+                                    cy: 120
+                                })
 
-                    pObj.addLineBreak()
-                    pObj.addText("Student's total registered hours : " + totalReg)
 
-                    pObj.addLineBreak()
-                    pObj.addText("Student's total earned hours : " + totalEarned)
-                    pObj.addLineBreak()
-                    pObj.addText("Student's total GPA : " + totalGPA)
-                    //var myobj1 = JSON.stringify(masterobject1);
-                    pObj.addLineBreak()
-                    pObj.addText("Subject's taken :")
+                                pObj = docx.createP({
+                                    align: 'left'
+                                })
+                                pObj.addText("Studnet's name :" + name)
+                                //pObj.addText(name,{color : '0000A0', bold: true, underline: true})
+                                pObj.addLineBreak()
+                                pObj.addText("Student's ID : " + id)
 
-                    pObj.addLineBreak()
-                    pObj.addText(info1sep.toString())
-                    pObj.addLineBreak()
-                    pObj.addText("Semester GPA and registered hours :")
-                    pObj.addLineBreak()
-                    pObj.addText(info2sep.toString(),{color : '0000FF'})
-                    
-                    // Let's generate the Word document into a file:
-                    let out = fs.createWriteStream('transcript.docx')
-                         out.on('error', function (err) {
-                      console.log(err)
-                    })
-                    
-                    // Async call to generate the output file:
-                   docx.generate(out)
-                   
-                   
-                   
-                  
-                    info1 = []
-                    info1sep = []
-                    info2 = []
-                    info2sep = []
-                            } else {
-                                response.send('Wrong ID');
-                            }
+                                pObj.addLineBreak()
+                                pObj.addText("Student's program: " + prog)
+
+                                pObj.addLineBreak()
+                                pObj.addText("Student's total registered hours : " + totalReg)
+
+                                pObj.addLineBreak()
+                                pObj.addText("Student's total earned hours : " + totalEarned)
+                                pObj.addLineBreak()
+                                pObj.addText("Student's total GPA : " + totalGPA)
+                                //var myobj1 = JSON.stringify(masterobject1);
+                                pObj.addLineBreak()
+                                pObj.addText("Subject's taken :")
+
+                                pObj.addLineBreak()
+                                pObj.addText(info1sep.toString())
+                                pObj.addLineBreak()
+                                pObj.addText("Semester GPA and registered hours :")
+                                pObj.addLineBreak()
+                                pObj.addText(info2sep.toString(),{color : '0000FF'})
+                                
+                                // Let's generate the Word document into a file:
+                                let out = fs.createWriteStream('transcript.docx')
+                                    out.on('error', function (err) {
+                                  console.log(err)
+                                })
+                                
+                                // Async call to generate the output file:
+                              docx.generate(out)
+                              
+                              
+                              
+                              
+                                info1 = []
+                                info1sep = []
+                                info2 = []
+                                info2sep = []
+                          } else {
+                                            response.send('Wrong ID');
+                                        }
 
                         });
 
@@ -222,9 +226,10 @@ router.get('/transcript', function (request, response, next) {
           });
           flag = 0;
         }
-      }
+    }
     );
-  } else {
+} else 
+  {
     response.send({
       error:true,
       message:"Please login to view this page!"
