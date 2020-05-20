@@ -15,8 +15,12 @@ var id = ""
 var flag = 1;
 var totalReg = "";
 var totalEarned = "";
+var totalGPA="";
 var prog = "";
+var row1={};
+var row2={};
 var row3
+var row4={};
 var grades = ""
 var semesters = ""
 var grade = ""
@@ -40,12 +44,12 @@ router.use(bodyParser.json());
 var connection = require('../controllers/dbconnection');
 
 router.get('/transcript', function (request, response, next) {
-    if (request.session.loggedin) {
-        response.sendFile(__dirname + '/transcript.html');
-        var username = request.session.username;
+    if (request.user) {
+        //response.sendFile(__dirname + '/transcript.html');
+        var username = request.user.username;
 
         connection.query('USE IntegratedData');
-        connection.query('SELECT ID,Name,ProgramName,TotalRegHours,TotalEarnedHours FROM Student WHERE ID = ? ', [username], function (error, results, fields) {
+        connection.query('SELECT ID,Name,ProgramName,TotalRegHours,TotalEarnedHours,GPA FROM Student WHERE ID = ? ', [username], function (error, results, fields) {
             var info = [];
             if (results.length > 0) {
 
@@ -57,12 +61,13 @@ router.get('/transcript', function (request, response, next) {
                     name = row1.Name;
                     totalReg = row1.TotalRegHours
                     totalEarned = row1.TotalEarnedHours
+                    totalGPA = row1.GPA
                     // console.log(info)
                 });
 
                 console.log(id, name, prog, totalReg, totalEarned);
                 connection.query('USE IntegratedData');
-                connection.query('SELECT CourseName,Grade,Semester FROM EnrolledCourses WHERE StudentID = ?  ORDER BY SemesterNum ASC', [id], function (error, results2, fields) {
+                connection.query('SELECT EnrolledCourses.CourseName,EnrolledCourses.Grade,EnrolledCourses.Semester FROM EnrolledCourses, Courses.ID, Courses.CH FROM EnrolledCourses JOIN Courses ON EnrolledCourses.CourseName = Courses.Name WHERE EnrolledCourses.StudentID = ?  ORDER BY SemesterNum ASC', [id], function (error, results2, fields) {
 
                     if (results2.length > 0) {
 
@@ -75,10 +80,10 @@ router.get('/transcript', function (request, response, next) {
                             info1sep = info1.join("\n")
                             console.log(courses + " " + grade + " " + semesters + "\n")
 
-                            masterobject1 = {
-                                ...1,
-                                ...results2
-                            };
+                            // masterobject1 = {
+                            //     ...1,
+                            //     ...results2
+                            // };
 
                         });
 
@@ -104,10 +109,11 @@ router.get('/transcript', function (request, response, next) {
                                     };
 
                                 });
-                                console.log('bada2t teba3a tanyyy\n');
-                                var obj2
-                                console.log(masterobject2);
-                                console.log('\n5allast teba3a tanyyy\n');
+                                // console.log('bada2t teba3a tanyyy\n');
+                                // var obj2
+                                // console.log(masterobject2);
+                                // console.log('\n5allast teba3a tanyyy\n');
+                                response.status(200).send({row1,row2,row4});
                              // Create an empty Word object:
                     let docx = officegen('docx')
 
@@ -154,8 +160,9 @@ router.get('/transcript', function (request, response, next) {
                     pObj.addLineBreak()
                     pObj.addText("Student's total earned hours : " + totalEarned)
                     pObj.addLineBreak()
-
+                    pObj.addText("Student's total GPA : " + totalGPA)
                     //var myobj1 = JSON.stringify(masterobject1);
+                    pObj.addLineBreak()
                     pObj.addText("Subject's taken :")
 
                     pObj.addLineBreak()
