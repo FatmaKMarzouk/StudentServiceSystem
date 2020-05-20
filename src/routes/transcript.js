@@ -43,24 +43,24 @@ router.use(bodyParser.urlencoded({
 router.use(bodyParser.json());
 var connection = require('../controllers/dbconnection');
 
-router.get('/transcript', function (request, response, next) 
+router.get('/transcript', function (request, response, next)
 {
-  if (request.user) 
+  if (request.user)
     {
         //response.sendFile(__dirname + '/transcript.html');
-        var username = request.user.username;
+        var username = req.user.username;
 
         connection.query('USE IntegratedData');
         // query to extract object row1 (object of totalGPA), query based on username
-        connection.query('SELECT ID,Name,ProgramName,TotalRegHours,TotalEarnedHours,GPA FROM Student WHERE ID = ? ', [username], 
-        function (error, results, fields) 
+        connection.query('SELECT ID,Name,ProgramName,TotalRegHours,TotalEarnedHours,GPA FROM Student WHERE ID = ? ', [username],
+        function (error, results, fields)
         {
             var info = [];
             // if no username, then student not registered
-            if (results.length > 0) 
+            if (results.length > 0)
             {
 
-                Object.keys(results).forEach(function (key) 
+                Object.keys(results).forEach(function (key)
                 {
                     row1 = results[key]
                     // info.push(results[key]);
@@ -76,12 +76,12 @@ router.get('/transcript', function (request, response, next)
                 console.log(id, name, prog, totalReg, totalEarned);
                 connection.query('USE IntegratedData');
                 // query to extract object row2, query based on id
-                connection.query('SELECT EnrolledCourses.CourseName, EnrolledCourses.Grade, EnrolledCourses.Semester FROM EnrolledCourses, Courses.ID, Courses.CH FROM EnrolledCourses JOIN Courses ON EnrolledCourses.CourseName = Courses.Name WHERE EnrolledCourses.StudentID = ?  ORDER BY EnrolledCourses.semesterNum ASC', [id], 
-                function (error, results2, fields) 
+                connection.query('SELECT EnrolledCourses.CourseName, EnrolledCourses.Grade, EnrolledCourses.Semester, Courses.ID, Courses.CH FROM EnrolledCourses JOIN Courses ON EnrolledCourses.CourseName = Courses.Name WHERE EnrolledCourses.StudentID = ?  ORDER BY EnrolledCourses.semesterNum ASC', [id],
+                function (error, results2, fields)
                 {
                     if(error)
                     throw error;
-                    else if (results2.length > 0) 
+                    else if (results2.length > 0)
                     {
                         Object.keys(results2).forEach(function (key) {
                             row2 = results2[key];
@@ -103,13 +103,13 @@ router.get('/transcript', function (request, response, next)
                         //console.log(row2.CourseName);
                         console.log('\n5allast teba3a\n');
                         connection.query('USE IntegratedData');
-                        connection.query('SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ? ', [id], function (error, results4, fields) 
+                        connection.query('SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ? ', [id], function (error, results4, fields)
                         {
                             var termGpa = [];
-                            if (results4.length > 0) 
+                            if (results4.length > 0)
                             {
 
-                                Object.keys(results4).forEach(function (key) 
+                                Object.keys(results4).forEach(function (key)
                                 {
                                     //  termGpa.push(results4[key]);
                                     row4 = results4[key]
@@ -133,13 +133,13 @@ router.get('/transcript', function (request, response, next)
                                 let docx = officegen('docx')
 
                                 // Officegen calling this function after finishing to generate the docx document:
-                                docx.on('finalize', function (written) 
+                                docx.on('finalize', function (written)
                                 {
                                     console.log('Finish to create a Microsoft Word document.');
                                 });
 
                                 // Officegen calling this function to report errors:
-                                docx.on('error', function (err) 
+                                docx.on('error', function (err)
                                 {
                                     console.log(err);
                                 });
@@ -184,40 +184,40 @@ router.get('/transcript', function (request, response, next)
                                 pObj.addText("Semester GPA and registered hours :");
                                 pObj.addLineBreak();
                                 pObj.addText(info2sep.toString(),{color : '0000FF'});
-                                
+
                                 // Let's generate the Word document into a file:
                                 let out = fs.createWriteStream('transcript.docx');
-                                    out.on('error', function (err) 
+                                    out.on('error', function (err)
                                     {
                                         console.log(err);
                                     })
-                                
+
                                 // Async call to generate the output file:
                                 docx.generate(out);
-                              
-                              
-                              
-                              
+
+
+
+
                                 info1 = [];
                                 info1sep = [];
                                 info2 = [];
                                 info2sep = [];
-                            } 
-                            else 
+                            }
+                            else
                             {
                                  response.send('Wrong ID');
                             }
 
                         });
-                    } 
+                    }
                     else
                     {
                         response.send("no registered courses");
                         flag = 0;
                     }
                 });
-            } 
-            else 
+            }
+            else
             {
                 response.status(400).send(
                 {
@@ -226,13 +226,13 @@ router.get('/transcript', function (request, response, next)
                 });
 
             }
-          
-        
+
+
           flag = 0;
-        
+
         });
-    } 
-    else 
+    }
+    else
     {
         response.send({
         error:true,
@@ -311,19 +311,19 @@ router.get('/transcriptconfirm', function (request, response, fields) {
                     pObj.addText("Semester GPA and registered hours :")
                     pObj.addLineBreak()
                     pObj.addText(info2sep.toString(),{color : '0000FF'})
-                    
+
                     // Let's generate the Word document into a file:
                     let out = fs.createWriteStream('transcript.docx')
                          out.on('error', function (err) {
                       console.log(err)
                     })
-                    
+
                     // Async call to generate the output file:
                    docx.generate(out)
-                   
-                   
-                   
-                  
+
+
+
+
                     info1 = []
                     info1sep = []
                     info2 = []
@@ -332,15 +332,15 @@ router.get('/transcriptconfirm', function (request, response, fields) {
                     if (paid) {
                         if (flag == 1) {
                             fs.readFile('./transcript.docx', function (err, data) {
-                                
+
                                 connection.query('USE AlexUni');
                             connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount,FacultyName,document) VALUES( ?,?,?,?,? ) ', [username, "Request Transcript", "50", "Faculty of Engineering",data]);
                             response.redirect('/cart');
                             })
-                            
-                            
-                       
-                        
+
+
+
+
                         }
                     } else {
                         response.send("You haven't paid fees");
