@@ -4,7 +4,6 @@ import UserDetails from "./UserDetails";
 import PersonalDetails from "./PersonalDetails";
 import Confirmation from "./Confirmation";
 import Success from "./Success";
-import axios from 'axios';
 
 class MainForm extends Component {
   state = {
@@ -42,10 +41,9 @@ class MainForm extends Component {
     this.setState({ [input]: event.target.value });
   };
 
-
   render() {
+    const { step } = this.state;
     const {
-      step,
       fullName,
       nationalId,
       email,
@@ -61,6 +59,7 @@ class MainForm extends Component {
       guardianPhoneNumber
     } = this.state;
     const values = {
+      id: 0,
       fullName,
       nationalId,
       email,
@@ -90,7 +89,7 @@ class MainForm extends Component {
             nextStep={this.nextStep}
             prevStep={this.prevStep}
             values={values}
-            values={{ id: 0 }}
+            id={0}
           />
         );
       case 3:

@@ -68,7 +68,7 @@ router.post('/add',function(request, response) {
         
         if(adminsec == 1){
 
-            response.send('Emplyee has been added successfully');
+            response.send('Employee has been added successfully');
             
         connection.query('INSERT INTO Secretary (Name,email,FacultyName,Password) VALUES( ?, ?, ?, ?) ',[name, email, facultysec, result] ,  function(error, results, fields){
 

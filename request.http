@@ -1,0 +1,14 @@
+POST  http://localhost:5000/users/signin HTTP/1.1
+Content-Type: : application/json
+
+{
+    "username": "1",
+    "password": "khaled",
+    "role": "student"
+}
+
+###
+
+GET http://localhost:5000/verifyToken
+
+###

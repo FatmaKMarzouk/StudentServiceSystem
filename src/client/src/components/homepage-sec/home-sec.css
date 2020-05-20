@@ -1,4 +1,7 @@
 .func-list {
-    float: right;
-  }
-  
+  float: right;
+}
+
+#hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

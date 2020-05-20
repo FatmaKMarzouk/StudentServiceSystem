@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { link } from 'react-router-dom';
+import { link } from "react-router-dom";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -76,7 +76,8 @@ const useStyles = makeStyles(theme => ({
     fontWeight: "bold",
     color: "white",
     textDecoration: "none",
-    marginRight: "2%"
+    marginRight: "2%",
+    fontFamily: "Cairo"
   },
   drawerPaper: {
     position: "relative",
@@ -207,7 +208,7 @@ export default function SecHome() {
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} id="hide-scrollbar">
       <CssBaseline />
       <AppBar
         position="absolute"
@@ -310,8 +311,16 @@ export default function SecHome() {
                   fontSize="medium"
                 />
               </ListItemIcon>
-              <ListItemText style={{ textAlign: "right", color: "white" }}>
-                إضافة طالب جديد
+              <ListItemText style={{ textAlign: "right" }}>
+                <span
+                  style={{
+                    color: "white",
+                    fontFamily: "Cairo",
+                    fontSize: "12px"
+                  }}
+                >
+                  إضافة طالب جديد
+                </span>
               </ListItemText>
             </ListItem>
             <ListItem button onClick={handleArmy}>
@@ -321,8 +330,16 @@ export default function SecHome() {
                   fontSize="medium"
                 />
               </ListItemIcon>
-              <ListItemText style={{ textAlign: "right", color: "white" }}>
-                تأجيل التجنيد العسكري
+              <ListItemText style={{ textAlign: "right" }}>
+                <span
+                  style={{
+                    color: "white",
+                    fontFamily: "Cairo",
+                    fontSize: "12px"
+                  }}
+                >
+                  تأجيل التجنيد العسكري
+                </span>
               </ListItemText>
             </ListItem>
           </div>

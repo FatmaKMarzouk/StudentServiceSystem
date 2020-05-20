@@ -12,18 +12,24 @@ var upload = multer({ dest: 'uploads/' })
 var request = require('request');
 var fs = require('fs');
 
-
 router.use(bodyParser.urlencoded({extended : true}));
 router.use(bodyParser.json());
 
+// router.get('/enrollement', function(request, response,next) {
+// 	response.sendFile(__dirname+'/enrollement.html');
+// 	//console.log('its anhoon11');
 
+// });
 
-router.get('/enrollement', function(request, response,next) {
-	response.sendFile(__dirname+'/enrollement.html');
-	//console.log('its anhoon11');
+var connection = require('../controllers/dbconnection');
 
-	if (request.session.loggedin) {
-		var secusername = request.session.username;
+router.post('/enroll',function(request, response) {
+	console.log("frontend connected");
+
+	if (request.user) {
+		console.log("request.user test");
+		console.log(request.user);
+		var secusername = request.user.username;
 
 		connection.query('SELECT FacultyName FROM Secretary WHERE ID = ? ',[secusername] ,  function(error, results, fields){
 
@@ -37,28 +43,18 @@ router.get('/enrollement', function(request, response,next) {
 			 	console.log("3aaaaaaaaaaaa");
 			   }
 
-
 		});
-	}
-
-});
-
-var connection = require('../controllers/dbconnection');
-
-
-router.post('/enroll',function(request, response) {
-	console.log("frontend connected");
-
-	response.send('Student has been added successfully');
+	
+	// response.send('Student has been added successfully');
 
 	var nameen = request.body.nameen;
 	var namear = request.body.namear;
 	var ssn = request.body.ssn;
 	var medicalcondition = request.body.medicalcondition || " ";
-	// var parentphone = request.body.parentphone;
-	// var parentname = request.body.parentname;
-	// var parentssn = request.body.parentssn;
-	// var parentrelation = request.body.parentrelation;
+	var parentphone = request.body.parentphone;
+	var parentname = request.body.parentname;
+	var parentssn = request.body.parentssn;
+	var parentrelation = request.body.parentrelation;
 	var email = request.body.email;
 	var nationality = request.body.nationality || " ";
 	var birthdate = request.body.birthdate || " ";
@@ -80,13 +76,12 @@ router.post('/enroll',function(request, response) {
 		for ( var i = 0; i < 10; i++ ) {
 		   result += characters.charAt(Math.floor(Math.random() * charactersLength));
 		}
-		connection.query('INSERT INTO Students (NameEn,NameAr,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Password,Faculty,Program) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ',[nameen, namear, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, result ,'Faculty of Engineering', 'General'] ,  function(error, results, fields){
-	//	connection.query('INSERT INTO Students (NameEn,NameAr,ParentPhone,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Password,Faculty,Program,ParentName,ParentSSN,ParentRelation) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ',[nameen, namear, parentphone, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, result ,facultysec, 'General',parentname,parentssn,parentrelation] ,  function(error, results, fields){
+		// connection.query('INSERT INTO Students (NameEn,NameAr,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Password,Faculty,Program) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ',[nameen, namear, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, result ,'Faculty of Engineering', 'General'] ,  function(error, results, fields){
+		connection.query('INSERT INTO Students (NameEn, NameAr, ParentPhone, Gender, medicalCondition, Email, Nationality, Birthdate, SSN, phoneNumber, Address, Password, Faculty, Program, ParentName, ParentSSN, ParentRelation, birthCertificate, Nationalid, NominationCard) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ',[nameen, namear, parentphone, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, result ,facultysec, 'General',parentname,parentssn,parentrelation, birthCerftificate, nationalid, nominationCard] ,  function(error, results, fields){
 
 
 			if(selection == 'private'){
 				connection.query("UPDATE Students SET SSP = b'1' WHERE Email = ? ",[email], function(error, results,fields){
-
                });
 			}
 
@@ -102,14 +97,15 @@ router.post('/enroll',function(request, response) {
 					  return user;
 					});}
 					const output = `
-					<p>You have been accepted in Alexandria University</p>
+					<p>Congratulations! You have been accepted in Alexandria University.</p>
 					<h3>Contact Details</h3>
 					<ul>
+					<li>Faculty: ${facultysec}</li>
 					<li>Username: ${user}</li>
 					<li>Password: ${result}</li>
 					</ul>
-					<h3>Message</h3>
-					<p>Please login and change your password</p>
+					<h3>Note:</h3>
+					<p>Please login and change your password.</p>
 				`;
 
 				let transporter = nodemailer.createTransport({
@@ -144,10 +140,8 @@ router.post('/enroll',function(request, response) {
 				});
 
 			});
-
+			response.status(200).send("Student added successfully");
 			if (error) throw error;
-
-
 		});
-
+	}
 });

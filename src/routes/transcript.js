@@ -1,5 +1,5 @@
-var mysql = require('mysql');
-var express = require('express');
+var mysql = require("mysql");
+var express = require("express");
 var router = express.Router();
 module.exports = router;
 var session = require('express-session');
@@ -202,27 +202,34 @@ router.get('/transcript', function (request, response, next) {
                         response.send("no registered courses");
                         flag = 0;
                     }
+                  }
+                );
+              } else {
+                response.status(400).send({
+                  error:true,
+                  message:"no registered courses"
                 });
 
             } else {
                 response.send("Not a registered student");
                 flag = 0;
             }
-
-
-
-
-        });
-
-
-
-    } else {
-
-        response.send('Please login to view this page!');
-    }
-
-
-
+          );
+        } else {
+          response.status(400).send({
+            error:true,
+            message:"Not a registered student"
+          });
+          flag = 0;
+        }
+      }
+    );
+  } else {
+    response.send({
+      error:true,
+      message:"Please login to view this page!"
+    });
+  }
 });
 router.get('/transcriptconfirm', function (request, response, fields) {
     if (request.session.loggedin) {
