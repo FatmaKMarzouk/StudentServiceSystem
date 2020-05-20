@@ -13,7 +13,8 @@ var resultobject2='';
 var allresults='';
 var faculty='';
 
-router.get("/certificateofenrollment", function (req, res, next) {
+router.get("/certificateofenrollment", function (req, res, next) 
+{
   //res.sendFile(__dirname+'/certificateofenrollment.html');
   //var username = 1;
   var username = req.user.username;
@@ -23,25 +24,26 @@ router.get("/certificateofenrollment", function (req, res, next) {
   console.log("THE USERNAME REACHED TO API:");
   console.log(username);
   connection.query("Use AlexUni");
-  connection.query(
-    "SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.armypostpone, Students.Gender, Payment.Paid FROM Students RIGHT JOIN Payment ON Students.ID=Payment.StudentID WHERE Students.Username = ?",
+  connection.query("SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.armypostpone, Students.Gender, Payment.Paid FROM Students RIGHT JOIN Payment ON Students.ID=Payment.StudentID WHERE Students.Username = ?",
     [username],
-    function (err, results, field) {
-      if (results.length > 0) {
-        Object.keys(results).forEach(function (key) {
+    function (err, results, field) 
+    {
+      if (results.length > 0) 
+      {
+        Object.keys(results).forEach(function (key) 
+        {
           var row = results[key];
           resultobject1 = row;
           faculty = row.Faculty;
         });
         return;
       }
-    }
-  );
+    });
   connection.query("Use IntegratedData");
-  connection.query(
-    "SELECT GPA,Semester FROM Student WHERE ID = ?",
+  connection.query("SELECT GPA,Semester FROM Student WHERE ID = ?",
     [username],
-    function (err, results, field) {
+    function (err, results, field) 
+    {
       if (results.length > 0) {
         Object.keys(results).forEach(function (key) {
           var row = results[key];
@@ -58,14 +60,18 @@ router.get("/certificateofenrollment", function (req, res, next) {
     }
   );
 });
-router.get("/cart-test", function (req, res, next) {
-  if (req.user) {
+router.get("/cart-test", function (req, res, next) 
+{
+  if (req.user) 
+  {
     var username = req.user.username;
     var flag = 1;
-    if (allresults.Gender === "Male") {
-      if (!allresults.Paid && allresults.armypostpone) {
-      //   // res.json(allresults);
-      // } else {
+    if (allresults.Gender === "Male") 
+    {
+      if (!allresults.Paid && allresults.armypostpone) 
+      {
+        //   // res.json(allresults);
+        // } else {
         flag = 0;
         res.status(400).send({
           error:true,
@@ -73,48 +79,48 @@ router.get("/cart-test", function (req, res, next) {
         });
       }
       
-    } else {
-      if (!allresults.Paid) {
-      //   // res.json(allresults);
-      // } else {
+    } 
+    else 
+    {
+      if (!allresults.Paid) 
+      {
+        //   // res.json(allresults);
+        // } else {
+        flag = 0;
         res.status(400).send({
           error:true,
           message:"You are not eligible for extracting certificate of enrollment as fees are not paid."
         });
-        flag = 0;
       }
     }
-    if (flag == 1) {
+    if (flag == 1) 
+    {
       connection.query("USE AlexUni");
-      connection.query(
-        'SELECT * FROM Services WHERE Name = "Certificate of Enrollment" ',
-        function (error, results1, fields) {
-          if (results1.length > 0) {
-            Object.keys(results1).forEach(function (key) {
+      connection.query('SELECT * FROM Services WHERE Name = "Certificate of Enrollment" ',
+        function (error, results1, fields) 
+        {
+          if (results1.length > 0) 
+          {
+            Object.keys(results1).forEach(function (key) 
+            {
               var row = results1[key];
               fees = row.Fees;
             });
             connection.query("USE AlexUni");
-            connection.query(
-              "INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName) VALUES( ?,?,?,?,? ) ",
-              [
-                username,
-                "Certificate of Enrollment",
-                JSON.stringify(allresults),
-                fees,
-                faculty,
-              ]
-            );
+            connection.query("INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName) VALUES( ?,?,?,?,? ) ",
+              [username, "Certificate of Enrollment", JSON.stringify(allresults), fees, faculty ]);
             res.status(200).send();
             // res.redirect("/cart");
-          } else {
+          } 
+          else 
+          {
             res.status(400).send({
               error:true,
               message:"No such service"
             });
-            console.log("No such service");
+            //console.log("No such service");
           }
-        }
+        
           // Create an empty Word object:
           let docx = officegen('docx');
 
@@ -167,24 +173,15 @@ router.get("/cart-test", function (req, res, next) {
           
           // Async call to generate the output file:
          docx.generate(out)
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
       });
   }
-  else{
+  else
+  {
     res.send("Please log in to view this page!");
   }
+  }
 });
-router.get('/cart-test', function(req,res,next)
+/*router.get('/cart-test', function(req,res,next)
 {     if(req.session.loggedin){
       var username = req.session.username;
       var flag =1;
@@ -238,4 +235,4 @@ router.get('/cart-test', function(req,res,next)
 else{
   console.log("Please log in to view this page!")
 }
-});
+});*/

@@ -6,7 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import TranscriptTable from "../tables/TranscriptTable";
 import { Card, Image } from "semantic-ui-react";
 import { getUser, getToken } from "../../Utils/Common";
-import { getStudentTranscript, readCertOfEnrollData } from "../../core/apis";
+import { getStudentTranscript, readCertOfEnrollData } from "../../core/Apis";
 
 class Confirmation extends Component {
   state = {
@@ -67,7 +67,9 @@ class Confirmation extends Component {
       case 2:
         getStudentTranscript(username, token).then(data => {
           if (data.error) {
-            console.log(data.error);
+            console.log("IN ERROR TRANSCRIPT");
+            console.log(data);
+            //console.log(data.error);
           } else {
             this.setState({
               semsterDetails: data.termGpa,

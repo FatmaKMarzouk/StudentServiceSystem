@@ -43,18 +43,26 @@ router.use(bodyParser.urlencoded({
 router.use(bodyParser.json());
 var connection = require('../controllers/dbconnection');
 
-router.get('/transcript', function (request, response, next) {
-    if (request.user) {
+router.get('/transcript', function (request, response, next)
+{
+  if (request.user)
+    {
         //response.sendFile(__dirname + '/transcript.html');
         var username = request.user.username;
 
         connection.query('USE IntegratedData');
-        connection.query('SELECT ID,Name,ProgramName,TotalRegHours,TotalEarnedHours,GPA FROM Student WHERE ID = ? ', [username], function (error, results, fields) {
+        // query to extract object row1 (object of totalGPA), query based on username
+        connection.query('SELECT ID,Name,ProgramName,TotalRegHours,TotalEarnedHours,GPA FROM Student WHERE ID = ? ', [username],
+        function (error, results, fields)
+        {
             var info = [];
-            if (results.length > 0) {
+            // if no username, then student not registered
+            if (results.length > 0)
+            {
 
-                Object.keys(results).forEach(function (key) {
-                    row1 = results[key]
+                Object.keys(results).forEach(function (key)
+                {
+                    row1 = { ...row1, ...results};
                     // info.push(results[key]);
                     id = row1.ID;
                     prog = row1.ProgramName;
@@ -65,20 +73,33 @@ router.get('/transcript', function (request, response, next) {
                     // console.log(info)
                 });
 
-                console.log(id, name, prog, totalReg, totalEarned);
+                //console.log(id, name, prog, totalReg, totalEarned);
+                
+                console.log('bada2t teba3a row1\n');
+                console.log(row1);
+                console.log('\n5allast teba3a row1\n');
                 connection.query('USE IntegratedData');
-                connection.query('SELECT EnrolledCourses.CourseName,EnrolledCourses.Grade,EnrolledCourses.Semester FROM EnrolledCourses, Courses.ID, Courses.CH FROM EnrolledCourses JOIN Courses ON EnrolledCourses.CourseName = Courses.Name WHERE EnrolledCourses.StudentID = ?  ORDER BY SemesterNum ASC', [id], function (error, results2, fields) {
-
-                    if (results2.length > 0) {
-
+                // query to extract object row2, query based on id
+                connection.query('SELECT EnrolledCourses.CourseName, EnrolledCourses.Grade, EnrolledCourses.Semester, Courses.ID, Courses.CH FROM EnrolledCourses JOIN Courses ON EnrolledCourses.CourseName = Courses.Name WHERE EnrolledCourses.StudentID = ?  ORDER BY EnrolledCourses.semesterNum ASC', [id],
+                function (error, results2, fields)
+                {
+                    if(error)
+                    {
+                        console.log(error);
+                    throw error;
+                    }
+                    else if (results2.length > 0)
+                    {
+                        console.log("loop print");
                         Object.keys(results2).forEach(function (key) {
-                            row2 = results2[key];
+                            row2 = { ...row2, ...results2 };
                             courses = row2.CourseName;
                             grade = row2.Grade
                             semesters = row2.Semester
                             info1.push(courses + " ,Grade: " + grade + " ,Semester: " + semesters)
                             info1sep = info1.join("\n")
-                            console.log(courses + " " + grade + " " + semesters + "\n")
+                            console.log(results2[key]);
+                            //console.log(courses + " " + grade + " " + semesters + "\n")
 
                             // masterobject1 = {
                             //     ...1,
@@ -86,150 +107,149 @@ router.get('/transcript', function (request, response, next) {
                             // };
 
                         });
+                        console.log("loop print end");
 
-                        console.log('bada2t teba3a\n');
-                        //console.log(row2.CourseName);
-                        console.log('\n5allast teba3a\n');
+                        console.log('bada2t teba3a row2\n');
+                        console.log(row2);
+                        console.log('\n5allast teba3a row2\n');
                         connection.query('USE IntegratedData');
-                        connection.query('SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ? ', [id], function (error, results4, fields) {
+                        connection.query('SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ? ', [id], function (error, results4, fields)
+                        {
                             var termGpa = [];
-                            if (results4.length > 0) {
+                            if (results4.length > 0)
+                            {
 
-                                Object.keys(results4).forEach(function (key) {
+                                Object.keys(results4).forEach(function (key)
+                                {
                                     //  termGpa.push(results4[key]);
-                                    row4 = results4[key]
+                                    row4 ={...row4, ...results4 };
                                     sems = row4.Semester
                                     gpa = row4.GPA
                                     regH = row4.regHours
                                     info2.push(sems + " ,GPA: " + gpa + " ,Registered Hours: " + regH)
                                     info2sep = info2.join("\n")
-                                    masterobject2 = {
-                                        ...masterobject2,
-                                        ...results4
-                                    };
+                                    // masterobject2 = {
+                                    //     ...masterobject2,
+                                    //     ...results4
+                                    // };
 
                                 });
-                                // console.log('bada2t teba3a tanyyy\n');
+                                 console.log('bada2t teba3a row4\n');
                                 // var obj2
-                                // console.log(masterobject2);
-                                // console.log('\n5allast teba3a tanyyy\n');
+                                 console.log(row4);
+                                 console.log('\n5allast teba3a row4\n');
                                 response.status(200).send({row1,row2,row4});
-                             // Create an empty Word object:
-                    let docx = officegen('docx')
+                                console.log("b3d el response test");
+                                // Create an empty Word object:
+                                let docx = officegen('docx')
 
-                    // Officegen calling this function after finishing to generate the docx document:
-                    docx.on('finalize', function (written) {
-                        console.log(
-                            'Finish to create a Microsoft Word document.'
-                        )
-                    })
+                                // Officegen calling this function after finishing to generate the docx document:
+                                docx.on('finalize', function (written)
+                                {
+                                    console.log('Finish to create a Microsoft Word document.');
+                                });
 
-                    // Officegen calling this function to report errors:
-                    docx.on('error', function (err) {
-                        console.log(err)
-                    })
+                                // Officegen calling this function to report errors:
+                                docx.on('error', function (err)
+                                {
+                                    console.log(err);
+                                });
 
-                    // Create a new paragraph:
-
-
-                    pObj = docx.createP({
-                        align: 'center'
-                    })
-
-                    // We can even add images:
-                    pObj.addImage(path.resolve(__dirname, 'uni_logoo.png'), {
-                        cx: 120,
-                        cy: 120
-                    })
+                                // Create a new paragraph:
 
 
-                    pObj = docx.createP({
-                        align: 'left'
-                    })
-                    pObj.addText("Studnet's name :" + name)
-                    //pObj.addText(name,{color : '0000A0', bold: true, underline: true})
-                    pObj.addLineBreak()
-                    pObj.addText("Student's ID : " + id)
+                                pObj = docx.createP({ align: 'center'});
 
-                    pObj.addLineBreak()
-                    pObj.addText("Student's program: " + prog)
+                                // We can even add images:
+                                pObj.addImage(path.resolve(__dirname, 'uni_logoo.png'), {
+                                    cx: 120,
+                                    cy: 120
+                                });
 
-                    pObj.addLineBreak()
-                    pObj.addText("Student's total registered hours : " + totalReg)
 
-                    pObj.addLineBreak()
-                    pObj.addText("Student's total earned hours : " + totalEarned)
-                    pObj.addLineBreak()
-                    pObj.addText("Student's total GPA : " + totalGPA)
-                    //var myobj1 = JSON.stringify(masterobject1);
-                    pObj.addLineBreak()
-                    pObj.addText("Subject's taken :")
+                                pObj = docx.createP({
+                                    align: 'left'
+                                });
+                                pObj.addText("Studnet's name :" + name);
+                                //pObj.addText(name,{color : '0000A0', bold: true, underline: true})
+                                pObj.addLineBreak();
+                                pObj.addText("Student's ID : " + id);
 
-                    pObj.addLineBreak()
-                    pObj.addText(info1sep.toString())
-                    pObj.addLineBreak()
-                    pObj.addText("Semester GPA and registered hours :")
-                    pObj.addLineBreak()
-                    pObj.addText(info2sep.toString(),{color : '0000FF'})
-                    
-                    // Let's generate the Word document into a file:
-                    let out = fs.createWriteStream('transcript.docx')
-                         out.on('error', function (err) {
-                      console.log(err)
-                    })
-                    
-                    // Async call to generate the output file:
-                   docx.generate(out)
-                   
-                   
-                   
-                  
-                    info1 = []
-                    info1sep = []
-                    info2 = []
-                    info2sep = []
-                            } else {
-                                response.send('Wrong ID');
+                                pObj.addLineBreak();
+                                pObj.addText("Student's program: " + prog);
+
+                                pObj.addLineBreak();
+                                pObj.addText("Student's total registered hours : " + totalReg);
+
+                                pObj.addLineBreak();
+                                pObj.addText("Student's total earned hours : " + totalEarned);
+                                pObj.addLineBreak();
+                                pObj.addText("Student's total GPA : " + totalGPA);
+                                //var myobj1 = JSON.stringify(masterobject1);
+                                pObj.addLineBreak();
+                                pObj.addText("Subject's taken :");
+
+                                pObj.addLineBreak();
+                                pObj.addText(info1sep.toString());
+                                pObj.addLineBreak();
+                                pObj.addText("Semester GPA and registered hours :");
+                                pObj.addLineBreak();
+                                pObj.addText(info2sep.toString(),{color : '0000FF'});
+
+                                // Let's generate the Word document into a file:
+                                let out = fs.createWriteStream('transcript.docx');
+                                    out.on('error', function (err)
+                                    {
+                                        console.log(err);
+                                    })
+
+                                // Async call to generate the output file:
+                                docx.generate(out);
+
+
+
+
+                                info1 = [];
+                                info1sep = [];
+                                info2 = [];
+                                info2sep = [];
+                            }
+                            else
+                            {
+                                 response.send('Wrong ID');
                             }
 
                         });
-
-
-
-
-
-                    } else {
+                    }
+                    else
+                    {
                         response.send("no registered courses");
                         flag = 0;
                     }
-                  }
-                );
-              } else {
-                response.status(400).send({
+                });
+            }
+            else
+            {
+                response.status(400).send(
+                {
                   error:true,
-                  message:"no registered courses"
+                  message:"Not a registered student"
                 });
 
-            } else {
-                response.send("Not a registered student");
-                flag = 0;
             }
-          );
-        } else {
-          response.status(400).send({
-            error:true,
-            message:"Not a registered student"
-          });
+
+
           flag = 0;
-        }
-      }
-    );
-  } else {
-    response.send({
-      error:true,
-      message:"Please login to view this page!"
-    });
-  }
+
+        });
+    }
+    else
+    {
+        response.send({
+        error:true,
+        message:"Please login to view this page!"
+        });
+    }
 });
 router.get('/transcriptconfirm', function (request, response, fields) {
     if (request.session.loggedin) {
@@ -302,19 +322,19 @@ router.get('/transcriptconfirm', function (request, response, fields) {
                     pObj.addText("Semester GPA and registered hours :")
                     pObj.addLineBreak()
                     pObj.addText(info2sep.toString(),{color : '0000FF'})
-                    
+
                     // Let's generate the Word document into a file:
                     let out = fs.createWriteStream('transcript.docx')
                          out.on('error', function (err) {
                       console.log(err)
                     })
-                    
+
                     // Async call to generate the output file:
                    docx.generate(out)
-                   
-                   
-                   
-                  
+
+
+
+
                     info1 = []
                     info1sep = []
                     info2 = []
@@ -323,15 +343,15 @@ router.get('/transcriptconfirm', function (request, response, fields) {
                     if (paid) {
                         if (flag == 1) {
                             fs.readFile('./transcript.docx', function (err, data) {
-                                
+
                                 connection.query('USE AlexUni');
                             connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount,FacultyName,document) VALUES( ?,?,?,?,? ) ', [username, "Request Transcript", "50", "Faculty of Engineering",data]);
                             response.redirect('/cart');
                             })
-                            
-                            
-                       
-                        
+
+
+
+
                         }
                     } else {
                         response.send("You haven't paid fees");

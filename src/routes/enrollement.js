@@ -15,21 +15,21 @@ var fs = require('fs');
 router.use(bodyParser.urlencoded({extended : true}));
 router.use(bodyParser.json());
 
-// router.get('/enrollement', function(request, response,next) {
-// 	response.sendFile(__dirname+'/enrollement.html');
-// 	//console.log('its anhoon11');
+router.get('/enrollement', function(request, response,next) {
+	response.sendFile(__dirname+'/enrollement.html');
+	//console.log('its anhoon11');
 
-// });
+});
 
 var connection = require('../controllers/dbconnection');
 
 router.post('/enroll',function(request, response) {
 	console.log("frontend connected");
 
-	if (request.user) {
-		console.log("request.user test");
-		console.log(request.user);
-		var secusername = request.user.username;
+	if (request.session.loggedin) {
+		//console.log("request.user test");
+		//console.log(request.user);
+		var secusername =  request.session.username;
 
 		connection.query('SELECT FacultyName FROM Secretary WHERE ID = ? ',[secusername] ,  function(error, results, fields){
 
@@ -43,7 +43,7 @@ router.post('/enroll',function(request, response) {
 			 	console.log("3aaaaaaaaaaaa");
 			   }
 
-		});
+			//});
 	
 	// response.send('Student has been added successfully');
 
@@ -143,5 +143,6 @@ router.post('/enroll',function(request, response) {
 			response.status(200).send("Student added successfully");
 			if (error) throw error;
 		});
+	});
 	}
 });
