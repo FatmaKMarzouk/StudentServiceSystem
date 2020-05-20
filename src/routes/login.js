@@ -75,19 +75,23 @@ router.post("/users/signin", function (req, res) {
   if (user && pwd && role) {
     console.log("user && pwd && role");
     connection.query("Use AlexUni");
-    if (role == "student") {
+    if (role == "student") 
+    {
       console.log("student");
       connection.query(
         "SELECT * FROM Students WHERE Username = ? AND Password = ?",
         [user, pwd],
-        function (error, results, fields) {
+        function (error, results, fields) 
+        {
           console.log(results);
-          if (results.length > 0) {
+          if (results.length > 0) 
+          {
             //req.session.loggedin = true;
             //console.log("Request session in login b3d el definition");
             //console.log(req.session.loggedin);
-            req.session.username = user;
-            Object.keys(results).forEach(function (key) {
+            //req.session.username = user;
+            Object.keys(results).forEach(function (key) 
+            {
               var row = results[key];
               userData.name = row.NameEn;
               userData.username = row.Username;
@@ -105,24 +109,30 @@ router.post("/users/signin", function (req, res) {
             return res.json({ user: userObj, token });
           }
           // return 401 status if credential don't not match.
-          else {
-            return res.status(401).json({
+          else 
+          {
+            return res.status(401).json(
+            {
               error: true,
               message: "Username or Password is Wrong.",
             });
           }
         }
       );
-    } else if (role == "secretary") {
+    } 
+    else if (role == "secretary") 
+    {
       console.log("secretary");
       connection.query(
-        "SELECT * FROM Secretary WHERE ID = ? AND Password = ?",
-        [user, pwd],
-        function (error, results, fields) {
-          if (results.length > 0) {
+        "SELECT * FROM Secretary WHERE ID = ? AND Password = ?", [user, pwd],
+        function (error, results, fields) 
+        {
+          if (results.length > 0) 
+          {
             req.session.loggedin = true;
             req.session.username = user;
-            Object.keys(results).forEach(function (key) {
+            Object.keys(results).forEach(function (key) 
+            {
               var row = results[key];
               userData.name = row.Name;
               userData.username = row.Username;
@@ -137,8 +147,10 @@ router.post("/users/signin", function (req, res) {
           }
 
           // return 401 status if the credential is not match.
-          else {
-            return res.status(401).json({
+          else 
+          {
+            return res.status(401).json(
+            {
               error: true,
               message: "Username or Password is Wrong.",
             });
@@ -148,8 +160,8 @@ router.post("/users/signin", function (req, res) {
     } else {
       console.log("Wala di wala di");
     }
-    console.log("Request session in login");
-    console.log(req.session.loggedin);
+    // console.log("Request session in login");
+    // console.log(req.session.loggedin);
   }
   // return 401 status if the credential is not match.
   else {
