@@ -11,12 +11,20 @@ var postpone = require("./routes/postpone");
 var homesec = require("./routes/homesec");
 var enrollement = require("./routes/enrollement");
 var chooseprog = require("./routes/chooseprog");
+
+var docx = require("docx");
+
 var annualfees = require("./routes/annualfees");
-var transcript = require("./routes/transcript");
+
+
+var request = require('request');
+var officegen = require('officegen')
+var fs = require('fs')
 var request = require("request");
 
 var cart = require("./routes/cart");
 var certificateofenrollment = require("./routes/certificateofenrollment");
+var transcript = require("./routes/transcript");
 var addsec = require("./routes/addsec");
 var checkout = require("./routes/checkout");
 var card = require("./routes/card");

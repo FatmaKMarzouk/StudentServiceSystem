@@ -67,6 +67,10 @@
   background-color: #002346;
 }
 
+.carousel .carousel-indicators li:hover {
+  cursor: pointer;
+}
+
 .carousel .carousel-indicators {
   margin-bottom: 1%;
 }

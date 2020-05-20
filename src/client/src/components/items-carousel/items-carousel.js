@@ -34,7 +34,7 @@ export default () => {
         chevronWidth={chevronWidth}
       >
         <Paper id="items-carousel-container">
-          <div id="items-carousel" className="items-carousel-1">
+          <div id="items-carousel">
             <div id="paper-icons">١</div>
 
             <span id="items-carousel-1-title">شهادة قيد</span>
@@ -50,24 +50,71 @@ export default () => {
                 ( في حالة وجود تأمين لا داعي للدفع )
               </span>
             </div>
-            <div id="service-icon"></div>
+            <div id="service-icon">
+              <img
+                style={{ height: "55px" }}
+                src="enrollment.png"
+                id="service-icon-image"
+              ></img>
+            </div>
             <DialogBox id={1} />
           </div>
         </Paper>
-        <Paper id="items-carousel">
-          <div id="paper-icons">٢</div>
-          <span id="items-carousel-1-title">اختيار البرنامج</span>
-          <DialogSelect />
+        <Paper id="items-carousel-container">
+          <div id="items-carousel">
+            <div id="paper-icons">٢</div>
+            <span id="items-carousel-1-title">اختيار البرنامج</span>
+            <div id="rules">
+              <span style={{ marginBottom: "2%", fontSize: "16px" }}>
+                : الشروط
+              </span>
+              <span style={{ marginBottom: "1%" }}>
+                ١- اجتياز المرحلة الإعدادية
+              </span>
+              <span style={{ marginBottom: "1%" }}>
+                ٢- الحصول على الحد الأدنى للمعدل
+              </span>
+              <span style={{ marginBottom: "1%" }}>
+                التراكمي للقسم المرغوب الالتحاق به
+              </span>
+            </div>
+            <div id="service-icon">
+              <img src="chooseprog.png" id="service-icon-image"></img>
+            </div>
+            <DialogSelect />
+          </div>
         </Paper>
-        <Paper id="items-carousel">
-          <div id="paper-icons">٣</div>
-          <span id="items-carousel-1-title">ترانسكريبت المواد</span>
-          <DialogBox id={2} />
+        <Paper id="items-carousel-container">
+          <div id="items-carousel">
+            <div id="paper-icons">٣</div>
+            <span id="items-carousel-1-title">ترانسكريبت المواد</span>
+            <div id="rules">
+              <span style={{ marginBottom: "2%", fontSize: "16px" }}>
+                : الشروط
+              </span>
+              <span style={{ marginBottom: "1%" }}>١- دفع مصاريف عام</span>
+            </div>
+            <div id="service-icon">
+              <img src="transcript.png" id="service-icon-image"></img>
+            </div>
+            <DialogBox id={2} />
+          </div>
         </Paper>
-        <Paper id="items-carousel">
-          <div id="paper-icons">٤</div>
-          <span id="items-carousel-1-title">الكارنية الجامعي</span>
-          <DialogBox id={3} />
+        <Paper id="items-carousel-container">
+          <div id="items-carousel">
+            <div id="paper-icons">٤</div>
+            <span id="items-carousel-1-title">الكارنية الجامعي</span>
+            <div id="rules">
+              <span style={{ marginBottom: "2%", fontSize: "16px" }}>
+                : الشروط
+              </span>
+              <span style={{ marginBottom: "1%" }}>١- دفع مصاريف عام</span>
+            </div>
+            <div id="service-icon">
+              <img src="studentcard.png" id="service-icon-image"></img>
+            </div>
+            <DialogBox id={3} />
+          </div>
         </Paper>
         <Paper id="items-carousel">
           <div id="paper-icons">٥</div>

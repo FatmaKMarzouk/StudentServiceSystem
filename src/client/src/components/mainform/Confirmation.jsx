@@ -6,7 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import TranscriptTable from "../tables/TranscriptTable";
 import { Card, Image } from "semantic-ui-react";
 import { getUser, getToken } from "../../Utils/Common";
-import {getStudentTranscript,readCertOfEnrollData} from "../../core/Apis";
+import { getStudentTranscript, readCertOfEnrollData } from "../../core/Apis";
 
 class Confirmation extends Component {
   state = {
@@ -17,17 +17,17 @@ class Confirmation extends Component {
       CollegeYear: "سنة رابعة",
       Program: "",
       EnrollmentStatus: "طالبة في كلية الهندسة جامعة الأسكندرية",
-      GPA: "",
+      GPA: ""
     },
-      semsterDetails : [], 
-      courses : []
+    semsterDetails: [],
+    courses: []
   };
-  saveAndContinue = (e) => {
+  saveAndContinue = e => {
     e.preventDefault();
     this.props.nextStep();
   };
 
-  back = (e) => {
+  back = e => {
     e.preventDefault();
     this.props.prevStep();
   };
@@ -35,7 +35,7 @@ class Confirmation extends Component {
   loadUserData = (username, token) => {
     switch (this.props.id) {
       case 1:
-        readCertOfEnrollData(username, token).then((data) => {
+        readCertOfEnrollData(username, token).then(data => {
           if (data.error) {
             console.log("IN ERORRR :: ");
             console.log(data.error);
@@ -51,8 +51,8 @@ class Confirmation extends Component {
                 ...data,
                 CollegeName: "جامعة الأسكندرية",
                 CollegeYear: "سنة رابعة",
-                EnrollmentStatus: "طالبة في كلية الهندسة جامعة الأسكندرية",
-              },
+                EnrollmentStatus: "طالبة في كلية الهندسة جامعة الأسكندرية"
+              }
             });
             console.log("userCertOfEnrollInfo!!!!!!!");
             console.log(this.state.userCertOfEnrollInfo);
@@ -65,13 +65,15 @@ class Confirmation extends Component {
           }
         });
       case 2:
-        getStudentTranscript(username, token).then((data) => {
+        getStudentTranscript(username, token).then(data => {
           if (data.error) {
-            console.log(data.error);
+            console.log("IN ERROR TRANSCRIPT");
+            console.log(data);
+            //console.log(data.error);
           } else {
             this.setState({
-              semsterDetails : data.termGpa,
-              courses : data.resultobject1
+              semsterDetails: data.termGpa,
+              courses: data.resultobject1
             });
             console.log("semsterDetails");
             console.log(this.state.semsterDetails);
@@ -143,8 +145,8 @@ class Confirmation extends Component {
         enrollmentStatus,
         gpa,
         enrollmentDestination,
-        courses,
-      },
+        courses
+      }
     } = this.props;
     {
       console.log(`confirmation id ${this.props.id}`);
@@ -159,7 +161,7 @@ class Confirmation extends Component {
                   float: "right",
                   fontWeight: "bold",
                   marginBottom: "0",
-                  marginTop: "1%",
+                  marginTop: "1%"
                 }}
               >
                 يرجى التأكد من صحة البيانات المدخلة
@@ -287,7 +289,7 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
               <List
                 style={{
                   textAlign: "right",
-                  float: "right",
+                  float: "right"
                 }}
               >
                 {/*<h3 style={{ fontWeight: "bold" }}>بيانات الطالب الشخصية</h3>*/}
