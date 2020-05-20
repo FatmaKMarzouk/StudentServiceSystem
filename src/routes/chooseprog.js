@@ -13,10 +13,11 @@ var connection = require('../controllers/dbconnection');
 var username ="";
 
 router.get('/chooseprog', function(request, response,next) {
-  if (request.session.loggedin) {
-    response.sendFile(__dirname+'/chooseprog.html');
+  if (request.user) {
+    // response.sendFile(__dirname+'/chooseprog.html');
     username = request.session.username;
-    var facultyname=""; var ssp="";
+    var facultyname=""; 
+    var ssp="";
     connection.query('USE AlexUni');
     connection.query('SELECT Faculty,SSP FROM Students WHERE Username = ? ', [username], function(error, results1, fields) {
 			if (results1.length>0) {
@@ -28,27 +29,34 @@ router.get('/chooseprog', function(request, response,next) {
     connection.query('USE AlexUni');
     connection.query('SELECT Name FROM Program WHERE FacultyName = ? AND SSP = ?',[facultyname,ssp],function(error,results2,fields){
       if (results2.length>0){
+        response.status(200).send(results2);
         console.log(results2);  //To be shown in drop down menu
       }
       else {
-        console.log("no valid program available");
+        response.status(400).send({
+          error:true,
+          message:"no valid program available"});
       }
     });
   }else {
-      console.log('Incorrect Data!No Faculty name specified');
+    response.status(400).send({
+      error:true,
+      message:'Incorrect Data!No Faculty name specified'});
     }
     });
   } else {
-    response.send('Please login to view this page!');
+    response.status(400).send({
+      error:true,
+      message:'Please login to view this page!'});
   }
 
 });
 
 router.post('/submitprog', function(request, response,next) {
   var currentprog="";
-  if (request.session.loggedin) {
+  if (request.user) {
     var flag = 1;
-    var username = request.session.username;
+    var username = request.user.username;
     var program = request.body.selectedprogram;
     connection.query('USE AlexUni');
     connection.query('SELECT Program FROM Students WHERE ID =?',[username],function(error,results0, fields){
@@ -78,8 +86,11 @@ router.post('/submitprog', function(request, response,next) {
               connection.query('UPDATE Students SET Program = ? WHERE ID =?',[program,username]);
             }
             else {
-              console.log('Your GPA doesn"t meet the minimum required grade for this program');
               flag = 0;
+              response.status(400).send({
+                error:true,
+                message:'Your GPA doesn"t meet the minimum required grade for this program'
+              });
             }
           }
         });
@@ -87,8 +98,11 @@ router.post('/submitprog', function(request, response,next) {
     });
   }
   else{
-    response.send("You have already chosen a program. Please Contact the secretary office for transfers.");
     flag = 0;
+    response.status(400).send({
+      error:true,
+      message:"You have already chosen a program. Please Contact the secretary office for transfers."
+    });
   }
   if(flag == 1){
     var date = dateFormat(new Date(), "yyyy-mm-dd");
@@ -100,12 +114,16 @@ router.post('/submitprog', function(request, response,next) {
              }
     connection.query('USE AlexUni');
     connection.query('INSERT INTO Requests (StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received,FacultyName) VALUES( ?,?,?,?,?,?,?,?,? ) ',[username,"Choose Program",JSON.stringify(info),info.Fee,"1",info.Date,"1","1","Faculty of Engineering"]);
+    response.status(200).send("Your Program has been selected successfully");
   }
 
 }
 });
   } else {
-    console.log('Please login to view this page!');
+    response.status(400).send({
+      error:true,
+      message:'Please login to view this page!'
+    });
   }
 
 

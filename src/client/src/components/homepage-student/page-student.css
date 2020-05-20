@@ -1,0 +1,79 @@
+#cart-icon {
+  font-size: x-large;
+  margin-left: 1%;
+}
+
+#account-icon {
+  font-size: x-large;
+  margin-left: -10%;
+}
+
+.appBar {
+  background-color: #002346;
+  bottom: 0;
+  color: white;
+  padding: 1%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.studentMain {
+  height: auto;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 2%;
+}
+
+.container {
+  padding-top: 0;
+  padding-bottom: 0;
+  background-color: rgb(255, 255, 255, 0.3);
+  margin-top: 2%;
+  box-shadow: 0px 0px 50px 5px rgba(163, 162, 162, 0.71);
+  width: 85%;
+  padding-left: 0;
+  padding-right: 0;
+}
+.student-toolbar {
+  background-color: #002346;
+  height: 30px;
+}
+
+.items-carousel {
+  /*background-image: url("bg.jpg");*/
+  background-color: rgb(169, 190, 207);
+  padding: 2%;
+  height: auto;
+}
+
+/*#items-carousel-title {
+  background-color: rgba(205, 228, 241, 0.637);
+  color: #003366;
+  padding: 2%;
+  margin-top: 2%;
+  font-family: "Cairo";
+}*/
+
+#inside-paper-icon {
+  font-size: 30px;
+}
+
+#vertical-div {
+  background-color: lightgray;
+  height: 25px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#shopping-cart-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 5%;
+  padding-bottom: 2%;
+}
+
+#footer-links {
+}

@@ -1,0 +1,169 @@
+.dialog-confirm-form {
+  margin-right: 5%;
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  color: #003366;
+  padding: 2%;
+  padding-bottom: 0;
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+}
+
+.dialog-content-cusomized {
+  background-image: "url(bg_home.jpeg)";
+}
+
+.dialog-box {
+  height: 100%;
+  overflow-y: hidden;
+}
+.service-title-container {
+  display: flex;
+  flex-direction: column;
+  padding-top: 0%;
+  padding-bottom: 0%;
+  width: 80%;
+  text-align: center;
+  margin: 0 auto;
+  border-radius: 10px;
+  font-family: "Cairo";
+  font-weight: bold;
+}
+.image-size {
+  height: 120px;
+  width: 100px;
+  float: left;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+.list-content-block {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.confirm-form-details {
+  padding-top: 4%;
+}
+
+.paper-width {
+  max-width: 800px;
+}
+
+#dialog-content {
+  overflow: hidden;
+  color: #003366;
+  padding-right: 3%;
+  padding-left: 3%;
+  height: auto;
+}
+
+#list-attribute-name {
+  font-weight: bold;
+  font-family: "Cairo";
+  font-size: 20px;
+}
+#inside-dialog-divider {
+  margin-bottom: 3%;
+}
+
+#list-attribute-content {
+  font-family: "Cairo";
+  margin-right: 10px;
+  margin-left: -10%;
+  font-style: oblique;
+}
+
+#list-item {
+  margin-bottom: 2%;
+}
+
+#close-button {
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #d32f2f;
+  color: white;
+  font-family: "Cairo";
+  width: 40%;
+  position: absolute;
+  bottom: -5%;
+  left: 50%;
+  margin-left: -40%;
+  padding: 0;
+}
+
+#add-to-cart-button {
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #388e3c;
+  color: white;
+  font-family: "Cairo";
+  width: 60%;
+  height: 45px;
+  margin: 0 auto;
+  margin-bottom: 1%;
+  padding: 0;
+}
+
+#customized-dialog-title {
+  font-size: 125px;
+  background-color: #002346;
+  color: white;
+  font-family: "Cairo";
+  padding: "5%";
+}
+
+#program-alert {
+  margin-top: 5%;
+  display: none;
+}
+#outlined-basic {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  text-align: right;
+  font-style: normal;
+  color: #003366;
+  font-family: "Cairo";
+}
+/*.dialog-box {
+width: 800px;
+margin: 0 auto;
+  }*/
+
+/*******************SELECT PROGRAM**********************/
+
+#select-program-title-container {
+  background-color: #002346;
+  color: white;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+#select-program-title {
+  font-family: "Cairo";
+  font-weight: bold;
+  font-size: 24px;
+}
+
+#close-select-button {
+  background-color: transparent;
+  float: right;
+  color: lightgray;
+  position: absolute;
+  right: 0;
+  width: 10%;
+}
+
+#ok-select-button {
+  font-family: "Cairo";
+  color: white;
+  background-color: #388e3c;
+  font-weight: bold;
+}
+
+#dialog-select-content {
+  padding: 4%;
+  width: 500px;
+}

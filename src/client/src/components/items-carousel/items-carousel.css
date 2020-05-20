@@ -1,0 +1,113 @@
+.test-div {
+  position: relative;
+  text-align: center;
+}
+#items-carousel-button {
+  color: white;
+  background-color: #002346;
+  border-radius: 0;
+  padding: 0;
+  height: 50px;
+  min-width: 30px;
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: 5px;
+  box-shadow: 0px 0px 50px 5px rgba(0, 0, 0, 0.3);
+}
+
+#items-carousel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 345px;
+  width: 290px;
+  margin-top: 11%;
+  margin-bottom: 11%;
+  font-family: "Cairo";
+  color: #003366;
+}
+
+#items-carousel-1-title {
+  font-family: "Cairo";
+  color: #d6a937;
+  border-bottom: 2px solid #d6a937;
+  padding: 2%;
+  padding-right: 8%;
+  padding-left: 8%;
+  font-weight: bold;
+  font-size: 28px;
+  margin-top: 15%;
+  width: auto;
+}
+
+#inside-paper-button {
+  font-size: 16px;
+  font-weight: bold;
+  position: absolute;
+  bottom: -5%;
+  left: 50%;
+  margin-left: -40%;
+  color: white;
+  background-color: #002346;
+  width: 80%;
+  font-family: "Cairo";
+  padding: 0;
+}
+
+#paper-icons {
+  margin-top: -7%;
+  border-radius: 50%;
+  height: 45px;
+  width: 45px;
+  background-color: #002346;
+  box-shadow: 0px 5px 10px 2px rgba(112, 112, 112, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  position: absolute;
+  left: 50%;
+  top: -1%;
+  margin-left: -22.5px;
+  font-family: "Cairo";
+  font-weight: bold;
+  font-size: 20px;
+}
+
+#rules {
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  text-align: right;
+  margin-top: 8%;
+  padding: 1% 8% 1% 4%;
+  width: 100%;
+}
+
+#service-icon {
+  margin-top: 8%;
+  height: 60px;
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 40px;
+  /*background-image: url("enrollment.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;*/
+}
+
+#service-icon-image {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#rules-exception {
+  padding: 5px;
+  border-radius: 10px;
+  color: rgb(141, 38, 38);
+}
