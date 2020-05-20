@@ -48,7 +48,7 @@ router.get('/transcript', function (request, response, next)
   if (request.user)
     {
         //response.sendFile(__dirname + '/transcript.html');
-        var username = req.user.username;
+        var username = request.user.username;
 
         connection.query('USE IntegratedData');
         // query to extract object row1 (object of totalGPA), query based on username
