@@ -67,7 +67,9 @@ class Confirmation extends Component {
       case 2:
         getStudentTranscript(username, token).then(data => {
           if (data.error) {
-            console.log(data.error);
+            console.log("IN ERROR TRANSCRIPT");
+            console.log(data);
+            //console.log(data.error);
           } else {
             this.setState({
               semsterDetails: data.termGpa,

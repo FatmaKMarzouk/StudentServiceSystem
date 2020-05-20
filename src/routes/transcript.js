@@ -62,7 +62,7 @@ router.get('/transcript', function (request, response, next)
 
                 Object.keys(results).forEach(function (key)
                 {
-                    row1 = results[key]
+                    row1 = { ...row1, ...results};
                     // info.push(results[key]);
                     id = row1.ID;
                     prog = row1.ProgramName;
@@ -73,24 +73,33 @@ router.get('/transcript', function (request, response, next)
                     // console.log(info)
                 });
 
-                console.log(id, name, prog, totalReg, totalEarned);
+                //console.log(id, name, prog, totalReg, totalEarned);
+                
+                console.log('bada2t teba3a row1\n');
+                console.log(row1);
+                console.log('\n5allast teba3a row1\n');
                 connection.query('USE IntegratedData');
                 // query to extract object row2, query based on id
                 connection.query('SELECT EnrolledCourses.CourseName, EnrolledCourses.Grade, EnrolledCourses.Semester, Courses.ID, Courses.CH FROM EnrolledCourses JOIN Courses ON EnrolledCourses.CourseName = Courses.Name WHERE EnrolledCourses.StudentID = ?  ORDER BY EnrolledCourses.semesterNum ASC', [id],
                 function (error, results2, fields)
                 {
                     if(error)
+                    {
+                        console.log(error);
                     throw error;
+                    }
                     else if (results2.length > 0)
                     {
+                        console.log("loop print");
                         Object.keys(results2).forEach(function (key) {
-                            row2 = results2[key];
+                            row2 = { ...row2, ...results2 };
                             courses = row2.CourseName;
                             grade = row2.Grade
                             semesters = row2.Semester
                             info1.push(courses + " ,Grade: " + grade + " ,Semester: " + semesters)
                             info1sep = info1.join("\n")
-                            console.log(courses + " " + grade + " " + semesters + "\n")
+                            console.log(results2[key]);
+                            //console.log(courses + " " + grade + " " + semesters + "\n")
 
                             // masterobject1 = {
                             //     ...1,
@@ -98,10 +107,11 @@ router.get('/transcript', function (request, response, next)
                             // };
 
                         });
+                        console.log("loop print end");
 
-                        console.log('bada2t teba3a\n');
-                        //console.log(row2.CourseName);
-                        console.log('\n5allast teba3a\n');
+                        console.log('bada2t teba3a row2\n');
+                        console.log(row2);
+                        console.log('\n5allast teba3a row2\n');
                         connection.query('USE IntegratedData');
                         connection.query('SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ? ', [id], function (error, results4, fields)
                         {
@@ -112,23 +122,24 @@ router.get('/transcript', function (request, response, next)
                                 Object.keys(results4).forEach(function (key)
                                 {
                                     //  termGpa.push(results4[key]);
-                                    row4 = results4[key]
+                                    row4 ={...row4, ...results4 };
                                     sems = row4.Semester
                                     gpa = row4.GPA
                                     regH = row4.regHours
                                     info2.push(sems + " ,GPA: " + gpa + " ,Registered Hours: " + regH)
                                     info2sep = info2.join("\n")
-                                    masterobject2 = {
-                                        ...masterobject2,
-                                        ...results4
-                                    };
+                                    // masterobject2 = {
+                                    //     ...masterobject2,
+                                    //     ...results4
+                                    // };
 
                                 });
-                                // console.log('bada2t teba3a tanyyy\n');
+                                 console.log('bada2t teba3a row4\n');
                                 // var obj2
-                                // console.log(masterobject2);
-                                // console.log('\n5allast teba3a tanyyy\n');
+                                 console.log(row4);
+                                 console.log('\n5allast teba3a row4\n');
                                 response.status(200).send({row1,row2,row4});
+                                console.log("b3d el response test");
                                 // Create an empty Word object:
                                 let docx = officegen('docx')
 
