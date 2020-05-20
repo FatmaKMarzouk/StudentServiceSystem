@@ -13,16 +13,14 @@ var connection = require('../controllers/dbconnection');
 module.exports = router;
 const { resolve } = require("path");
 // Replace if using a different env file or config
-const env = require("../app");
+var env = require("dotenv").config({ path: __dirname + "../.env" });
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 
 
 router.get("/checkout", (req, res) => {
   // Display checkout page
-  const path = resolve(process.env.DEFAULT_PATH+process.env.STATIC_DIR + "/checkout.html");
-  //const path = resolve(process.env.STATIC_DIR + "/checkout.html");
-  res.sendFile(path);
+  //res.sendFile(__dirname+'/client/index.html');
 });
 
 router.get("/stripe-key", (req, res) => {
