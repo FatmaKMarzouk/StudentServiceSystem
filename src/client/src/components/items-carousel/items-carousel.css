@@ -28,13 +28,6 @@
   color: #003366;
 }
 
-.items-carousel-1 {
-  /*background-image: url("./qeid.jpg");*/
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-}
-
 #items-carousel-1-title {
   font-family: "Cairo";
   color: #d6a937;
@@ -89,20 +82,28 @@
   justify-content: flex-end;
   text-align: right;
   margin-top: 8%;
-  padding: 1%;
+  padding: 1% 8% 1% 4%;
+  width: 100%;
 }
 
 #service-icon {
   margin-top: 8%;
-  height: 55px;
-  width: 55px;
+  height: 60px;
+  width: auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("enrollment.png");
+  position: absolute;
+  bottom: 40px;
+  /*background-image: url("enrollment.png");
   background-repeat: no-repeat;
   background-size: contain;
-  background-position: center;
+  background-position: center;*/
+}
+
+#service-icon-image {
+  max-width: 100%;
+  max-height: 100%;
 }
 
 #rules-exception {

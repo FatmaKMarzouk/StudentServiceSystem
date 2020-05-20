@@ -29,6 +29,7 @@ import ItemsCarousel from "../items-carousel/items-carousel";
 //import ShoppingCart from "../shopping-cart/shopping-cart";
 import ShoppingCart2 from "../shopping-cart/shopping-cart2";
 import Link from "@material-ui/core/Link";
+import LanguageIcon from "@material-ui/icons/Language";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -153,9 +154,6 @@ function getFunctionContent(func) {
           <div className="items-carousel">
             <ItemsCarousel />
           </div>
-          <footer className="appBar">
-            <FacebookIcon />
-          </footer>
         </div>
       );
 
@@ -163,11 +161,10 @@ function getFunctionContent(func) {
       return (
         <div>
           <ShoppingCart2 />
-          <footer className="appBar">
-            <FacebookIcon />
-          </footer>
         </div>
       );
+    case 2:
+      return;
     default:
       return "Unknown step";
   }
@@ -196,6 +193,10 @@ export default function StudentHome(props) {
 
   const handleHome = () => {
     setActiveFunc(0);
+  };
+
+  const handleProfile = () => {
+    setActiveFunc(2);
   };
 
   const handleClose = event => {
@@ -272,7 +273,7 @@ export default function StudentHome(props) {
                       id="menu-list-grow"
                       onKeyDown={handleListKeyDown}
                     >
-                      <MenuItem onClick={handleClose}>My account</MenuItem>
+                      <MenuItem onClick={handleProfile}>My account</MenuItem>
                       <MenuItem onClick={handleClose}>Logout</MenuItem>
                     </MenuList>
                   </ClickAwayListener>
@@ -452,6 +453,21 @@ export default function StudentHome(props) {
           </div>
         </Container>
             */}
+        <footer className="appBar">
+          <div>
+            <FacebookIcon />
+          </div>
+          <div>
+            <LanguageIcon />{" "}
+            <Link
+              id="footer-links"
+              href="https://www.alexu.edu.eg/index.php/en/"
+              target="_blank"
+            >
+              Alexandria University
+            </Link>
+          </div>
+        </footer>
       </main>
     </React.Fragment>
   );
