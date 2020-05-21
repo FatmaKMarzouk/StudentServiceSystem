@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./transcript.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -31,7 +31,7 @@ const columns = [
     format: (value) => value.toLocaleString(),
   },
 ];
-
+/*
 const semsterDetails = [
   {
     semesterr: "Fall 2015-2016",
@@ -54,8 +54,16 @@ const semsterDetails = [
     attemptedHours: "20",
     totalEarnedHours: "14",
   },
-];
+];*/
 
+/*
+    row2 = courses
+    CourseName: 'Engineering Graphics I',
+     Grade: 'B-',
+     Semester: 'Fall 2015-2016',
+     ID: 11,
+     CH: 3 }, */
+/*
 const courses = [
   {
     semester: "Fall 2015-2016",
@@ -155,8 +163,7 @@ const courses = [
     creditHours: "3",
     courseGrade: "A+",
   },
-];
-
+];*/
 const useStyles = makeStyles({
   root: {
     width: "100%",
@@ -167,10 +174,68 @@ const useStyles = makeStyles({
   },
 });
 
-export default function StickyHeadTable() {
+export default function StickyHeadTable(props) {
   const classes = useStyles();
 
-  const numOfCoursesPerSemster = [];
+  const [columns, setColumns] = useState([
+    { id: "ID", label: "Course Code", minWidth: 120 },
+    { id: "CourseName", label: "Course Name", align: "center", minWidth: 170 },
+    {
+      id: "CH",
+      label: "Credit Hours",
+      minWidth: 170,
+      align: "center",
+      format: (value) => value.toLocaleString(),
+    },
+    {
+      id: "Grade",
+      label: "Grade",
+      minWidth: 170,
+      align: "center",
+      format: (value) => value.toLocaleString(),
+    },
+  ]);
+
+  //const [courses, setCourses] = useState(props.courses);
+  //const [semsterDetails, setSemsterDetails] = useState(props.semsterDetails);
+  //const [totalGpa, setTotalGpa] = useState(props.totalGpa);
+
+  /* const updateCourses = () => {
+    var myCoursesArray = [];
+    const objectTemp = props.courses;
+    var count = 0;
+
+    Object.keys(props.courses).map(function (keyName, keyIndex) {
+      console.log("keyName");
+      console.log(keyName);
+
+      console.log("objectTemp[keyName]");
+      console.log(objectTemp[keyName]);
+
+      myCoursesArray.push(objectTemp[keyName]);
+
+      // use keyName to get current key's name
+      // and a[keyName] to get its value
+    });
+
+    console.log("myCoursesArray11111111111");
+    console.log(myCoursesArray);
+    return myCoursesArray;
+  };
+  const [cor, setCor] = useState(updateCourses());
+*/
+
+  //const [courses, setCourses] = useState(props.courses);
+  //const [semsterDetails, setSemsterDetails] = useState(props.semsterDetails);
+  //const [totalGpa, setTotalGpa] = useState(props.totalGpa);
+
+  //console.log("Courses fel table");
+  //console.log(courses);
+  //console.log("semsterDetails fel table");
+  //console.log(courses);
+  //console.log("totalGpa fel table");
+  //console.log(courses);
+  //const numOfCoursesPerSemster = [];
 
   return (
     <Container id="transcript-container" style={{ width: "750px" }}>
@@ -191,14 +256,14 @@ export default function StickyHeadTable() {
           />
         }
       >
-        {semsterDetails.map((semster) => {
-          const coursesTemp = courses.filter(
-            (semsterCourse) => semsterCourse.semester == semster.semesterr
+        {props.semsterDetails.map((semster) => {
+          const coursesTemp = props.courses.filter(
+            (semsterCourse) => semsterCourse.Semester == semster.Semester
           );
           return (
             <Carousel.Item>
               <div id="table-container">
-                <div id="transcript-term-title">{semster.semesterr}</div>
+                <div id="transcript-term-title">{semster.Semester}</div>
                 <Divider id="transcript-term-title-underline" />
                 <TableContainer className={classes.container}>
                   <Table size="small" aria-label="a dense table">
@@ -225,7 +290,7 @@ export default function StickyHeadTable() {
                             hover
                             role="checkbox"
                             tabIndex={-1}
-                            key={course.courseCode}
+                            key={course.ID}
                             id="transcript-entries-rows"
                           >
                             {columns.map((column) => {
@@ -249,16 +314,17 @@ export default function StickyHeadTable() {
                       })}
                       <TableRow id="semester-details-row">
                         <TableCell id="semester-details-row">
-                          Term GPA: {semster.termGPA}
+                          Term GPA: {semster.GPA}
                         </TableCell>
                         <TableCell id="semester-details-row" align="center">
-                          GPA: {semster.GPA}
+                          GPA: {props.totalGpa[0].GPA}
                         </TableCell>
                         <TableCell id="semester-details-row" align="center">
-                          Attempted Hours: {semster.attemptedHours}
+                          Attempted Hours: {props.totalGpa[0].TotalRegHours}
                         </TableCell>
                         <TableCell id="semester-details-row" align="center">
-                          Total Earned Hours: {semster.totalEarnedHours}
+                          Total Earned Hours:{" "}
+                          {props.totalGpa[0].TotalEarnedHours}
                         </TableCell>
                       </TableRow>
                     </TableBody>
