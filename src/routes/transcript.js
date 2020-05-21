@@ -45,10 +45,10 @@ var connection = require('../controllers/dbconnection');
 
 router.get('/transcript', function (request, response, next)
 {
-  if (request.session.loggedin)
+  if (request.user)
     {
         //response.sendFile(__dirname + '/transcript.html');
-        var username = request.session.username;
+        var username = request.user.username;
 
         connection.query('USE IntegratedData');
         // query to extract object row1 (object of totalGPA), query based on username
