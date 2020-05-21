@@ -13,7 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Confirmation from "../mainform/Confirmation";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Zoom from "@material-ui/core/Zoom";
-import { readCertOfEnrollData } from "../../core/Apis";
+import { readCertOfEnrollData, certificateToCart, transcriptCart } from "../../core/Apis";
 import { getUser, getToken } from "../../Utils/Common";
 import axios from "axios";
 import Upload from "../upload/Upload";
@@ -212,6 +212,16 @@ export default function CustomizedDialogs(props) {
     setOpen(true);
   };
   const handleClose = () => {
+
+    const token = getToken();
+
+    switch (props.id)
+    {
+      case 1:
+        certificateToCart(token);
+      case 2:
+        transcriptCart(token);
+    }
     setOpen(false);
     document.getElementById("blur").style.filter = "blur(0)";
   };
