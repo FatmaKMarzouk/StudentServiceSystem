@@ -13,7 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Confirmation from "../mainform/Confirmation";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Zoom from "@material-ui/core/Zoom";
-import { readCertOfEnrollData } from "../../core/Apis";
+import { readCertOfEnrollData } from "../../core/apis";
 import { getUser, getToken } from "../../Utils/Common";
 import axios from "axios";
 import Upload from "../upload/Upload";

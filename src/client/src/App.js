@@ -38,7 +38,7 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <PublicRoute exact path="/" component={Login} />
+        <PublicRoute exact path="/" component={SecHome} />
         <PrivateRoute path="/home" component={StudentHome} />
         <PublicRoute path="/enroll" component={Enrolling} />
       </Switch>

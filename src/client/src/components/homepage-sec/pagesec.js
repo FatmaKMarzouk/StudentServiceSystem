@@ -30,12 +30,13 @@ import ListItem from "@material-ui/core/ListItem";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import Link from "@material-ui/core/Link";
-import Grid from '@material-ui/core/Grid';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
-import Paper from '@material-ui/core/Paper'; 
+import Grid from "@material-ui/core/Grid";
+import FormLabel from "@material-ui/core/FormLabel";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import Radio from "@material-ui/core/Radio";
+import Paper from "@material-ui/core/Paper";
+
 import "./home-sec.css";
 import Requests from "../tables/requests.js";
 const drawerWidth = 240;
@@ -43,7 +44,7 @@ const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
-    overflow: "hidden",
+    overflow: "hidden"
   },
 
   toolbar: {
@@ -125,15 +126,12 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     display: "flex",
     overflow: "auto",
-    flexDirection: "column" ,
-   
+    flexDirection: "column"
   },
 
   fixedHeight: {
-    height: 240 
-
+    height: 240
   }
-
 }));
 
 const StyledMenu = withStyles({
@@ -167,26 +165,24 @@ const StyledMenuItem = withStyles(theme => ({
   }
 }))(MenuItem);
 
-
-
 function getFunctionContent(func) {
- 
   switch (func) {
     case 0:
       return (
         <Grid item xs={12}>
-                <Grid container justify="center" spacing = "2">
-                      {[0, 1].map((value) => (        
-                         <Grid key={value} item>      
-                          <Paper id= "grid-paper"  >
-                            <Requests/>
-                            </Paper>  
-                           </Grid>      
-      ))}  
-                            </Grid>   
-                       </Grid> 
-
-
+          <Grid container justify="center" spacing="2">
+            <Grid key="1" item>
+              <Paper id="grid-paper">
+                <Requests id={0} />
+              </Paper>
+            </Grid>
+            <Grid key="2" item>
+              <Paper id="grid-paper">
+                <Requests id={1} />
+              </Paper>
+            </Grid>
+          </Grid>
+        </Grid>
       );
     case 1:
       return <EnrollingNewStudent />;
@@ -201,14 +197,12 @@ function getFunctionContent(func) {
   }
 }
 
-
 export default function SecHome() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [activeFunc, setActiveFunc] = React.useState(0);
 
-   
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
@@ -245,15 +239,14 @@ export default function SecHome() {
         position="absolute"
         className={clsx(classes.appBar, open && classes.appBarShift)}
       >
-        <Toolbar className={classes.toolbar } variant= "dense">
+        <Toolbar className={classes.toolbar} variant="dense">
           <IconButton
             aria-controls="customized-menu"
             aria-haspopup="true"
             variant="contained"
             color="inherit"
             onClick={handleClick}
-            style={{ padding: "0px" , minWidth: "0"}}
-
+            style={{ padding: "0px", minWidth: "0" }}
           >
             <AccountCircle fontSize="medium" />
           </IconButton>
@@ -278,7 +271,6 @@ export default function SecHome() {
             </StyledMenuItem>
           </StyledMenu>
           <Divider />
-          
 
           <Link
             component="button"
