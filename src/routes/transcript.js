@@ -45,10 +45,10 @@ var connection = require('../controllers/dbconnection');
 
 router.get('/transcript', function (request, response, next)
 {
-  if (request.user)
+  if (request.session.loggedin)
     {
         //response.sendFile(__dirname + '/transcript.html');
-        var username = request.user.username;
+        var username = request.session.username;
 
         connection.query('USE IntegratedData');
         // query to extract object row1 (object of totalGPA), query based on username
@@ -59,7 +59,6 @@ router.get('/transcript', function (request, response, next)
             // if no username, then student not registered
             if (results.length > 0)
             {
-
                 Object.keys(results).forEach(function (key)
                 {
                     row1 = { ...row1, ...results};
@@ -74,13 +73,13 @@ router.get('/transcript', function (request, response, next)
                 });
 
                 //console.log(id, name, prog, totalReg, totalEarned);
-                
-                console.log('bada2t teba3a row1\n');
+
                 console.log(row1);
-                console.log('\n5allast teba3a row1\n');
                 connection.query('USE IntegratedData');
                 // query to extract object row2, query based on id
-                connection.query('SELECT EnrolledCourses.CourseName, EnrolledCourses.Grade, EnrolledCourses.Semester, Courses.ID, Courses.CH FROM EnrolledCourses JOIN Courses ON EnrolledCourses.CourseName = Courses.Name WHERE EnrolledCourses.StudentID = ?  ORDER BY EnrolledCourses.semesterNum ASC', [id],
+                connection.query('USE IntegratedData');
+                console.log(id)
+                connection.query('SELECT EnrolledCourses.CourseName, EnrolledCourses.Grade, EnrolledCourses.Semester, Courses.ID, Courses.CH FROM EnrolledCourses JOIN Courses ON EnrolledCourses.CourseName = Courses.Name WHERE EnrolledCourses.StudentID = ?  ORDER BY EnrolledCourses.semesterNum ASC', [username],
                 function (error, results2, fields)
                 {
                     if(error)
@@ -88,7 +87,7 @@ router.get('/transcript', function (request, response, next)
                         console.log(error);
                     throw error;
                     }
-                    else if (results2.length > 0)
+                    if (results2.length > 0)
                     {
                         console.log("loop print");
                         Object.keys(results2).forEach(function (key) {
@@ -113,7 +112,7 @@ router.get('/transcript', function (request, response, next)
                         console.log(row2);
                         console.log('\n5allast teba3a row2\n');
                         connection.query('USE IntegratedData');
-                        connection.query('SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ? ', [id], function (error, results4, fields)
+                        connection.query('SELECT Semester,GPA,regHours FROM Semesters WHERE StudentID = ? ', [username], function (error, results4, fields)
                         {
                             var termGpa = [];
                             if (results4.length > 0)
