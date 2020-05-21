@@ -251,13 +251,15 @@ router.get('/transcript', function (request, response, next)
     }
 });
 router.get('/transcriptconfirm', function (request, response, fields) {
-    if (request.session.loggedin) {
+    if (request.user) {
 
-        var username = request.session.username;
+        var username = request.user.username;
         var paid = "";
         var flag = 1;
         connection.query('USE AlexUni');
         connection.query('SELECT Paid FROM Payment WHERE StudentID = ? ', [username], function (error, results3, fields) {
+            if(error)
+            throw error;
             if (results3.length > 0) {
                 Object.keys(results3).forEach(function (key) {
                     var row3 = results3[key];
@@ -345,7 +347,8 @@ router.get('/transcriptconfirm', function (request, response, fields) {
 
                                 connection.query('USE AlexUni');
                             connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount,FacultyName,document) VALUES( ?,?,?,?,? ) ', [username, "Request Transcript", "50", "Faculty of Engineering",data]);
-                            response.redirect('/cart');
+                            //response.redirect('/cart');
+                            response.status(200).send("submit successfully");
                             })
 
 
@@ -353,8 +356,11 @@ router.get('/transcriptconfirm', function (request, response, fields) {
 
                         }
                     } else {
-                        response.send("You haven't paid fees");
                         flag = 0;
+                        response.status(400).send({
+                            error: true,
+                            message: "You haven't paid fees"
+                        });
                     }
 
 
