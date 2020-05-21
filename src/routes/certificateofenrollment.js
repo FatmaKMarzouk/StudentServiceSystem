@@ -122,7 +122,7 @@ router.get("/cart-test", function (req, res, next)
           }
         
           // Create an empty Word object:
-          let docx = officegen('docx')
+          let docx = officegen('docx');
 
           // Officegen calling this function after finishing to generate the docx document:
           docx.on('finalize', function (written) {
