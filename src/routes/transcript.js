@@ -238,24 +238,25 @@ router.get("/transcript", function (request, response, next) {
     });
   }
 });
-router.get("/transcriptconfirm", function (request, response, fields) {
-  if (request.session.loggedin) {
-    var username = request.session.username;
-    var paid = "";
-    var flag = 1;
-    connection.query("USE AlexUni");
-    connection.query(
-      "SELECT Paid FROM Payment WHERE StudentID = ? ",
-      [username],
-      function (error, results3, fields) {
-        if (results3.length > 0) {
-          Object.keys(results3).forEach(function (key) {
-            var row3 = results3[key];
+router.get('/transcriptconfirm', function (request, response, fields) {
+    if (request.user) {
 
-            paid = row3.Paid;
-          });
-          if (paid) {
-            /* // Create an empty Word object:
+        var username = request.user.username;
+        var paid = "";
+        var flag = 1;
+        connection.query('USE AlexUni');
+        connection.query('SELECT Paid FROM Payment WHERE StudentID = ? ', [username], function (error, results3, fields) {
+            if(error)
+            throw error;
+            if (results3.length > 0) {
+                Object.keys(results3).forEach(function (key) {
+                    var row3 = results3[key];
+
+                    paid = row3.Paid;
+                });
+                if (paid) {
+                   /* // Create an empty Word object:
+
                     let docx = officegen('docx')
 
                     // Officegen calling this function after finishing to generate the docx document:
@@ -329,23 +330,36 @@ router.get("/transcriptconfirm", function (request, response, fields) {
                     info2 = []
                     info2sep = []
                     */
-            if (paid) {
-              if (flag == 1) {
-                fs.readFile("./transcript.docx", function (err, data) {
-                  connection.query("USE AlexUni");
-                  connection.query(
-                    "INSERT INTO Requests (StudentID,ServiceName,Amount,FacultyName,document) VALUES( ?,?,?,?,? ) ",
-                    [
-                      username,
-                      "Request Transcript",
-                      "50",
-                      "Faculty of Engineering",
-                      data,
-                    ]
-                  );
-                  response.redirect("/cart");
-                });
-              }
+                    if (paid) {
+                        if (flag == 1) {
+                            fs.readFile('./transcript.docx', function (err, data) {
+
+                                connection.query('USE AlexUni');
+                            connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount,FacultyName,document) VALUES( ?,?,?,?,? ) ', [username, "Request Transcript", "50", "Faculty of Engineering",data]);
+                            //response.redirect('/cart');
+                            response.status(200).send("submit successfully");
+                            })
+
+
+
+
+                        }
+                    } else {
+                        flag = 0;
+                        response.status(400).send({
+                            error: true,
+                            message: "You haven't paid fees"
+                        });
+                    }
+
+
+
+                } else {
+                    response.send("You haven't paid fees");
+                    flag = 0;
+                }
+
+
             } else {
               response.send("You haven't paid fees");
               flag = 0;
