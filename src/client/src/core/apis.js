@@ -1,5 +1,5 @@
 // certificate of enrollment api
-export const readCertOfEnrollData = (username, token) => {
+export const readCertOfEnrollData = (token) => {
   return fetch(`http://localhost:5000/certificateofenrollment`, {
     method: "GET",
     headers: {
@@ -15,8 +15,8 @@ export const readCertOfEnrollData = (username, token) => {
 };
 
 // transcript api
-export const getStudentTranscript = (username, token) => {
-  return fetch(`http://localhost:5000/transcript/`, {
+export const getStudentTranscript = (token) => {
+  return fetch(`http://localhost:5000/transcript`, {
     method: "GET",
     headers: {
       Accept: "application/json",
