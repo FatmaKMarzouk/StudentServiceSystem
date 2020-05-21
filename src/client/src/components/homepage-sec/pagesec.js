@@ -30,14 +30,22 @@ import ListItem from "@material-ui/core/ListItem";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import Link from "@material-ui/core/Link";
-
+import Grid from '@material-ui/core/Grid';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Radio from '@material-ui/core/Radio';
+import Paper from '@material-ui/core/Paper'; 
+import "./home-sec.css";
+import Requests from "../tables/requests.js";
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
-    overflow: "hidden"
+    overflow: "hidden",
   },
+
   toolbar: {
     paddingRight: 24 // keep right padding when drawer closed
   },
@@ -117,11 +125,15 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     display: "flex",
     overflow: "auto",
-    flexDirection: "column"
+    flexDirection: "column" ,
+   
   },
+
   fixedHeight: {
-    height: 240
+    height: 240 
+
   }
+
 }));
 
 const StyledMenu = withStyles({
@@ -155,10 +167,27 @@ const StyledMenuItem = withStyles(theme => ({
   }
 }))(MenuItem);
 
+
+
 function getFunctionContent(func) {
+ 
   switch (func) {
     case 0:
-      return;
+      return (
+        <Grid item xs={12}>
+                <Grid container justify="center" spacing = "2">
+                      {[0, 1].map((value) => (        
+                         <Grid key={value} item>      
+                          <Paper id= "grid-paper"  >
+                            <Requests/>
+                            </Paper>  
+                           </Grid>      
+      ))}  
+                            </Grid>   
+                       </Grid> 
+
+
+      );
     case 1:
       return <EnrollingNewStudent />;
     case 2:
@@ -172,12 +201,14 @@ function getFunctionContent(func) {
   }
 }
 
+
 export default function SecHome() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [activeFunc, setActiveFunc] = React.useState(0);
 
+   
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
@@ -214,16 +245,17 @@ export default function SecHome() {
         position="absolute"
         className={clsx(classes.appBar, open && classes.appBarShift)}
       >
-        <Toolbar className={classes.toolbar}>
+        <Toolbar className={classes.toolbar } variant= "dense">
           <IconButton
             aria-controls="customized-menu"
             aria-haspopup="true"
             variant="contained"
             color="inherit"
             onClick={handleClick}
-            style={{ padding: "0px" }}
+            style={{ padding: "0px" , minWidth: "0"}}
+
           >
-            <AccountCircle fontSize="large" />
+            <AccountCircle fontSize="medium" />
           </IconButton>
           <StyledMenu
             id="customized-menu"
@@ -246,15 +278,11 @@ export default function SecHome() {
             </StyledMenuItem>
           </StyledMenu>
           <Divider />
-          <IconButton color="inherit" style={{ padding: "0px" }}>
-            <Badge badgeContent={1} color="secondary">
-              <NotificationsIcon fontSize="large" />
-            </Badge>
-          </IconButton>
+          
 
           <Link
             component="button"
-            variant="h5"
+            variant="h6"
             className={classes.title}
             underline="none"
             onClick={handleHome}

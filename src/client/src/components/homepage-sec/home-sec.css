@@ -5,3 +5,18 @@
 #hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+#grid-paper{
+  height: 600px;
+  width: 550px;
+}
+
+#grid-control{
+  padding: 2px;
+
+}
+
+#grid-root{
+  flex-grow: 1;
+  
+}
