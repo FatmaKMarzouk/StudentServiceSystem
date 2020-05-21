@@ -172,14 +172,10 @@ function getFunctionContent(func) {
         <Grid item xs={12}>
           <Grid container justify="center" spacing="2">
             <Grid key="1" item>
-              <Paper id="grid-paper">
-                <Requests id={0} />
-              </Paper>
+              <Requests id={0} />
             </Grid>
             <Grid key="2" item>
-              <Paper id="grid-paper">
-                <Requests id={1} />
-              </Paper>
+              <Requests id={1} />
             </Grid>
           </Grid>
         </Grid>

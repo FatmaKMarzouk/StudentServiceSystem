@@ -6,17 +6,16 @@
   display: none;
 }
 
-#grid-paper{
+#grid-paper {
   height: 600px;
   width: 550px;
+  background-color: rgb(255, 255, 255, 0.5);
 }
 
-#grid-control{
+#grid-control {
   padding: 2px;
-
 }
 
-#grid-root{
+#grid-root {
   flex-grow: 1;
-  
 }

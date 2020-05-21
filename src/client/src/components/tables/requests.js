@@ -69,13 +69,13 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
+  { id: "id", numeric: true, disablePadding: false, label: "الرقم الجامعي" },
   {
     id: "request",
     numeric: false,
     disablePadding: true,
     label: "الطلب"
-  },
-  { id: "id", numeric: true, disablePadding: false, label: "ID" }
+  }
 ];
 
 function EnhancedTableHead(props) {
@@ -95,25 +95,19 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ "aria-label": "select all desserts" }}
-          />
-        </TableCell>
         {headCells.map(headCell => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "center" : "left"}
+            align={headCell.numeric ? "center" : "right"}
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
+            id="table-header"
           >
             <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
+              id="table-header"
             >
               {headCell.label}
               {orderBy === headCell.id ? (
@@ -124,6 +118,14 @@ function EnhancedTableHead(props) {
             </TableSortLabel>
           </TableCell>
         ))}
+        <TableCell padding="checkbox"></TableCell>
+        {/* <Checkbox
+            indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={rowCount > 0 && numSelected === rowCount}
+            onChange={onSelectAllClick}
+            inputProps={{ "aria-label": "select all desserts" }}
+          />
+              </TableCell>*/}
       </TableRow>
     </TableHead>
   );
@@ -148,7 +150,7 @@ const useToolbarStyles = makeStyles(theme => ({
     theme.palette.type === "light"
       ? {
           color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85)
+          backgroundColor: "rgb(220, 220, 220, 0.8)"
         }
       : {
           color: theme.palette.text.primary,
@@ -164,7 +166,7 @@ function getTableTitle(id) {
     case 0:
       return <span id="table-title">الطلبات الجديدة</span>;
     case 1:
-      return <span id="table-title"> كل الطلبات</span>;
+      return <span id="table-title"> جميع الطلبات</span>;
   }
 }
 
@@ -175,7 +177,9 @@ const EnhancedTableToolbar = props => {
   return (
     <Toolbar
       className={clsx(classes.root, {
+        /*{
         [classes.highlight]: numSelected > 0
+      }*/
       })}
     >
       {/*{numSelected > 0 ? (
@@ -197,8 +201,10 @@ const EnhancedTableToolbar = props => {
           color="inherit"
           variant="subtitle1"
           component="div"
+          style={{ display: "flex", justifyContent: "flex-end" }}
         >
-          {numSelected} selected
+          <span style={{ marginRight: "auto" }}>{numSelected} selected</span>
+          {getTableTitle(props.id)}
         </Typography>
       ) : (
         <Typography
@@ -223,8 +229,10 @@ const useStyles = makeStyles(theme => ({
     width: "100%"
   },
   paper: {
-    width: "100%",
-    marginBottom: theme.spacing(2)
+    minWidth: "550px",
+    minHeight: "600px",
+    marginBottom: theme.spacing(2),
+    backgroundColor: "rgb(255,255,255,0.7)"
   },
   visuallyHidden: {
     border: 0,
@@ -246,7 +254,7 @@ export default function EnhancedTable(props) {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(true);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -338,21 +346,25 @@ export default function EnhancedTable(props) {
                       key={row.request}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
+                      <TableCell id="table-body" align="center">
+                        {row.id}
                       </TableCell>
                       <TableCell
                         component="th"
                         id={labelId}
                         scope="row"
                         padding="none"
+                        align="right"
+                        id="table-body"
                       >
                         {row.request}
                       </TableCell>
-                      <TableCell align="center">{row.id}</TableCell>
+                      <TableCell padding="checkbox" id="table-body">
+                        <Checkbox
+                          checked={isItemSelected}
+                          inputProps={{ "aria-labelledby": labelId }}
+                        />
+                      </TableCell>
                     </TableRow>
                   );
                 })}
