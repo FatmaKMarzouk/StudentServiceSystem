@@ -115,7 +115,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     height: "100vh",
     overflow: "auto",
-    backgroundImage: "url(bg_home.jpeg)",
+    backgroundColor: "rgb(60, 100, 134)",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover"
   },
@@ -171,7 +171,7 @@ function getFunctionContent(func) {
     case 0:
       return (
         <Grid item xs={12}>
-          <Grid container justify="center" spacing="2">
+          <Grid container justify="center" spacing="3">
             <Grid key="1" item>
               <Requests id={0} />
             </Grid>
