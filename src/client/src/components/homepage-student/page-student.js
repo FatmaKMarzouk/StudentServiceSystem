@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import "./page-student.css";
 import "../style.css";
+import Profile from "../profile/profile";
+import Footer from "../footer/footer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -16,8 +18,6 @@ import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import DialogBox from "../dialog/DialogBox";
-import Button from "@material-ui/core/Button";
-import FacebookIcon from "@material-ui/icons/Facebook";
 import Collapsible from "react-collapsible";
 import DialogSelect from "../dialog/DialogSelect";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
@@ -28,8 +28,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ItemsCarousel from "../items-carousel/items-carousel";
 //import ShoppingCart from "../shopping-cart/shopping-cart";
 import ShoppingCart2 from "../shopping-cart/shopping-cart2";
+import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
-import LanguageIcon from "@material-ui/icons/Language";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -164,7 +164,7 @@ function getFunctionContent(func) {
         </div>
       );
     case 2:
-      return;
+      return <Profile />;
     default:
       return "Unknown step";
   }
@@ -273,8 +273,12 @@ export default function StudentHome(props) {
                       id="menu-list-grow"
                       onKeyDown={handleListKeyDown}
                     >
-                      <MenuItem onClick={handleProfile}>My account</MenuItem>
-                      <MenuItem onClick={handleClose}>Logout</MenuItem>
+                      <MenuItem onClick={handleProfile} id="menu-list-items">
+                        My account
+                      </MenuItem>
+                      <MenuItem onClick={handleClose} id="menu-list-items">
+                        Logout
+                      </MenuItem>
                     </MenuList>
                   </ClickAwayListener>
                 </Paper>
@@ -453,21 +457,7 @@ export default function StudentHome(props) {
           </div>
         </Container>
             */}
-        <footer className="appBar">
-          <div>
-            <FacebookIcon />
-          </div>
-          <div>
-            <LanguageIcon />{" "}
-            <Link
-              id="footer-links"
-              href="https://www.alexu.edu.eg/index.php/en/"
-              target="_blank"
-            >
-              Alexandria University
-            </Link>
-          </div>
-        </footer>
+        <Footer />
       </main>
     </React.Fragment>
   );

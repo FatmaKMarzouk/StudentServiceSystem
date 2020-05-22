@@ -1,0 +1,7 @@
+#profile-page-background {
+  background-image: "bg.jpg";
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  margin-top: 2%;
+}

@@ -1,5 +1,6 @@
 // Confirmation.jsx
 import React, { Component } from "react";
+import "./student-card.css";
 import { Button, List, Form } from "semantic-ui-react";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
@@ -359,7 +360,7 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                 {/*<h3 style={{ fontWeight: "bold" }}>بيانات الطالب الشخصية</h3>*/}
                 <List.Item id="list-item">
                   <List.Icon name="users" />
-                  <List.Content>
+                  <List.Content id="form-content">
                     <div className="list-content-block">
                       <span id="list-attribute-content">
                         {this.state.userCertOfEnrollInfo.NameAr}
@@ -370,7 +371,7 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                 </List.Item>
                 <List.Item id="list-item">
                   <List.Icon name="users" />
-                  <List.Content>
+                  <List.Content id="form-content">
                     <div className="list-content-block">
                       <span id="list-attribute-content">
                         {this.state.userCertOfEnrollInfo.Faculty}
@@ -381,7 +382,7 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                 </List.Item>
                 <List.Item id="list-item">
                   <List.Icon name="Email" />
-                  <List.Content>
+                  <List.Content id="form-content">
                     <div className="list-content-block">
                       <span id="list-attribute-content">
                         {this.state.userCertOfEnrollInfo.CollegeName}
@@ -392,7 +393,7 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                 </List.Item>
                 <List.Item id="list-item">
                   <List.Icon name="users" />
-                  <List.Content>
+                  <List.Content id="form-content">
                     <div className="list-content-block">
                       <span id="list-attribute-content">
                         {this.state.userCertOfEnrollInfo.CollegeYear}
@@ -403,7 +404,7 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                 </List.Item>
                 <List.Item id="list-item">
                   <List.Icon name="users" />
-                  <List.Content>
+                  <List.Content id="form-content">
                     <div className="list-content-block">
                       <span id="list-attribute-content">
                         {this.state.userCertOfEnrollInfo.Program}
@@ -414,7 +415,7 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                 </List.Item>
                 <List.Item id="list-item">
                   <List.Icon name="users" />
-                  <List.Content>
+                  <List.Content id="form-content">
                     <div className="list-content-block">
                       <span id="list-attribute-content">
                         {this.state.userCertOfEnrollInfo.EnrollmentStatus}
@@ -425,7 +426,7 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                 </List.Item>
                 <List.Item id="list-item">
                   <List.Icon name="users" />
-                  <List.Content>
+                  <List.Content id="form-content">
                     <div className="list-content-block">
                       <span id="list-attribute-content">
                         {this.state.userCertOfEnrollInfo.GPA}
@@ -436,7 +437,7 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                 </List.Item>
                 <List.Item id="list-item">
                   <List.Icon name="users" />
-                  <List.Content>
+                  <List.Content id="form-content">
                     <div
                       className="list-content-block"
                       style={{ height: "10px" }}
@@ -476,7 +477,7 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
         return (
           <div id="student-card-container">
             <Card id="student-card">
-              <Card.Content>
+              <Card.Content id="form-content">
                 <Image
                   floated="left"
                   id="student-card-image"
@@ -484,7 +485,7 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                   id="student-card-image"
                   src="card.jpg"
                 />
-                <Card.Header>
+                <Card.Header id="student-card-header">
                   <span id="student-card-title">كلية الهندسة</span>
                 </Card.Header>
                 <Card.Meta>
