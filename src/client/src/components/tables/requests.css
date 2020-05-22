@@ -1,0 +1,20 @@
+#table-title {
+  font-family: "Cairo";
+  font-weight: bold;
+  font-size: 18px;
+  color: #003366;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+}
+
+#table-header {
+  font-family: "Cairo";
+  font-weight: bold;
+  color: #003366;
+}
+
+#table-body {
+  font-family: "Cairo";
+  color: #003366;
+}

@@ -9,6 +9,7 @@ import PublicRoute from "./Utils/PublicRoute";
 import { getToken, setUserSession, removeUserSession } from "./Utils/Common";
 import SecHome from "./components/homepage-sec/pagesec";
 import StudentHome from "./components/homepage-student/page-student";
+import DummyFile from "./components/dummyfolder/dummyfile"
 
 function App() {
   const [authLoading, setAuthLoading] = useState(true);
@@ -38,9 +39,10 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <PublicRoute exact path="/" component={Login} />
+        <PublicRoute exact path="/" component={StudentHome} />
         <PrivateRoute path="/home" component={StudentHome} />
         <PublicRoute path="/enroll" component={Enrolling} />
+        <PrivateRoute path="/dummy" component={DummyFile} />
       </Switch>
     </BrowserRouter>
   );
