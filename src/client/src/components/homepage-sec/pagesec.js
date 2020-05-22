@@ -55,6 +55,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     justifyContent: "flex-end",
     padding: "0 8px",
+    minWidth: "48px",
     ...theme.mixins.toolbar
   },
   appBar: {
@@ -63,7 +64,7 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     }),
-    backgroundColor: "#003366"
+    backgroundColor: "#002346"
   },
   appBarShift: {
     marginRight: drawerWidth,
@@ -96,7 +97,7 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
     }),
-    backgroundColor: "#003366"
+    backgroundColor: "#002346"
   },
   drawerPaperClose: {
     overflowX: "hidden",
