@@ -1,0 +1,25 @@
+#footer {
+  background-color: #002346;
+  bottom: 0;
+  color: white;
+  padding: 1%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#footer-links {
+  color: white;
+}
+
+#footer-links-container {
+  display: flex;
+  align-items: center;
+  margin: 1%;
+  font-family: "Cairo";
+}
+
+#footer-icons {
+  margin-right: 8px;
+}

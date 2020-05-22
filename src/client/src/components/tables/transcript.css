@@ -64,6 +64,10 @@
 }
 
 .carousel .carousel-indicators li {
+  background-color: #00234673;
+}
+
+.carousel .carousel-indicators .active {
   background-color: #002346;
 }
 
