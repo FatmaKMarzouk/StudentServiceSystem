@@ -60,7 +60,7 @@ router.get("/certificateofenrollment", function (req, res, next)
     }
   );
 });
-router.get("/cart-test", function (req, res, next) 
+router.get("/certificatecart", function (req, res, next) 
 {
   if (req.user) 
   {
@@ -109,7 +109,7 @@ router.get("/cart-test", function (req, res, next)
             connection.query("USE AlexUni");
             connection.query("INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName) VALUES( ?,?,?,?,? ) ",
               [username, "Certificate of Enrollment", JSON.stringify(allresults), fees, faculty ]);
-            res.status(200).send();
+            res.status(200).send("tmaaaaam");
             // res.redirect("/cart");
           } 
           else 
@@ -177,7 +177,10 @@ router.get("/cart-test", function (req, res, next)
   }
   else
   {
-    res.send("Please log in to view this page!");
+    res.status(401).send({
+      error : true ,
+      message : "Please log in to view this page!" 
+    });
   }
   }
 });

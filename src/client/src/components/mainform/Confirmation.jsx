@@ -18,25 +18,84 @@ class Confirmation extends Component {
       CollegeYear: "سنة رابعة",
       Program: "",
       EnrollmentStatus: "طالبة في كلية الهندسة جامعة الأسكندرية",
-      GPA: ""
+      GPA: "",
     },
     semsterDetails: [],
-    courses: []
+    courses: [],
+    totalGpa: {},
   };
-  saveAndContinue = e => {
+  saveAndContinue = (e) => {
     e.preventDefault();
     this.props.nextStep();
   };
 
-  back = e => {
+  back = (e) => {
     e.preventDefault();
     this.props.prevStep();
+  };
+
+  updateCourses = (cor) => {
+    var myCoursesArray = [];
+    const objectTemp = cor;
+    var count = 0;
+
+    Object.keys(cor).map(function (keyName, keyIndex) {
+      console.log("keyName");
+      console.log(keyName);
+
+      console.log("objectTemp[keyName]");
+      console.log(objectTemp[keyName]);
+
+      myCoursesArray.push(objectTemp[keyName]);
+    });
+
+    console.log("myCoursesArray11111111111");
+    console.log(myCoursesArray);
+    return myCoursesArray;
+  };
+
+  updateSemsterDetails = (sem) => {
+    var mySemsterDetailsArray = [];
+    const objectTemp = sem;
+
+    Object.keys(sem).map(function (keyName, keyIndex) {
+      console.log("keyName");
+      console.log(keyName);
+
+      console.log("objectTemp[keyName]");
+      console.log(objectTemp[keyName]);
+
+      mySemsterDetailsArray.push(objectTemp[keyName]);
+    });
+
+    console.log("mySemsterDetailsArray11111111111");
+    console.log(mySemsterDetailsArray);
+    return mySemsterDetailsArray;
+  };
+
+  updateTotalGpa = (gpa) => {
+    var myTotalGpaArray = [];
+    const objectTemp = gpa;
+
+    Object.keys(gpa).map(function (keyName, keyIndex) {
+      console.log("keyName");
+      console.log(keyName);
+
+      console.log("objectTemp[keyName]");
+      console.log(objectTemp[keyName]);
+
+      myTotalGpaArray.push(objectTemp[keyName]);
+    });
+
+    console.log("myTotalGpaArray11111111111");
+    console.log(myTotalGpaArray);
+    return myTotalGpaArray;
   };
 
   loadUserData = (username, token) => {
     switch (this.props.id) {
       case 1:
-        readCertOfEnrollData(username, token).then(data => {
+        readCertOfEnrollData(token).then((data) => {
           if (data.error) {
             console.log("IN ERORRR :: ");
             console.log(data.error);
@@ -52,8 +111,8 @@ class Confirmation extends Component {
                 ...data,
                 CollegeName: "جامعة الأسكندرية",
                 CollegeYear: "سنة رابعة",
-                EnrollmentStatus: "طالبة في كلية الهندسة جامعة الأسكندرية"
-              }
+                EnrollmentStatus: "طالبة في كلية الهندسة جامعة الأسكندرية",
+              },
             });
             console.log("userCertOfEnrollInfo!!!!!!!");
             console.log(this.state.userCertOfEnrollInfo);
@@ -66,21 +125,26 @@ class Confirmation extends Component {
           }
         });
       case 2:
-        getStudentTranscript(username, token).then(data => {
+        getStudentTranscript(token).then((data) => {
           if (data.error) {
             console.log("IN ERROR TRANSCRIPT");
             console.log(data);
             //console.log(data.error);
           } else {
             this.setState({
-              semsterDetails: data.termGpa,
-              courses: data.resultobject1
+              semsterDetails: this.updateSemsterDetails(data.row4),
+              courses: this.updateCourses(data.row2),
+              totalGpa: this.updateTotalGpa(data.row1),
             });
+
             console.log("semsterDetails");
-            console.log(this.state.semsterDetails);
+            console.log(Array.isArray(this.state.semsterDetails));
 
             console.log("courses");
             console.log(this.state.courses);
+
+            console.log("total Gpa ");
+            console.log(this.state.totalGpa);
           }
         });
     }
@@ -146,8 +210,8 @@ class Confirmation extends Component {
         enrollmentStatus,
         gpa,
         enrollmentDestination,
-        courses
-      }
+        courses,
+      },
     } = this.props;
     {
       console.log(`confirmation id ${this.props.id}`);
@@ -162,7 +226,7 @@ class Confirmation extends Component {
                   float: "right",
                   fontWeight: "bold",
                   marginBottom: "0",
-                  marginTop: "1%"
+                  marginTop: "1%",
                 }}
               >
                 يرجى التأكد من صحة البيانات المدخلة
@@ -290,7 +354,7 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
               <List
                 style={{
                   textAlign: "right",
-                  float: "right"
+                  float: "right",
                 }}
               >
                 {/*<h3 style={{ fontWeight: "bold" }}>بيانات الطالب الشخصية</h3>*/}
@@ -402,7 +466,13 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
           </div>
         );
       case 2:
-        return <TranscriptTable courses={this.props.values.courses} />;
+        return (
+          <TranscriptTable
+            courses={this.state.courses}
+            semsterDetails={this.state.semsterDetails}
+            totalGpa={this.state.totalGpa}
+          />
+        );
       case 3:
         return (
           <div id="student-card-container">
