@@ -21,6 +21,9 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
+import InputBase from '@material-ui/core/InputBase';
+import SearchIcon from '@material-ui/icons/Search';
+import {fade} from '@material-ui/core/styles';
 
 function createData(request, id, fat, carbs, protein) {
   return { request, id, fat, carbs, protein };
@@ -38,8 +41,9 @@ const rows = [
   createData("KitKat", 518, 26.0, 65, 7.0),
   createData("Lollipop", 392, 0.2, 98, 0.0),
   createData("Marshmallow", 318, 0, 81, 2.0),
-  createData("Nougat", 360, 19.0, 9, 37.0),
-  createData("Oreo", 437, 18.0, 63, 4.0)
+  createData("Nougat", 360, 19.0, 9, 37.0)
+ 
+
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -207,6 +211,21 @@ const EnhancedTableToolbar = props => {
           {getTableTitle(props.id)}
         </Typography>
       ) : (
+        <div id="requests-bar">
+        <div className={classes.search} id= "requests-search">
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </div>
+      
         <Typography
           className={classes.title}
           variant="h6"
@@ -215,6 +234,7 @@ const EnhancedTableToolbar = props => {
         >
           {getTableTitle(props.id)}
         </Typography>
+        </div>
       )}
     </Toolbar>
   );
@@ -232,7 +252,7 @@ const useStyles = makeStyles(theme => ({
     minWidth: "550px",
     minHeight: "600px",
     marginBottom: theme.spacing(2),
-    backgroundColor: "rgb(255,255,255,0.7)"
+    backgroundColor: "#FFFFFFB3"
   },
   visuallyHidden: {
     border: 0,
@@ -244,8 +264,49 @@ const useStyles = makeStyles(theme => ({
     position: "absolute",
     top: 20,
     width: 1
-  }
+  },
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(1),
+      width: 'auto',
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '12ch',
+      '&:focus': {
+        width: '20ch',
+      },
+    },
+  },
 }));
+
+
 
 export default function EnhancedTable(props) {
   const classes = useStyles();
@@ -254,7 +315,7 @@ export default function EnhancedTable(props) {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(true);
-  const [rowsPerPage, setRowsPerPage] = React.useState(25);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -311,7 +372,7 @@ export default function EnhancedTable(props) {
 
   return (
     <div className={classes.root}>
-      <Paper className={classes.paper}>
+      <Paper className={classes.paper} id="requests-container">
         <EnhancedTableToolbar numSelected={selected.length} id={props.id} />
         <TableContainer>
           <Table
@@ -345,6 +406,7 @@ export default function EnhancedTable(props) {
                       tabIndex={-1}
                       key={row.request}
                       selected={isItemSelected}
+                      id="requests-rows"
                     >
                       <TableCell id="table-body" align="center">
                         {row.id}
