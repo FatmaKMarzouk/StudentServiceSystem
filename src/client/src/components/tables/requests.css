@@ -1,7 +1,7 @@
 #table-title {
   font-family: "Cairo";
   font-weight: bold;
-  font-size: 18px;
+  font-size: 25px;
   color: #003366;
   display: flex;
   justify-content: flex-end;
@@ -18,3 +18,33 @@
   font-family: "Cairo";
   color: #003366;
 }
+
+#requests-search {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: row;
+  color: #003366;
+  font-family: "cairo";
+  margin-top: 1%;
+}
+
+#requests-bar {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: row;
+  width: 100%;
+}
+
+#requests-search:hover{
+  border : solid 1px #dab350 ;
+  padding : 1%;
+  border-width: 2px;
+  border-radius: 5px ;
+
+  
+}
+
+#requests-rows{
+  border-bottom: solid 2px #9ea2a79f;
+}
+
