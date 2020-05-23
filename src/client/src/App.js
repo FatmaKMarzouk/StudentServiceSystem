@@ -9,7 +9,7 @@ import PublicRoute from "./Utils/PublicRoute";
 import { getToken, setUserSession, removeUserSession } from "./Utils/Common";
 import SecHome from "./components/homepage-sec/pagesec";
 import StudentHome from "./components/homepage-student/page-student";
-import DummyFile from "./components/dummyfolder/dummyfile"
+import DummyFile from "./components/dummyfolder/dummyfile";
 
 function App() {
   const [authLoading, setAuthLoading] = useState(true);
@@ -22,11 +22,11 @@ function App() {
 
     axios
       .get(`http:/localhost:5000/verifyToken?token=${token}`)
-      .then(response => {
+      .then((response) => {
         setUserSession(response.data.token, response.data.user);
         setAuthLoading(false);
       })
-      .catch(error => {
+      .catch((error) => {
         removeUserSession();
         setAuthLoading(false);
       });
@@ -39,8 +39,9 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <PublicRoute exact path="/" component={SecHome} />
-        <PrivateRoute path="/home" component={StudentHome} />
+        <PublicRoute exact path="/" component={Login} />
+        <PrivateRoute path="/studentHome" component={StudentHome} />
+        <PrivateRoute path="/secretaryHome" component={SecHome} />
         <PublicRoute path="/enroll" component={Enrolling} />
         <PrivateRoute path="/dummy" component={DummyFile} />
       </Switch>
