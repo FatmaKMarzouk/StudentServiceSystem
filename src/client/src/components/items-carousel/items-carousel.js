@@ -5,7 +5,6 @@ import DialogBox from "../dialog/DialogBox";
 import DialogSelect from "../dialog/DialogSelect";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 
@@ -55,6 +54,7 @@ export default () => {
                 style={{ height: "55px" }}
                 src="enrollment.png"
                 id="service-icon-image"
+                alt="service-icon"
               ></img>
             </div>
             <DialogBox id={1} />
@@ -79,7 +79,11 @@ export default () => {
               </span>
             </div>
             <div id="service-icon">
-              <img src="chooseprog.png" id="service-icon-image"></img>
+              <img
+                src="chooseprog.png"
+                id="service-icon-image"
+                alt="service-icon"
+              ></img>
             </div>
             <DialogSelect />
           </div>
@@ -95,7 +99,11 @@ export default () => {
               <span style={{ marginBottom: "1%" }}>١- دفع مصاريف عام</span>
             </div>
             <div id="service-icon">
-              <img src="transcript.png" id="service-icon-image"></img>
+              <img
+                src="transcript.png"
+                id="service-icon-image"
+                alt="service-icon"
+              ></img>
             </div>
             <DialogBox id={2} />
           </div>
@@ -111,7 +119,11 @@ export default () => {
               <span style={{ marginBottom: "1%" }}>١- دفع مصاريف عام</span>
             </div>
             <div id="service-icon">
-              <img src="studentcard.png" id="service-icon-image"></img>
+              <img
+                src="studentcard.png"
+                id="service-icon-image"
+                alt="service-icon"
+              ></img>
             </div>
             <DialogBox id={3} />
           </div>

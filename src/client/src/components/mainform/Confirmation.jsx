@@ -1,7 +1,7 @@
 // Confirmation.jsx
 import React, { Component } from "react";
 import "./student-card.css";
-import { Button, List, Form } from "semantic-ui-react";
+import { Button, List } from "semantic-ui-react";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import TranscriptTable from "../tables/TranscriptTable";
@@ -37,7 +37,6 @@ class Confirmation extends Component {
   updateCourses = (cor) => {
     var myCoursesArray = [];
     const objectTemp = cor;
-    var count = 0;
 
     Object.keys(cor).map(function (keyName, keyIndex) {
       console.log("keyName");
@@ -124,6 +123,7 @@ class Confirmation extends Component {
             //console.log(userData);
           }
         });
+        break;
       case 2:
         getStudentTranscript(token).then((data) => {
           if (data.error) {
@@ -147,6 +147,9 @@ class Confirmation extends Component {
             console.log(this.state.totalGpa);
           }
         });
+        break;
+      default:
+        return;
     }
   };
 
@@ -482,7 +485,6 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                   floated="left"
                   id="student-card-image"
                   className="image-size"
-                  id="student-card-image"
                   src="card.jpg"
                 />
                 <Card.Header id="student-card-header">

@@ -4,10 +4,10 @@ import { Form, Button } from "semantic-ui-react";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
-import { nationalities } from "./Nationalities";
+//import { nationalities } from "./Nationalities";
 
 class UserDetails extends Component {
-  saveAndContinue = e => {
+  saveAndContinue = (e) => {
     e.preventDefault();
     this.props.nextStep();
   };
@@ -21,7 +21,7 @@ class UserDetails extends Component {
             <span
               style={{
                 fontSize: "32px",
-                paddingRight: "15px"
+                paddingRight: "15px",
               }}
             >
               بيانات الطالب الشخصية
@@ -67,7 +67,7 @@ class UserDetails extends Component {
                     defaultValue={values.email}
                     margin="dense"
                     InputLabelProps={{
-                      className: "floating-labels"
+                      className: "floating-labels",
                     }}
                   />
                 </Form.Field>
@@ -86,7 +86,7 @@ class UserDetails extends Component {
                     style={{
                       width: "255px",
                       paddingTop: "0px",
-                      fontSize: "14px"
+                      fontSize: "14px",
                     }}
                   >
                     <MenuItem key="female" value="female">
@@ -139,7 +139,7 @@ class UserDetails extends Component {
                     style={{
                       width: "255px",
                       paddingTop: "0px",
-                      fontSize: "14px"
+                      fontSize: "14px",
                     }}
                   >
                     <MenuItem value="Afganistan">Afghanistan</MenuItem>
@@ -456,7 +456,7 @@ class UserDetails extends Component {
                     defaultValue={values.birthDate}
                     margin="dense"
                     style={{
-                      color: "#003366"
+                      color: "#003366",
                     }}
                   />
                 </Form.Field>
@@ -478,7 +478,7 @@ class UserDetails extends Component {
             <span
               style={{
                 fontSize: "32px",
-                paddingRight: "15px"
+                paddingRight: "15px",
               }}
             >
               بيانات ولي الأمر

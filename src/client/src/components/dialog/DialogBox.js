@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./dialog.css";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -13,11 +13,15 @@ import { makeStyles } from "@material-ui/core/styles";
 import Confirmation from "../mainform/Confirmation";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Zoom from "@material-ui/core/Zoom";
-import { readCertOfEnrollData, certificateToCart, transcriptCart } from "../../core/Apis";
-import { getUser, getToken } from "../../Utils/Common";
-import axios from "axios";
+import {
+  //readCertOfEnrollData,
+  certificateToCart,
+  transcriptCart,
+} from "../../core/Apis";
+import { /*getUser,*/ getToken } from "../../Utils/Common";
+/*import axios from "axios";
 import Upload from "../upload/Upload";
-import { Hidden } from "@material-ui/core";
+import { Hidden } from "@material-ui/core";*/
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Zoom in="checked" ref={ref} {...props} />;
@@ -130,7 +134,7 @@ function getConfirmationTitle(num) {
 
 export default function CustomizedDialogs(props) {
   const [open, setOpen] = React.useState(false);
-  const [loading, setLoading] = useState(false);
+  /*const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   /*const [userData, setUserData] = useState({
     NameAr: "",
@@ -212,15 +216,17 @@ export default function CustomizedDialogs(props) {
     setOpen(true);
   };
   const handleClose = () => {
-
     const token = getToken();
 
-    switch (props.id)
-    {
+    switch (props.id) {
       case 1:
         certificateToCart(token);
+        break;
       case 2:
         transcriptCart(token);
+        break;
+      default:
+        return;
     }
     setOpen(false);
     document.getElementById("blur").style.filter = "blur(0)";
@@ -228,12 +234,6 @@ export default function CustomizedDialogs(props) {
 
   const handleEnter = () => {
     document.getElementById("blur").style.filter = "blur(8px)";
-  };
-
-  const handleWidth = () => {
-    if (props.id == 1) {
-      document.getElementById("dialog-content").style.width = "600px";
-    }
   };
 
   const classes = useStyles();

@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import "./Dropzone.css";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import CloudUploadOutlinedIcon from "@material-ui/icons/CloudUploadOutlined";
 import QueueIcon from "@material-ui/icons/Queue";
 
 class Dropzone extends Component {
