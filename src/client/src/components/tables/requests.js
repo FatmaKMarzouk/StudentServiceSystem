@@ -259,9 +259,11 @@ const useStyles = makeStyles((theme) => ({
     minWidth: "550px",
     height: "545px",
     marginBottom: theme.spacing(2),
-    backgroundColor: "rgb(255,255,255,0.9)",
+    backgroundColor: "rgb(255,255,255,0.7)",
     overflow: "auto",
     padding: "15px",
+    border: "2px solid #003366",
+    boxShadow: "-1px 14px 13px 2px rgba(184,184,184,1)",
   },
   visuallyHidden: {
     border: 0,

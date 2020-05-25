@@ -5,12 +5,13 @@
 /*Progress Bar Styles*/
 
 #progress-bar {
-  background-color: rgb(255, 255, 255, 0.8);
-  border-radius: 30px;
+  background-color: rgb(255, 255, 255, 0.7);
+  border-radius: 12px;
   box-shadow: 10px 10px 32px 0px rgba(0, 0, 0, 0.71);
   font-size: 24px;
-  width: 80%;
+  width: 78%;
   margin: 0 auto;
+  border: 2px solid #003366;
 }
 
 .progress-bar-labels {
@@ -29,11 +30,11 @@
   color: #003366;
   margin-left: 40%;
   width: 80%;
-  background-color: rgb(255, 255, 255, 0.8);
-  box-shadow: 0px 0px 50px 5px rgba(0, 0, 0, 0.71);
+  /*background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 0px 50px 5px rgba(0, 0, 0, 0.71);*/
   border-radius: 30px;
   padding: 1%;
-  padding-bottom: 80px;
+  padding-bottom: 48px;
   margin: 0 auto;
   margin-top: 2%;
   justify-content: center;
@@ -62,7 +63,8 @@
   float: left;
   background-color: #003366;
   font-family: "Cairo";
-  border-radius: 10px;
+  border-radius: 3px;
+  width: 140px;
 }
 
 #progress-bar-buttons:disabled {
@@ -70,23 +72,57 @@
 }
 
 #progress-button {
-  border-radius: 10px;
-  background-color: #003366;
+  border-radius: 5px;
+  background-color: #388e3c;
   color: whitesmoke;
   font-size: 14px;
+  font-weight: bold;
   position: absolute;
-  left: 0;
+  left: 50%;
   bottom: 0;
-  margin-left: 3%;
+  margin-left: -70px;
   margin-bottom: 2%;
   font-family: "Cairo";
+  height: 36px;
+  width: 140px;
 }
 
 .column {
   float: right;
-  padding: 15px;
+  padding-bottom: 15px;
+  /*padding-left: 25px;*/
   width: 100%;
   text-align: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0px 0px 40px 5px rgba(128, 127, 127, 0.71);
+  border-radius: 12px;
+  margin-bottom: 3%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 2px solid #003366;
+}
+
+#main-form-titles {
+  font-size: 28px;
+  padding: 15px;
+  padding-bottom: 57px;
+  color: white;
+  width: 100%;
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
+  height: 60px;
+  /*margin-bottom: 20px;*/
+  border-bottom: 2px solid #003366;
+  background-color: #003366;
+}
+
+#mainform-vertical-divider {
+  height: 112.3%;
+  background-color: #003366;
+  margin-right: 30px;
+  width: 2px;
 }
 
 #divider {
@@ -102,22 +138,29 @@
 
 #form-labels {
   display: flex;
-  margin-right: 1%;
-  margin-bottom: 3%;
+  padding-bottom: 3%;
+  margin-left: 25px;
 }
 
 #form-labels-column {
-  float: right;
-  margin-right: 14%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-top: 20px;
 }
 
-#filled-required {
+#outlined-required {
   font-size: 14px;
-  width: 230px;
-  padding-top: 20px;
+  width: 300px;
   color: #003366;
   text-align: left;
   direction: ltr;
+}
+
+#outlined-required-label {
+  font-size: 12px;
+  font-family: "Cairo";
+  transform: translate(10px, 8px) scale(1);
 }
 
 .floating-labels {
@@ -169,4 +212,10 @@
 
 #confirmation-list-item {
   padding: 5px;
+}
+
+#enrolling-form-field {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
 }

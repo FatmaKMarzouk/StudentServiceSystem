@@ -108,9 +108,10 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
     overflow: "auto",
     /*backgroundColor: "rgb(60, 100, 134)",*/
-    backgroundImage: "url(wallpaper1.jpg)",
+    backgroundImage: "url(wallpaper333.jpeg)",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
+    backgroundColor: "#adc4cf",
   },
   container: {
     padding: theme.spacing(4),
