@@ -66,6 +66,7 @@ router.post('/enroll', function (request, response) {
 			var birthCerftificate = request.body.birthCerftificate || " ";
 			var nationalid = request.body.nationalid || " ";
 			var nominationCard = request.body.nominationCard || " ";
+			var photo = request.body.photo || "";
 			var user = '';
 
 
@@ -78,7 +79,7 @@ router.post('/enroll', function (request, response) {
 				result += characters.charAt(Math.floor(Math.random() * charactersLength));
 			}
 			// connection.query('INSERT INTO Students (NameEn,NameAr,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Password,Faculty,Program) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ',[nameen, namear, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, result ,'Faculty of Engineering', 'General'] ,  function(error, results, fields){
-			connection.query('INSERT INTO Students (NameEn, NameAr, ParentPhone, Gender, medicalCondition, Email, Nationality, Birthdate, SSN, phoneNumber, Address, Password, Faculty, Program, ParentName, ParentSSN, ParentRelation, birthCertificate, Nationalid, NominationCard) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ', [nameen, namear, parentphone, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, result, facultysec, 'General', parentname, parentssn, parentrelation, birthCerftificate, nationalid, nominationCard], function (error, results, fields) {
+			connection.query('INSERT INTO Students (NameEn, NameAr, ParentPhone, Gender, medicalCondition, Email, Nationality, Birthdate, SSN, phoneNumber, Address, Password, Faculty, Program, ParentName, ParentSSN, ParentRelation, birthCertificate, Nationalid, NominationCard, Photo) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ', [nameen, namear, parentphone, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, result, facultysec, 'General', parentname, parentssn, parentrelation, birthCerftificate, nationalid, nominationCard, photo], function (error, results, fields) {
 
 
 				if (selection == 'private') {
