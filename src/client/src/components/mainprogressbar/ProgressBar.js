@@ -18,66 +18,37 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Upload from "../upload/Upload";
 import MainForm from "../mainform/MainForm";
-import { Container } from "semantic-ui-react";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Grow from "@material-ui/core/Grow";
-import Zoom from "@material-ui/core/Zoom";
-//import { CarouselCaption } from "reactstrap";
-
-const QontoConnector = withStyles({
-  alternativeLabel: {
-    top: 10,
-    left: "calc(-50% + 16px)",
-    right: "calc(50% + 16px)"
-  },
-  active: {
-    "& $line": {
-      borderColor: "#784af4"
-    }
-  },
-  completed: {
-    "& $line": {
-      borderColor: "#784af4"
-    }
-  },
-  line: {
-    borderColor: "#eaeaf0",
-    borderTopWidth: 3,
-    borderRadius: 1
-  }
-})(StepConnector);
 
 const useQontoStepIconStyles = makeStyles({
   root: {
     color: "#eaeaf0",
     display: "flex",
     height: 22,
-    alignItems: "center"
+    alignItems: "center",
   },
   active: {
-    color: "#784af4"
+    color: "#784af4",
   },
   circle: {
     width: 8,
     height: 8,
     borderRadius: "50%",
-    backgroundColor: "currentColor"
+    backgroundColor: "currentColor",
   },
   completed: {
     color: "#784af4",
     zIndex: 1,
-    fontSize: 18
+    fontSize: 18,
   },
   paper: {
     padding: "20px",
     display: "flex",
     overflow: "auto",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   fixedHeight: {
-    height: 240
-  }
+    height: 240,
+  },
 });
 
 function QontoStepIcon(props) {
@@ -87,7 +58,7 @@ function QontoStepIcon(props) {
   return (
     <div
       className={clsx(classes.root, {
-        [classes.active]: active
+        [classes.active]: active,
       })}
     >
       {completed ? (
@@ -101,33 +72,33 @@ function QontoStepIcon(props) {
 
 QontoStepIcon.propTypes = {
   active: PropTypes.bool,
-  completed: PropTypes.bool
+  completed: PropTypes.bool,
 };
 
 const ColorlibConnector = withStyles({
   alternativeLabel: {
     top: 22,
     left: "calc(50% + 20px)",
-    right: "calc(-50% + 20px)"
+    right: "calc(-50% + 20px)",
   },
   active: {
     "& $line": {
       backgroundImage:
-        "linear-gradient( 95deg,rgb(223,197,127) 0%,rgb(216,171,48) 50%,rgb(218,179,80)100%)"
-    }
+        "linear-gradient( 95deg,rgb(223,197,127) 0%,rgb(216,171,48) 50%,rgb(218,179,80)100%)",
+    },
   },
   completed: {
     "& $line": {
       backgroundImage:
-        "linear-gradient( 95deg,rgb(218,179,80) 0%,rgb(218,179,80) 50%,rgb(218,179,80) 100%)"
-    }
+        "linear-gradient( 95deg,rgb(218,179,80) 0%,rgb(218,179,80) 50%,rgb(218,179,80) 100%)",
+    },
   },
   line: {
     height: 3,
     border: 0,
     backgroundColor: "#eaeaf0",
-    borderRadius: 1
-  }
+    borderRadius: 1,
+  },
 })(StepConnector);
 
 const useColorlibStepIconStyles = makeStyles({
@@ -140,17 +111,17 @@ const useColorlibStepIconStyles = makeStyles({
     display: "flex",
     borderRadius: "50%",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   active: {
     backgroundImage:
       "linear-gradient( 136deg,#CDAB50 0%, #CEA020 50%, #CB990F 100%)",
-    boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)"
+    boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
   },
   completed: {
     backgroundImage:
-      "linear-gradient( 136deg, #CDAB50 0%, #CEA020 50%, #CB990F 100%)"
-  }
+      "linear-gradient( 136deg, #CDAB50 0%, #CEA020 50%, #CB990F 100%)",
+  },
 });
 
 function ColorlibStepIcon(props) {
@@ -163,14 +134,14 @@ function ColorlibStepIcon(props) {
     3: <SchoolIcon />,
     4: <CakeSharpIcon />,
     5: <RecentActorsOutlinedIcon />,
-    6: <AddAPhotoIcon />
+    6: <AddAPhotoIcon />,
   };
 
   return (
     <div
       className={clsx(classes.root, {
         [classes.active]: active,
-        [classes.completed]: completed
+        [classes.completed]: completed,
       })}
     >
       {icons[String(props.icon)]}
@@ -181,23 +152,23 @@ function ColorlibStepIcon(props) {
 ColorlibStepIcon.propTypes = {
   active: PropTypes.bool,
   completed: PropTypes.bool,
-  icon: PropTypes.node
+  icon: PropTypes.node,
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     direction: "rtl",
-    width: "100%"
+    width: "100%",
   },
   button: {
     marginRight: theme.spacing(1),
     backgroundColor: "#003366",
-    color: "white"
+    color: "white",
   },
   instructions: {
     marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  }
+    marginBottom: theme.spacing(1),
+  },
 }));
 
 function getSteps() {
@@ -207,7 +178,7 @@ function getSteps() {
     "شهادة الثانوية العامة",
     "شهادة الميلاد",
     "البطاقة الشخصية",
-    "الصور الشخصية"
+    "الصور الشخصية",
   ];
 }
 
@@ -255,14 +226,12 @@ export default function CustomizedSteppers() {
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
 
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
   const handleNext = () => {
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleReset = () => {
@@ -277,7 +246,7 @@ export default function CustomizedSteppers() {
         connector={<ColorlibConnector />}
         id="progress-bar"
       >
-        {steps.map(label => (
+        {steps.map((label) => (
           <Step key={label}>
             <StepLabel StepIconComponent={ColorlibStepIcon}>
               <span className="progress-bar-labels">{label}</span>

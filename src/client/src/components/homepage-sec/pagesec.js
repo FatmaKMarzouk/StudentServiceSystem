@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import { link } from "react-router-dom";
+import React from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -7,14 +6,11 @@ import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
-import Badge from "@material-ui/core/Badge";
 import Container from "@material-ui/core/Container";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import NotificationsIcon from "@material-ui/icons/Notifications";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 //import { mainListItems, secondaryListItems } from "./listItems";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -31,24 +27,20 @@ import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
-import FormLabel from "@material-ui/core/FormLabel";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import Radio from "@material-ui/core/Radio";
-import Paper from "@material-ui/core/Paper";
+import Profile from "../profile/profile";
 
 import "./home-sec.css";
 import Requests from "../tables/requests.js";
 const drawerWidth = 240;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    overflow: "hidden"
+    overflow: "hidden",
   },
 
   toolbar: {
-    paddingRight: 24 // keep right padding when drawer closed
+    paddingRight: 24, // keep right padding when drawer closed
   },
   toolbarIcon: {
     display: "flex",
@@ -56,29 +48,29 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "flex-end",
     padding: "0 8px",
     minWidth: "48px",
-    ...theme.mixins.toolbar
+    ...theme.mixins.toolbar,
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      duration: theme.transitions.duration.leavingScreen,
     }),
-    backgroundColor: "#002346"
+    backgroundColor: "#002346",
   },
   appBarShift: {
     marginRight: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   menuButton: {
     //marginRight: 0
   },
   menuButtonHidden: {
-    display: "none"
+    display: "none",
   },
   title: {
     flexGrow: 1,
@@ -87,7 +79,7 @@ const useStyles = makeStyles(theme => ({
     color: "white",
     textDecoration: "none",
     marginRight: "2%",
-    fontFamily: "Cairo"
+    fontFamily: "Cairo",
   },
   drawerPaper: {
     position: "relative",
@@ -95,75 +87,76 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
+      duration: theme.transitions.duration.enteringScreen,
     }),
-    backgroundColor: "#002346"
+    backgroundColor: "#002346",
   },
   drawerPaperClose: {
     overflowX: "hidden",
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      duration: theme.transitions.duration.leavingScreen,
     }),
     width: theme.spacing(7),
     [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9)
-    }
+      width: theme.spacing(9),
+    },
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
     height: "100vh",
     overflow: "auto",
-    backgroundColor: "rgb(60, 100, 134)",
+    /*backgroundColor: "rgb(60, 100, 134)",*/
+    backgroundImage: "url(wallpaper333.jpeg)",
     backgroundRepeat: "no-repeat",
-    backgroundSize: "cover"
+    backgroundSize: "cover",
+    backgroundColor: "#adc4cf",
   },
   container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4)
+    padding: theme.spacing(4),
   },
   paper: {
     padding: theme.spacing(2),
     display: "flex",
     overflow: "auto",
-    flexDirection: "column"
+    flexDirection: "column",
   },
 
   fixedHeight: {
-    height: 240
-  }
+    height: 240,
+  },
 }));
 
 const StyledMenu = withStyles({
   paper: {
-    border: "1px solid #d3d4d5"
-  }
-})(props => (
+    border: "1px solid #d3d4d5",
+  },
+})((props) => (
   <Menu
     elevation={0}
     getContentAnchorEl={null}
     anchorOrigin={{
       vertical: "bottom",
-      horizontal: "center"
+      horizontal: "center",
     }}
     transformOrigin={{
       vertical: "top",
-      horizontal: "center"
+      horizontal: "center",
     }}
     {...props}
   />
 ));
 
-const StyledMenuItem = withStyles(theme => ({
+const StyledMenuItem = withStyles((theme) => ({
   root: {
     "&:focus": {
       backgroundColor: "rgb(0,51,102,0.6)",
       "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
-        color: theme.palette.common.white
-      }
-    }
-  }
+        color: theme.palette.common.white,
+      },
+    },
+  },
 }))(MenuItem);
 
 function getFunctionContent(func) {
@@ -182,13 +175,19 @@ function getFunctionContent(func) {
         </Grid>
       );
     case 1:
-      return <EnrollingNewStudent />;
+      return (
+        <div style={{ paddingBottom: "35px" }}>
+          <EnrollingNewStudent />
+        </div>
+      );
     case 2:
       return (
         <div className="Card">
           <Upload value="استمارة ٦ جند" />
         </div>
       );
+    case 3:
+      return <Profile />;
     default:
       return "Unknown step";
   }
@@ -200,7 +199,7 @@ export default function SecHome() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [activeFunc, setActiveFunc] = React.useState(0);
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -227,7 +226,11 @@ export default function SecHome() {
     setActiveFunc(0);
   };
 
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  const handleProfile = () => {
+    setActiveFunc(3);
+  };
+
+  const handleLogout = () => {};
 
   return (
     <div className={classes.root} id="hide-scrollbar">
@@ -254,17 +257,17 @@ export default function SecHome() {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <StyledMenuItem>
-              <ListItemIcon>
+            <StyledMenuItem onClick={handleProfile}>
+              <ListItemText id="sec-profile-menu-item">حسابي</ListItemText>
+              <ListItemIcon id="sec-profile-menu-item">
                 <SettingsIcon fontSize="small" />
               </ListItemIcon>
-              <ListItemText primary="My Account" />
             </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemIcon>
+            <StyledMenuItem onClick={handleLogout}>
+              <ListItemText id="sec-profile-menu-item">الخروج</ListItemText>
+              <ListItemIcon id="sec-profile-menu-item">
                 <ExitToAppIcon fontSize="small" />
               </ListItemIcon>
-              <ListItemText primary="Logout" />
             </StyledMenuItem>
           </StyledMenu>
           <Divider />
@@ -297,17 +300,15 @@ export default function SecHome() {
 
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
+        <div maxWidth="lg" className={classes.container}>
           {getFunctionContent(activeFunc)}
-          {/*<EnrollingNewStudent />*/}
-          {/*<div className="Card"><Upload value="استمارة ٦ جند" /></div>*/}
-        </Container>
+        </div>
       </main>
       <Drawer
         variant="permanent"
         anchor="right"
         classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)
+          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
         }}
         open={open}
       >
@@ -333,7 +334,7 @@ export default function SecHome() {
                   style={{
                     color: "white",
                     fontFamily: "Cairo",
-                    fontSize: "12px"
+                    fontSize: "12px",
                   }}
                 >
                   إضافة طالب جديد
@@ -352,7 +353,7 @@ export default function SecHome() {
                   style={{
                     color: "white",
                     fontFamily: "Cairo",
-                    fontSize: "12px"
+                    fontSize: "12px",
                   }}
                 >
                   تأجيل التجنيد العسكري

@@ -12,20 +12,37 @@
   font-family: "Cairo";
   font-weight: bold;
   color: #003366;
+  font-size: 15px;
+  border-color: rgb(182, 175, 175);
 }
 
 #table-body {
   font-family: "Cairo";
   color: #003366;
+  border-color: rgb(182, 175, 175);
+}
+
+#requests-container {
+  overflow: auto;
+  height: 420px;
 }
 
 #requests-search {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   flex-direction: row;
   color: #003366;
   font-family: "cairo";
-  margin-top: 1%;
+  padding: 1%;
+  background-color: rgb(208, 211, 214);
+  border-radius: 5px;
+  width: 53%;
+  height: 32px;
+  margin-bottom: 20px;
+  margin-left: -13px;
+}
+
+#requests-search:hover {
 }
 
 #requests-bar {
@@ -35,16 +52,34 @@
   width: 100%;
 }
 
-#requests-search:hover{
-  border : solid 1px #dab350 ;
-  padding : 1%;
-  border-width: 2px;
-  border-radius: 5px ;
-
-  
+#requests-rows {
+  border-bottom: solid 1px #9ea2a79f;
 }
 
-#requests-rows{
-  border-bottom: solid 2px #9ea2a79f;
+#requests-rows.Mui-selected {
+  background-color: #90b6dd94;
 }
 
+#requests-selected-number {
+  margin-right: auto;
+  font-family: "Cairo";
+  color: #003366;
+  font-weight: bold;
+  border-bottom: 1px solid #003366;
+}
+
+#requests-checkbox {
+  color: #003366;
+}
+
+.requests-checkbox.Mui-checked {
+  color: #003366;
+}
+
+.requests-checkbox.MuiIconButton-root {
+  color: #388e3c;
+}
+
+#requests-headers {
+  border-bottom: solid 1px #002346;
+}
