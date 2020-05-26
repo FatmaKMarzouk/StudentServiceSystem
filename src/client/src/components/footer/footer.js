@@ -50,7 +50,11 @@ class Footer extends Component {
           </div>
         </div>
         <div>
-          <img src="uni_name.png" style={{ height: "100px" }} />
+          <img
+            src="uni_name.png"
+            alt="alexuni-logo"
+            style={{ height: "100px" }}
+          />
         </div>
       </footer>
     );

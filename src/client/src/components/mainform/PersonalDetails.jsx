@@ -1,15 +1,14 @@
 // PersonalDetails.jsx
 import React, { Component } from "react";
 import { Form, Button } from "semantic-ui-react";
-import { throws } from "assert";
 
 class PersonalDetails extends Component {
-  saveAndContinue = e => {
+  saveAndContinue = (e) => {
     e.preventDefault();
     this.props.nextStep();
   };
 
-  back = e => {
+  back = (e) => {
     e.preventDefault();
     this.props.prevStep();
   };

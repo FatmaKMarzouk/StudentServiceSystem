@@ -8,7 +8,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
-import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Alerts from "../alert/Alert";
@@ -19,36 +18,34 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Zoom in="checked" ref={ref} {...props} />;
 });
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
     flexWrap: "wrap",
-    width: "100%"
+    width: "100%",
   },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
-    width: "100%"
-  }
+    width: "100%",
+  },
 }));
 
 export default function DialogSelect() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [age, setAge] = React.useState("");
   const values = {
     alertNumber: 1,
-    alertMessage: "Hey Ass"
+    alertMessage: "Hey Ass",
   };
   const programs = [
     { id: 1, value: "Foundation Year" },
     { id: 2, value: "Computer and Communication Engineering" },
     { id: 3, value: " Architecture and Construction Engineering" },
     { id: 4, value: "Electromechanical Engineering" },
-    { id: 5, value: "Gas And Petrochemicals Engineering" }
+    { id: 5, value: "Gas And Petrochemicals Engineering" },
   ];
-  const handleChange = event => {
-    setAge(Number(event.target.value) || "");
+  const handleChange = (event) => {
     document.getElementById("program-alert").style.display = "block";
   };
 
@@ -100,7 +97,7 @@ export default function DialogSelect() {
                 style={{ fontFamily: "Cairo" }}
               >
                 <option aria-label="None" value="" />
-                {programs.map(program => (
+                {programs.map((program) => (
                   <option key={program.id} value={program.id}>
                     {program.value}
                   </option>

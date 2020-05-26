@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Switch, Route, NavLink } from "react-router-dom";
+import { BrowserRouter, Switch /*, Route, NavLink */ } from "react-router-dom";
 import axios from "axios";
-import UserDetails from "./components/mainform/UserDetails";
+//import UserDetails from "./components/mainform/UserDetails";
 import Login from "./components/login/Login";
 import Enrolling from "./components/simple-enrolling/enrolling";
 import PrivateRoute from "./Utils/PrivateRoute";
@@ -9,7 +9,7 @@ import PublicRoute from "./Utils/PublicRoute";
 import { getToken, setUserSession, removeUserSession } from "./Utils/Common";
 import SecHome from "./components/homepage-sec/pagesec";
 import StudentHome from "./components/homepage-student/page-student";
-import DummyFile from "./components/dummyfolder/dummyfile"
+import DummyFile from "./components/dummyfolder/dummyfile";
 
 function App() {
   const [authLoading, setAuthLoading] = useState(true);
@@ -22,11 +22,11 @@ function App() {
 
     axios
       .get(`http:/localhost:5000/verifyToken?token=${token}`)
-      .then(response => {
+      .then((response) => {
         setUserSession(response.data.token, response.data.user);
         setAuthLoading(false);
       })
-      .catch(error => {
+      .catch((error) => {
         removeUserSession();
         setAuthLoading(false);
       });

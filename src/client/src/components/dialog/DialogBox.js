@@ -189,7 +189,7 @@ export default function CustomizedDialogs(props) {
             setLoading(false);
             console.log("data");
             console.log(response.data);
-            
+
             //userData = username.value,
             //handleUserData(response.data);
             //setUserData(response.data);
@@ -219,8 +219,10 @@ export default function CustomizedDialogs(props) {
     {
       case 1:
         certificateToCart(token);
+        break;
       case 2:
         transcriptCart(token);
+        break;
     }
     setOpen(false);
     document.getElementById("blur").style.filter = "blur(0)";

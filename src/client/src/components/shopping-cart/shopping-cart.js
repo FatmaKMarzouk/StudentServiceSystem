@@ -1,79 +1,160 @@
-import React, { Component } from "react";
+import React from "react";
 import "./shopping-cart.css";
-import Divider from "@material-ui/core/Divider";
-import { Button } from "react-bootstrap";
+import { makeStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 
-class shoppingCart extends Component {
-  state = {
-    requests: [
-      { id: "1", name: " استخراج شهادة القيد", price: "50 LE" },
-      { id: "2", name: "استخراج درجات المواد ", price: "70 LE" },
-      { id: "3", name: " استخراج شهادة القيد", price: "50 LE" },
-      { id: "4", name: "استخراج درجات المواد ", price: "70 LE" },
-      { id: "5", name: " استخراج شهادة القيد", price: "50 LE" },
-      { id: "6", name: "استخراج درجات المواد ", price: "70 LE" },
-      { id: "7", name: " استخراج شهادة القيد", price: "50 LE" },
-      { id: "8", name: "استخراج درجات المواد ", price: "70 LE" },
-      { id: "9", name: " استخراج شهادة القيد", price: "50 LE" },
-      { id: "10", name: "استخراج درجات المواد", price: "70 LE" }
-    ],
-    requestsIds: [1, 2, 3, 4, 5, 6]
-  };
+const TAX_RATE = 0.07;
 
-  handleDeleteRequest(requestId) {
-    const requestsIds = this.state.requestsIds.filter(r => r !== requestId);
-    this.setState({ requestsIds: requestsIds });
-  } /*handleNewRequest(requestId) {
-    this.setState({ requestsIds: this.props.requestsIds });
-  }*/
+const useStyles = makeStyles({
+  table: {
+    minWidth: 700,
+  },
+});
 
-  render() {
-    return (
-      <div className="cart-container">
-        <div id="cart-title-container">
-          <h2 id="cart-title">الطلبات</h2>
-        </div>
-        {/*<Divider id="cart-divider" />*/}
-        <div id="cart-items-container">
-            
-          {this.state.requestsIds.length == 0 ? (
-            <h2 id="cart-title" style={{ textAlign: "center" }}>
-                    ...العربة فارغة     
-            </h2>
-          ) : (
-            this.state.requestsIds.map(requestId => (
-              <div id="cart-item">
-                <button
-                  className="btn btn-outline-danger btn-sm"
-                  id="cart-item-button"
-                  onClick={() => this.handleDeleteRequest(requestId)}
-                >
-                  x
-                </button>
-                <span id="cart-item-price">
-                  {this.state.requests[requestId - 1].price}
-                </span>
-                <span id="cart-item-title">
-                  {this.state.requests[requestId - 1].name}
-                </span>
-                {/*<span id="cart-item-title">طلب</span>*/}
-                <Divider orientation="vertical" flexItem />
-                <span class="badge badge-warning" id="cart-item-number">
-                  ١
-                </span>
-                      
-              </div>
-            ))
-          )}
-        </div>
-        {/*<Divider id="cart-item-divider" />*/}
-        <button id="cart-button" class="btn btn-success">
-            Checkout
-        </button>
-              
-      </div>
-    );
-  }
+function ccyFormat(num) {
+  return `${num.toFixed(2)}`;
 }
 
-export default shoppingCart;
+function createRow(desc, price) {
+  return { desc, price };
+}
+
+function subtotal(items) {
+  return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
+}
+
+const orders = [
+  {
+    orderName: "طلب ١",
+    orderPrice: 19.99,
+  },
+  {
+    orderName: "طلب ٢",
+    orderPrice: 29.99,
+  },
+  {
+    orderName: "طلب ٣",
+    orderPrice: 39.99,
+  },
+];
+
+/*const rows = [];
+
+orders.map((order)=>{
+    rows.push(createRow(order.orderName, order.orderPrice) );
+}*/
+
+const rows = [
+  createRow(orders[0].orderName, orders[0].orderPrice),
+  createRow(orders[1].orderName, orders[1].orderPrice),
+  createRow(orders[2].orderName, orders[2].orderPrice),
+];
+
+const invoiceSubtotal = subtotal(rows);
+const invoiceTaxes = TAX_RATE * invoiceSubtotal;
+const invoiceTotal = invoiceTaxes + invoiceSubtotal;
+
+export default function SpanningTable() {
+  const classes = useStyles();
+
+  return (
+    <div id="shopping-cart-container">
+      <TableContainer component={Paper} id="cart-container">
+        <div id="cart-title"> عــربــة الطلبات</div>
+        <div id="cart-table">
+          <Table className={classes.table} aria-label="spanning table">
+            <TableHead>
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell id="cart-row-title" align="left">
+                  السعر
+                </TableCell>
+                <TableCell id="cart-row-title" align="right" colSpan={3}>
+                  الطلب
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow key={row.desc}>
+                  <TableCell id="cart-row">
+                    <button id="delete-button">
+                      <DeleteOutlinedIcon />
+                    </button>
+                  </TableCell>
+                  <TableCell id="cart-row" align="left">
+                    {ccyFormat(row.price)}
+                  </TableCell>
+                  <TableCell id="cart-row" align="right" colSpan={3}>
+                    {row.desc}
+                  </TableCell>
+                  {/*<TableCell id="cart-row" align="right">
+                  {row.qty}
+            </TableCell>*/}
+                  {/*setHeight(rows.length)*/}
+                </TableRow>
+              ))}
+
+              <TableRow id="start-total-rows">
+                <TableCell id="end-total-rows" rowSpan={3} />
+                <TableCell id="cart-row" align="left">
+                  {ccyFormat(invoiceSubtotal)}
+                </TableCell>
+                <TableCell
+                  id="cart-row"
+                  align="right"
+                  colSpan={3}
+                  style={{ fontWeight: "bold" }}
+                >
+                  الإجمالي قبل الضريبة
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell id="cart-row" align="left">
+                  {ccyFormat(invoiceTaxes)}
+                </TableCell>
+                <TableCell id="cart-row" align="center">{`${(
+                  TAX_RATE * 100
+                ).toFixed(0)} %`}</TableCell>
+                <TableCell
+                  id="cart-row"
+                  align="right"
+                  style={{ fontWeight: "bold" }}
+                >
+                  الضريبة المضافة
+                </TableCell>
+              </TableRow>
+              <TableRow id="end-total-rows">
+                <TableCell
+                  id="cart-row"
+                  align="left"
+                  style={{ fontWeight: "bold" }}
+                >
+                  {ccyFormat(invoiceTotal)}
+                </TableCell>
+                <TableCell
+                  id="cart-row"
+                  align="right"
+                  colSpan={3}
+                  style={{ fontWeight: "bold" }}
+                >
+                  الإجمالي
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
+        <button id="checkout-button" class="btn btn-success">
+          الدفع
+        </button>
+      </TableContainer>
+    </div>
+  );
+}
