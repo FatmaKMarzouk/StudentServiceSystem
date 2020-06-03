@@ -23,8 +23,7 @@ router.get('/cart',function(request,response,next){
         total += row.Amount;
 
       });
-      console.log(requests);
-      console.log(total);
+      response.status(200).send(requests,total);
     }
     else {
       response.status(400).send({
@@ -44,16 +43,18 @@ else{
 });
 
 router.post('/delete-cart',function(request,response,next){
-  if(request.session.loggedin){
-  var reqID = request.session.reqID;
+  if(request.user){
+  var reqID = request.body.reqID;
   console.log(reqID);
   connection.query('USE AlexUni');
-  connection.query('DELETE FROM Requests WHERE ID = 2',[reqID]); //hardcoding id till front end is ready
+  connection.query('DELETE FROM Requests WHERE ID = ?',[reqID]); //hardcoding id till front end is ready
   response.redirect('/cart');
 
 }
 else{
-  response.send("Please log in to view this page!");
+  response.status(400).send({
+    error:true,
+    message:"Please log in to view this page!"});
 }
 
 });
