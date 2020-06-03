@@ -67,3 +67,23 @@ export const getStudentTranscript = (token) => {
       })
       .catch((err) => console.log(err));
   };
+
+  // card api
+    // api 1
+
+    // api 2
+export const cardCart = (token) => {
+  return fetch(`http://localhost:5000/cardcart`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      console.log("CARD CART TESTTTTTTTTTTT");
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};

@@ -13,6 +13,7 @@ var connection = require('../controllers/dbconnection');
 var username ="";
 
 router.get('/chooseprog', function(request, response,next) {
+  console.log("inside chooseprog API");
   if (request.user) {
     // response.sendFile(__dirname+'/chooseprog.html');
     username = request.session.username;
@@ -30,7 +31,7 @@ router.get('/chooseprog', function(request, response,next) {
     connection.query('SELECT Name FROM Program WHERE FacultyName = ? AND SSP = ?',[facultyname,ssp],function(error,results2,fields){
       if (results2.length>0){
         response.status(200).send(results2);
-        console.log(results2);  //To be shown in drop down menu
+        // console.log(results2);  //To be shown in drop down menu
       }
       else {
         response.status(400).send({
@@ -53,6 +54,7 @@ router.get('/chooseprog', function(request, response,next) {
 });
 
 router.post('/submitprog', function(request, response,next) {
+  console.log("inside submitprog API");
   var currentprog="";
   if (request.user) {
     var flag = 1;

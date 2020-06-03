@@ -47,8 +47,6 @@ router.use(function (req, res, next) {
         message: "Invalid user.",
       });
     } else {
-      console.log("FLAG");
-      console.log(user);
       req.user = user; //set the user to req so other routes can use it
       next();
     }
