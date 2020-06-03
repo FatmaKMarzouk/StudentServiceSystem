@@ -13,6 +13,8 @@ import Select from "@material-ui/core/Select";
 import Alerts from "../alert/Alert";
 import CloseIcon from "@material-ui/icons/Close";
 import Zoom from "@material-ui/core/Zoom";
+import { getToken } from "../../Utils/Common";
+import { getProgramss } from "../../core/Apis";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Zoom in="checked" ref={ref} {...props} />;
@@ -34,10 +36,12 @@ const useStyles = makeStyles((theme) => ({
 export default function DialogSelect() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [programs2, setPrograms2] = React.useState([]);
   const values = {
     alertNumber: 1,
     alertMessage: "Hey Ass",
   };
+
   const programs = [
     { id: 1, value: "Foundation Year" },
     { id: 2, value: "Computer and Communication Engineering" },
@@ -45,11 +49,30 @@ export default function DialogSelect() {
     { id: 4, value: "Electromechanical Engineering" },
     { id: 5, value: "Gas And Petrochemicals Engineering" },
   ];
+
   const handleChange = (event) => {
     document.getElementById("program-alert").style.display = "block";
   };
 
+  const getPrograms = () => {
+    const token = getToken();
+    console.log(token);
+    getProgramss(token).then((data) => {
+      if (data.error) {
+        console.log("IN ERORRR GET PROGRAMS:: ");
+        console.log(data.message);
+      } else {
+        console.log("IN ELSEEE DATA GETPROGRAMS:: ");
+        console.log(data);
+        setPrograms2(...data);
+        console.log("programs222222!!!!!!");
+        console.log(programs2);
+      }
+    });
+  };
+
   const handleClickOpen = () => {
+    getPrograms();
     setOpen(true);
   };
 

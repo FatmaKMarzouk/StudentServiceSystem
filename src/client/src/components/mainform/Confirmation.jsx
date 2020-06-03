@@ -180,7 +180,6 @@ class Confirmation extends Component {
           }
         });
         break;
-
       default:
         return;
     }

@@ -33,7 +33,7 @@ router.get("/card", function (req, res, next) {
           console.log("bada2t allresults");
           console.log(allresults);
           console.log("5allast allresults");
-          res.status(200).json(cardobject);
+          res.status(200).json(cardobject[0]);
           return;
         }
       }
