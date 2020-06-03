@@ -17,7 +17,7 @@ router.get("/card", function (req, res, next) {
     var username = req.user.username;
     connection.query("Use AlexUni");
     connection.query(
-      "SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.Gender, Students.Username, Payment.Paid FROM Students RIGHT JOIN Payment ON Students.ID=Payment.StudentID WHERE Students.Username = ?",
+      "SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.Gender, Students.Username, Students.Photo, Students.SSN, Payment.Paid FROM Students RIGHT JOIN Payment ON Students.ID=Payment.StudentID WHERE Students.Username = ?",
       [username],
       function (err, results, field) {
         if (results.length > 0) {
@@ -31,13 +31,9 @@ router.get("/card", function (req, res, next) {
                     console.log("5allast teba3a cardobject barra");*/
           allresults = cardobject;
           console.log("bada2t allresults");
-          console.log(allresults[0].Faculty);
+          console.log(allresults);
           console.log("5allast allresults");
-
-          console.log("CARDOBJECTTTTT");
-          console.log(cardobject);
-
-          res.status(200).json(cardobject[0]);
+          res.status(200).json(cardobject);
           return;
         }
       }
