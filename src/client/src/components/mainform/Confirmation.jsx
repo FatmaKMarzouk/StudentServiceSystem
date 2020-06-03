@@ -7,7 +7,11 @@ import TextField from "@material-ui/core/TextField";
 import TranscriptTable from "../tables/TranscriptTable";
 import { Card, Image } from "semantic-ui-react";
 import { getUser, getToken } from "../../Utils/Common";
-import { getStudentTranscript, readCertOfEnrollData } from "../../core/Apis";
+import {
+  getStudentTranscript,
+  readCertOfEnrollData,
+  getCardDetails,
+} from "../../core/Apis";
 
 class Confirmation extends Component {
   state = {
@@ -23,6 +27,15 @@ class Confirmation extends Component {
     semsterDetails: [],
     courses: [],
     totalGpa: {},
+
+    userCardDetails: {
+      NameAr: "",
+      Faculty: "",
+      Program: "",
+      Username: "",
+      SSN: "",
+      Photo: "",
+    },
   };
   saveAndContinue = (e) => {
     e.preventDefault();
@@ -148,6 +161,26 @@ class Confirmation extends Component {
           }
         });
         break;
+
+      case 3:
+        getCardDetails(token).then((data) => {
+          if (data.error) {
+            console.log("IN ERORRR CARD DETAILS:: ");
+            console.log(data.error);
+          } else {
+            console.log("IN ELSEEE DATA CARD DETAILS:: ");
+            console.log(data);
+            this.setState({
+              userCardDetails: {
+                ...data,
+              },
+            });
+            console.log("USERCARDDETAILS!!!!!!");
+            console.log(this.state.userCardDetails.Faculty);
+          }
+        });
+        break;
+
       default:
         return;
     }
@@ -488,23 +521,31 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                   src="card.jpg"
                 />
                 <Card.Header id="student-card-header">
-                  <span id="student-card-title">كلية الهندسة</span>
+                  <span id="student-card-title">
+                    {this.state.userCardDetails.Faculty}
+                  </span>
                 </Card.Header>
                 <Card.Meta>
                   <div className="list-content-block">
-                    <span id="student-card-content">{fullName}</span>
+                    <span id="student-card-content">
+                      {this.state.userCardDetails.NameAr}
+                    </span>
                     <span id="student-card-name">: الاسم</span>
                   </div>
                 </Card.Meta>
                 <Card.Description>
                   <div className="list-content-block">
-                    <span id="student-card-content">{collegeProgram}</span>
+                    <span id="student-card-content">
+                      {this.state.userCardDetails.Program}
+                    </span>
                     <span id="student-card-name"> : البرنامج </span>
                   </div>
                 </Card.Description>
                 <Card.Meta>
                   <div className="list-content-block">
-                    <span id="student-card-content">{collegeId}</span>
+                    <span id="student-card-content">
+                      {this.state.userCardDetails.Username}
+                    </span>
                     <span id="student-card-name"> : الرقم الجامعي </span>
                   </div>
                 </Card.Meta>
@@ -514,7 +555,7 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                       id="student-card-content"
                       style={{ paddingBottom: "25px" }}
                     >
-                      {nationalId}
+                      {this.state.userCardDetails.SSN}
                     </span>
                     <span
                       id="student-card-name"
