@@ -7,7 +7,7 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
 var officegen = require('officegen')
-const fs = require("fs");
+var fs = require('fs')
 var resultobject1 = '';
 var resultobject2 = '';
 var allresults = '';
@@ -17,61 +17,57 @@ var semester = '';
 var gpa = '';
 
 router.get("/certificateofenrollment", function (req, res, next) {
-  //res.sendFile(__dirname+'/certificateofenrollment.html');
-  //var username = 1;
-  var username = req.user.username;
-  console.log("REQ.USER TEST");
-  console.log(req.user);
-  console.log("REQ.USER TEST END");
-  console.log("THE USERNAME REACHED TO API:");
-  console.log(username);
-  connection.query("Use AlexUni");
-  connection.query("SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.armypostpone, Students.Gender, Payment.Paid FROM Students RIGHT JOIN Payment ON Students.ID=Payment.StudentID WHERE Students.Username = ?",
-    [username],
-    function (err, results, field) {
-
-
-      if (results.length > 0) {
-        Object.keys(results).forEach(function (key)
-
-
-          {
+  if (req.user) {
+    //res.sendFile(__dirname+'/certificateofenrollment.html');
+    //var username = 1;
+    var username = req.user.username;
+    console.log("REQ.USER TEST");
+    console.log(req.user);
+    console.log("REQ.USER TEST END");
+    console.log("THE USERNAME REACHED TO API:");
+    console.log(username);
+    connection.query("Use AlexUni");
+    connection.query("SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.armypostpone, Students.Gender, Payment.Paid FROM Students RIGHT JOIN Payment ON Students.ID=Payment.StudentID WHERE Students.Username = ?",
+      [username],
+      function (err, results, field) {
+        if (results.length > 0) {
+          Object.keys(results).forEach(function (key) {
             var row = results[key];
             resultobject1 = row;
             faculty = row.Faculty;
             program = row.Program;
-            nameen = row.nameen
-            namear = row.NameAr
-
           });
-        return;
-      }
-
-    });
-  connection.query("Use IntegratedData");
-  connection.query("SELECT GPA,Semester FROM Student WHERE ID = ?",
-    [username],
-    function (err, results, field) {
-      if (results.length > 0) {
-        Object.keys(results).forEach(function (key) {
-          var row = results[key];
-          resultobject2 = row;
-          //console.log(row);
-          semester = row.Semester;
-          gpa = row.GPA;
           return;
-        });
+        }
 
-        allresults = {
-          ...resultobject1,
-          ...resultobject2
-        };
-        console.log("All resultsssssssss");
-        console.log(allresults);
-        res.status(200).json(allresults);
+      });
+    connection.query("Use IntegratedData");
+    connection.query("SELECT GPA,Semester FROM Student WHERE ID = ?",
+      [username],
+      function (err, results, field) {
+        if (results.length > 0) {
+          Object.keys(results).forEach(function (key) {
+            var row = results[key];
+            resultobject2 = row;
+            //console.log(row);
+            semester = results.Semester;
+            gpa = results.GPA;
+            return;
+          });
+
+          allresults = { ...resultobject1, ...resultobject2 };
+          console.log("All resultsssssssss");
+          console.log(allresults);
+          res.status(200).json(allresults);
+        }
       }
-    }
-  );
+    );
+  } else {
+    return res.status(400).send({
+      error: true,
+      message: "Please login to view this page!"
+    });
+  }
 });
 router.get("/certificatecart", function (req, res, next) {
   if (req.user) {
@@ -88,7 +84,8 @@ router.get("/certificatecart", function (req, res, next) {
         });
       }
 
-    } else {
+    }
+    else {
       if (!allresults.Paid) {
         //   // res.json(allresults);
         // } else {
@@ -113,7 +110,8 @@ router.get("/certificatecart", function (req, res, next) {
               [username, "Certificate of Enrollment", JSON.stringify(allresults), fees, faculty]);
             res.status(200).send("tmaaaaam");
             // res.redirect("/cart");
-          } else {
+          }
+          else {
             res.status(400).send({
               error: true,
               message: "No such service"
@@ -211,7 +209,7 @@ router.get("/certificatecart", function (req, res, next) {
 
         });
 
-     
+
 
 
 
