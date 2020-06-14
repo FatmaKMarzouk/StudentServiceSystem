@@ -60,14 +60,15 @@ router.get("/transcript", function (request, response, next) {
         // if no username, then student not registered
         if (results.length > 0) {
           Object.keys(results).forEach(function (key) {
+            row1arr = results[key]
             row1 = { ...row1, ...results };
             // info.push(results[key]);
-            id = row1.ID;
-            prog = row1.ProgramName;
-            name = row1.Name;
-            totalReg = row1.TotalRegHours;
-            totalEarned = row1.TotalEarnedHours;
-            totalGPA = row1.GPA;
+            id = row1arr.ID;
+            prog = row1arr.ProgramName;
+            name = row1arr.Name;
+            totalReg = row1arr.TotalRegHours;
+            totalEarned = row1arr.TotalEarnedHours;
+            totalGPA = row1arr.GPA;
             // console.log(info)
           });
 
@@ -90,10 +91,11 @@ router.get("/transcript", function (request, response, next) {
               if (results2.length > 0) {
                 console.log("loop print");
                 Object.keys(results2).forEach(function (key) {
+                  row2arr = results2[key]
                   row2 = { ...row2, ...results2 };
-                  courses = row2.CourseName;
-                  grade = row2.Grade;
-                  semesters = row2.Semester;
+                  courses = row2arr.CourseName;
+                  grade = row2arr.Grade;
+                  semesters = row2arr.Semester;
                   info1.push(
                     courses + " ,Grade: " + grade + " ,Semester: " + semesters
                   );
@@ -120,10 +122,11 @@ router.get("/transcript", function (request, response, next) {
                     if (results4.length > 0) {
                       Object.keys(results4).forEach(function (key) {
                         //  termGpa.push(results4[key]);
+                        row4arr = results4[key]
                         row4 = { ...row4, ...results4 };
-                        sems = row4.Semester;
-                        gpa = row4.GPA;
-                        regH = row4.regHours;
+                        sems = row4arr.Semester;
+                        gpa = row4arr.GPA;
+                        regH = row4arr.regHours;
                         info2.push(
                           sems + " ,GPA: " + gpa + " ,Registered Hours: " + regH
                         );
