@@ -52,11 +52,13 @@
 
 #userDetails-label {
   margin-left: 10px;
-  display: block;
+  display: flex;
   margin-right: 10px;
   text-align: right;
   margin-bottom: -8px;
-  margin-top: 10px;
+  width: 100px;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 #progress-bar-buttons {

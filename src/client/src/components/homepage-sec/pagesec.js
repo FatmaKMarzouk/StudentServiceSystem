@@ -183,7 +183,7 @@ function getFunctionContent(func) {
     case 2:
       return (
         <div className="Card">
-          <Upload value="استمارة ٦ جند" />
+          <Upload value="استمارة ٦ جند" id={1} />
         </div>
       );
     case 3:
