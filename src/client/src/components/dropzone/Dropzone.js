@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import "./Dropzone.css";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import CloudUploadOutlinedIcon from "@material-ui/icons/CloudUploadOutlined";
 import QueueIcon from "@material-ui/icons/Queue";
+import BackupIcon from "@material-ui/icons/Backup";
 
 class Dropzone extends Component {
   constructor(props) {
@@ -77,7 +76,8 @@ class Dropzone extends Component {
           multiple
           onChange={this.onFilesAdded}
         />
-        <QueueIcon id="upload-icon" />
+        <BackupIcon id="upload-icon" />
+        <button id="dropzone-upload-button">تحميل الملفات</button>
         {/*<span>تحميل الملفات</span>*/}
       </div>
     );

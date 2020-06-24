@@ -8,16 +8,6 @@
   margin-left: -10%;
 }
 
-.appBar {
-  background-color: #002346;
-  bottom: 0;
-  color: white;
-  padding: 1%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
 .studentMain {
   height: auto;
   width: 100%;
@@ -75,5 +65,18 @@
   padding-bottom: 2%;
 }
 
-#footer-links {
+#menu-list-grow {
+  background-color: #002346;
+}
+
+#menu-list-items {
+  font-family: "Cairo";
+  color: white;
+}
+
+#menu-list-items:hover {
+  background-color: #1361af36;
+}
+
+#profile-component-container {
 }

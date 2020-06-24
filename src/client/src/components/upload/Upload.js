@@ -3,7 +3,7 @@ import Dropzone from "../dropzone/Dropzone";
 import "./Upload.css";
 import Progress from "../progress/Progress";
 import Divider from "@material-ui/core/Divider";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import TextField from "@material-ui/core/TextField";
 
 class Upload extends Component {
   constructor(props) {
@@ -12,7 +12,7 @@ class Upload extends Component {
       files: [],
       uploading: false,
       uploadProgress: {},
-      successfullUploaded: false
+      successfullUploaded: false,
     };
 
     this.onFilesAdded = this.onFilesAdded.bind(this);
@@ -22,8 +22,8 @@ class Upload extends Component {
   }
 
   onFilesAdded(files) {
-    this.setState(prevState => ({
-      files: prevState.files.concat(files)
+    this.setState((prevState) => ({
+      files: prevState.files.concat(files),
     }));
     document.getElementById("files-container").style.display = "block";
   }
@@ -31,7 +31,7 @@ class Upload extends Component {
   async uploadFiles() {
     this.setState({ uploadProgress: {}, uploading: true });
     const promises = [];
-    this.state.files.forEach(file => {
+    this.state.files.forEach((file) => {
       promises.push(this.sendRequest(file));
     });
     try {
@@ -48,25 +48,25 @@ class Upload extends Component {
     return new Promise((resolve, reject) => {
       const req = new XMLHttpRequest();
 
-      req.upload.addEventListener("progress", event => {
+      req.upload.addEventListener("progress", (event) => {
         if (event.lengthComputable) {
           const copy = { ...this.state.uploadProgress };
           copy[file.name] = {
             state: "pending",
-            percentage: (event.loaded / event.total) * 100
+            percentage: (event.loaded / event.total) * 100,
           };
           this.setState({ uploadProgress: copy });
         }
       });
 
-      req.upload.addEventListener("load", event => {
+      req.upload.addEventListener("load", (event) => {
         const copy = { ...this.state.uploadProgress };
         copy[file.name] = { state: "done", percentage: 100 };
         this.setState({ uploadProgress: copy });
         resolve(req.response);
       });
 
-      req.upload.addEventListener("error", event => {
+      req.upload.addEventListener("error", (event) => {
         const copy = { ...this.state.uploadProgress };
         copy[file.name] = { state: "error", percentage: 0 };
         this.setState({ uploadProgress: copy });
@@ -93,7 +93,7 @@ class Upload extends Component {
             src="baseline-check_circle_outline-24px.svg"
             style={{
               opacity:
-                uploadProgress && uploadProgress.state === "done" ? 0.5 : 0
+                uploadProgress && uploadProgress.state === "done" ? 0.5 : 0,
             }}
           />
         </div>
@@ -111,7 +111,7 @@ class Upload extends Component {
           }}
           id="upload-button"
         >
-          Clear
+          مسح
         </button>
       );
     } else {
@@ -121,9 +121,32 @@ class Upload extends Component {
           onClick={this.uploadFiles}
           id="upload-button"
         >
-          Upload
+          رفع
         </button>
       );
+    }
+  }
+
+  getInputID(id) {
+    switch (id) {
+      case 0:
+        return;
+      case 1:
+        return (
+          <div id="upload-input-id">
+            <TextField
+              required
+              id="outlined-basic"
+              variant="outlined"
+              margin="dense"
+              style={{
+                width: "130px",
+                textAlign: "center",
+              }}
+            />
+            <label id="upload-id-label">: الرقم الجامعي </label>
+          </div>
+        );
     }
   }
 
@@ -131,39 +154,33 @@ class Upload extends Component {
     return (
       <div className="Upload">
         <div className="upload-files">
-          <h4
-            style={{
-              float: "right",
-              marginRight: "5%",
-              marginTop: "2%",
-              marginBottom: "2%"
-            }}
-          >
-            يرجى تحميل {this.props.value}
-          </h4>
+          <div id="upload-title">يرجى تحميل {this.props.value}</div>
           <Divider id="divider-upload" />
           <br />
-          <div id="inside-upload-container">
-            <div className="upload-circle">
-              <Dropzone
-                onFilesAdded={this.onFilesAdded}
-                disabled={
-                  this.state.uploading || this.state.successfullUploaded
-                }
-              />
+          <div id="upload-container">
+            <div id="inside-upload-container">
+              <div id="files-container">
+                {this.state.files.map((file) => {
+                  return (
+                    <div key={file.name} className="Row">
+                      <span className="Filename">{file.name}</span>
+                      {this.renderProgress(file)}
+                      <Divider />
+                    </div>
+                  );
+                })}
+                {this.renderActions()}
+              </div>
+              <div className="upload-circle">
+                <Dropzone
+                  onFilesAdded={this.onFilesAdded}
+                  disabled={
+                    this.state.uploading || this.state.successfullUploaded
+                  }
+                />
+              </div>
             </div>
-            <div id="files-container">
-              {this.state.files.map(file => {
-                return (
-                  <div key={file.name} className="Row">
-                    <span className="Filename">{file.name}</span>
-                    {this.renderProgress(file)}
-                    <Divider />
-                  </div>
-                );
-              })}
-              {this.renderActions()}
-            </div>
+            {this.getInputID(this.props.id)}
           </div>
         </div>
       </div>

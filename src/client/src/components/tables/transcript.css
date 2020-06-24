@@ -43,6 +43,7 @@
   font-family: "Cairo";
   color: #003366;
   font-weight: bold;
+  padding-right: 5px;
 }
 
 /*Overriding Carousel*/
@@ -64,6 +65,10 @@
 }
 
 .carousel .carousel-indicators li {
+  background-color: #00234673;
+}
+
+.carousel .carousel-indicators .active {
   background-color: #002346;
 }
 

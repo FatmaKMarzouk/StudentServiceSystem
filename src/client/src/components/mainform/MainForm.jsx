@@ -1,7 +1,7 @@
 // MainForm.jsx
 import React, { Component } from "react";
 import UserDetails from "./UserDetails";
-import PersonalDetails from "./PersonalDetails";
+//import PersonalDetails from "./PersonalDetails";
 import Confirmation from "./Confirmation";
 import Success from "./Success";
 
@@ -20,24 +20,24 @@ class MainForm extends Component {
     relativeRelation: "",
     birthDate: "",
     medicalCondition: "",
-    guardianPhoneNumber: ""
+    guardianPhoneNumber: "",
   };
 
   nextStep = () => {
     const { step } = this.state;
     this.setState({
-      step: step + 1
+      step: step + 1,
     });
   };
 
   prevStep = () => {
     const { step } = this.state;
     this.setState({
-      step: step - 1
+      step: step - 1,
     });
   };
 
-  handleChange = input => event => {
+  handleChange = (input) => (event) => {
     this.setState({ [input]: event.target.value });
   };
 
@@ -56,7 +56,7 @@ class MainForm extends Component {
       relativeRelation,
       birthDate,
       medicalCondition,
-      guardianPhoneNumber
+      guardianPhoneNumber,
     } = this.state;
     const values = {
       id: 0,
@@ -72,7 +72,7 @@ class MainForm extends Component {
       relativeRelation,
       birthDate,
       medicalCondition,
-      guardianPhoneNumber
+      guardianPhoneNumber,
     };
     switch (step) {
       case 1:
@@ -94,6 +94,8 @@ class MainForm extends Component {
         );
       case 3:
         return <Success />;
+      default:
+        return;
     }
   }
 }

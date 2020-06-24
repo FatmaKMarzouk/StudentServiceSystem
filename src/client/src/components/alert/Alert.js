@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
 
 class Alerts extends Component {
@@ -29,7 +28,7 @@ class Alerts extends Component {
   }
   render() {
     const {
-      values: { alertNumber, alertMessage }
+      values: { alertNumber, alertMessage },
     } = this.props;
 
     return <div>{this.getAlert(alertNumber, alertMessage)}</div>;
@@ -38,8 +37,7 @@ class Alerts extends Component {
 
 export default Alerts;
 
-{
-  /*const useStyles = makeStyles(theme => ({
+/*const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
     "& > * + *": {
@@ -82,4 +80,3 @@ export default function SimpleAlerts() {
     <div className={classes.root}>{getAlert(alertNumber, alertMessage)}</div>
   );
 }*/
-}

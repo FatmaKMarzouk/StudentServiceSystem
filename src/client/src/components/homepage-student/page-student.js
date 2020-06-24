@@ -1,59 +1,51 @@
-import React, { Component } from "react";
+import React from "react";
 import "./page-student.css";
 import "../style.css";
+import Profile from "../profile/profile";
+import Footer from "../footer/footer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import IconButton from "@material-ui/core/IconButton";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import Carousel from "react-bootstrap/Carousel";
-import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
-import FileCopyIcon from "@material-ui/icons/FileCopy";
-import DialogBox from "../dialog/DialogBox";
-import Button from "@material-ui/core/Button";
-import FacebookIcon from "@material-ui/icons/Facebook";
-import Collapsible from "react-collapsible";
-import DialogSelect from "../dialog/DialogSelect";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Grow from "@material-ui/core/Grow";
 import Popper from "@material-ui/core/Popper";
 import MenuList from "@material-ui/core/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
 import ItemsCarousel from "../items-carousel/items-carousel";
-//import ShoppingCart from "../shopping-cart/shopping-cart";
-import ShoppingCart2 from "../shopping-cart/shopping-cart2";
+import ShoppingCart from "../shopping-cart/shopping-cart";
+import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
-import LanguageIcon from "@material-ui/icons/Language";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     position: "auto",
     bottom: theme.spacing(2),
     right: theme.spacing(2),
     flexGrow: 1,
     marginTop: "2%",
-    textAlign: "right"
+    textAlign: "right",
   },
   content: {
     flexGrow: 1,
-    height: "100%",
+    height: "100vh",
     overflow: "auto",
     backgroundImage: "url(bg.jpg)",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-    position: "relative"
+    position: "relative",
   },
   studentMain: {
     height: "auto",
     width: "100%",
     margin: "0 auto",
-    marginTop: "2%"
+    marginTop: "2%",
   },
   paper: {
     padding: theme.spacing(2),
@@ -61,16 +53,16 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.secondary,
     height: 320,
     width: 250,
-    position: "relative"
+    position: "relative",
   },
   control: {
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
 
   contain: {
     backgroundColor: "white",
     opacity: 0.5,
-    marginTop: "2%"
+    marginTop: "2%",
   },
   container: {
     paddingTop: "0",
@@ -80,7 +72,7 @@ const useStyles = makeStyles(theme => ({
     boxShadow: "0px 0px 50px 5px rgba(0, 0, 0, 0.71)",
     width: "auto",
     paddingLeft: "0",
-    paddingRight: "0"
+    paddingRight: "0",
   },
   appBar: {
     backgroundColor: "#002346",
@@ -88,7 +80,7 @@ const useStyles = makeStyles(theme => ({
     height: "auto",
     color: "white",
     padding: "1%",
-    width: "100%"
+    width: "100%",
   },
   dialogButton: {
     position: "absolute",
@@ -96,26 +88,9 @@ const useStyles = makeStyles(theme => ({
     bottom: 0,
     marginRight: "4%",
     marginBottom: "4%",
-    marginTop: "10%"
-  }
+    marginTop: "10%",
+  },
 }));
-
-function FormRow() {
-  const classes = useStyles();
-  return (
-    <React.Fragment>
-      <Grid item xs={4}>
-        <Paper className={classes.paper}>item</Paper>
-      </Grid>
-      <Grid item xs={4}>
-        <Paper className={classes.paper}>item</Paper>
-      </Grid>
-      <Grid item xs={4}>
-        <Paper className={classes.paper}>item</Paper>
-      </Grid>
-    </React.Fragment>
-  );
-}
 
 function getFunctionContent(func) {
   switch (func) {
@@ -160,11 +135,15 @@ function getFunctionContent(func) {
     case 1:
       return (
         <div>
-          <ShoppingCart2 />
+          <ShoppingCart />
         </div>
       );
     case 2:
-      return;
+      return (
+        <div id="profile-component-container">
+          <Profile />
+        </div>
+      );
     default:
       return "Unknown step";
   }
@@ -184,7 +163,7 @@ export default function StudentHome(props) {
   }
 
   const handleToggle = () => {
-    setOpenM(prevOpenM => !prevOpenM);
+    setOpenM((prevOpenM) => !prevOpenM);
   };
 
   const handleCart = () => {
@@ -199,7 +178,7 @@ export default function StudentHome(props) {
     setActiveFunc(2);
   };
 
-  const handleClose = event => {
+  const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
@@ -243,7 +222,7 @@ export default function StudentHome(props) {
               fontWeight: "bold",
               color: "white",
               fontFamily: "Cairo",
-              fontSize: "18px"
+              fontSize: "18px",
             }}
             className={classes.title}
             underline="none"
@@ -263,7 +242,7 @@ export default function StudentHome(props) {
                 {...TransitionProps}
                 style={{
                   transformOrigin:
-                    placement === "bottom" ? "center top" : "center bottom"
+                    placement === "bottom" ? "center top" : "center bottom",
                 }}
               >
                 <Paper>
@@ -273,8 +252,12 @@ export default function StudentHome(props) {
                       id="menu-list-grow"
                       onKeyDown={handleListKeyDown}
                     >
-                      <MenuItem onClick={handleProfile}>My account</MenuItem>
-                      <MenuItem onClick={handleClose}>Logout</MenuItem>
+                      <MenuItem onClick={handleProfile} id="menu-list-items">
+                        My account
+                      </MenuItem>
+                      <MenuItem onClick={handleClose} id="menu-list-items">
+                        Logout
+                      </MenuItem>
                     </MenuList>
                   </ClickAwayListener>
                 </Paper>
@@ -453,21 +436,7 @@ export default function StudentHome(props) {
           </div>
         </Container>
             */}
-        <footer className="appBar">
-          <div>
-            <FacebookIcon />
-          </div>
-          <div>
-            <LanguageIcon />{" "}
-            <Link
-              id="footer-links"
-              href="https://www.alexu.edu.eg/index.php/en/"
-              target="_blank"
-            >
-              Alexandria University
-            </Link>
-          </div>
-        </footer>
+        <Footer />
       </main>
     </React.Fragment>
   );

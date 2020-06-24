@@ -12,8 +12,8 @@ router.use(bodyParser.json());
 var connection = require('../controllers/dbconnection');
 
 router.get('/cart',function(request,response,next){
-  if(request.session.loggedin){
-  var username = request.session.username;
+  if(request.user){
+  var username = request.user.username;
   connection.query('USE AlexUni');
   connection.query('SELECT * FROM Requests WHERE StudentID = ? AND Paid = 0',[username],function(error,results,fields){
     if(results.length>0){
@@ -23,32 +23,38 @@ router.get('/cart',function(request,response,next){
         total += row.Amount;
 
       });
-      console.log(requests);
-      console.log(total);
+      response.status(200).send(requests,total);
     }
     else {
-      console.log('You have no requested services in your cart');
+      response.status(400).send({
+        error:true,
+        message:'You have no requested services in your cart'
+      });
     }
   });
 
-  response.sendFile(__dirname+'/cart.html');
+  //response.sendFile(__dirname+'/cart.html');
 }
 else{
-  response.send("Please log in to view this page!");
+  response.status(400).send({
+    error:true,
+    message:"Please log in to view this page!"});
 }
 });
 
 router.post('/delete-cart',function(request,response,next){
-  if(request.session.loggedin){
-  var reqID = request.session.reqID;
+  if(request.user){
+  var reqID = request.body.reqID;
   console.log(reqID);
   connection.query('USE AlexUni');
-  connection.query('DELETE FROM Requests WHERE ID = 2',[reqID]); //hardcoding id till front end is ready
+  connection.query('DELETE FROM Requests WHERE ID = ?',[reqID]); //hardcoding id till front end is ready
   response.redirect('/cart');
 
 }
 else{
-  response.send("Please log in to view this page!");
+  response.status(400).send({
+    error:true,
+    message:"Please log in to view this page!"});
 }
 
 });

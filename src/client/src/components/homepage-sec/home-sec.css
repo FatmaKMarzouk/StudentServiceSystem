@@ -2,6 +2,43 @@
   float: right;
 }
 
+#customized-menu {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#sec-profile-menu-item {
+  color: white;
+  float: right;
+  min-width: 10px;
+  margin-left: 12px;
+}
+
+.MuiListItemText-primary.MuiTypography-body1 {
+  font-family: "Cairo";
+}
+
+.MuiMenu-paper.Component-paper-80 {
+  background-color: #002346;
+  border: none;
+  color: white;
+  font-family: "Cairo";
+}
+
 #hide-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+#grid-paper {
+  height: 600px;
+  width: 550px;
+  background-color: rgb(255, 255, 255, 0.5);
+}
+
+#grid-control {
+  padding: 2px;
+}
+
+#grid-root {
+  flex-grow: 1;
 }

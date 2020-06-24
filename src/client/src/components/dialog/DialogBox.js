@@ -13,7 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Confirmation from "../mainform/Confirmation";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Zoom from "@material-ui/core/Zoom";
-import { readCertOfEnrollData } from "../../core/Apis";
+import { readCertOfEnrollData, certificateToCart, transcriptCart, cardCart } from "../../core/Apis";
 import { getUser, getToken } from "../../Utils/Common";
 import axios from "axios";
 import Upload from "../upload/Upload";
@@ -23,16 +23,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Zoom in="checked" ref={ref} {...props} />;
 });
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     margin: 0,
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
   closeButton: {
     position: "absolute",
     right: theme.spacing(1),
     top: theme.spacing(1),
-    color: theme.palette.grey[500]
+    color: theme.palette.grey[500],
   },
 
   paper: {
@@ -44,7 +44,7 @@ const styles = theme => ({
     bottom: 0,
     marginRight: "4%",
     marginBottom: "4%",
-    marginTop: "10%"
+    marginTop: "10%",
   },
   dialogButton: {
     position: "absolute",
@@ -52,11 +52,11 @@ const styles = theme => ({
     bottom: 0,
     marginRight: "4%",
     marginBottom: "4%",
-    marginTop: "10%"
-  }
+    marginTop: "10%",
+  },
 });
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(5),
     textAlign: "center",
@@ -64,15 +64,15 @@ const useStyles = makeStyles(theme => ({
     height: 150,
     width: 250,
     margin: "0 auto",
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   paperWidth: {
     maxWidth: "800px",
-    width: "auto"
-  }
+    width: "auto",
+  },
 }));
 
-const DialogTitle = withStyles(styles)(props => {
+const DialogTitle = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
@@ -90,17 +90,17 @@ const DialogTitle = withStyles(styles)(props => {
   );
 });
 
-const DialogContent = withStyles(theme => ({
+const DialogContent = withStyles((theme) => ({
   root: {
-    padding: theme.spacing(2)
-  }
+    padding: theme.spacing(2),
+  },
 }))(MuiDialogContent);
 
-const DialogActions = withStyles(theme => ({
+const DialogActions = withStyles((theme) => ({
   root: {
     margin: 0,
-    padding: theme.spacing(1)
-  }
+    padding: theme.spacing(1),
+  },
 }))(MuiDialogActions);
 
 function getConfirmationTitle(num) {
@@ -130,7 +130,6 @@ function getConfirmationTitle(num) {
 
 export default function CustomizedDialogs(props) {
   const [open, setOpen] = React.useState(false);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   /*const [userData, setUserData] = useState({
@@ -190,7 +189,7 @@ export default function CustomizedDialogs(props) {
             setLoading(false);
             console.log("data");
             console.log(response.data);
-            
+
             //userData = username.value,
             //handleUserData(response.data);
             //setUserData(response.data);
@@ -213,6 +212,20 @@ export default function CustomizedDialogs(props) {
     setOpen(true);
   };
   const handleClose = () => {
+
+    const token = getToken();
+
+    switch (props.id) {
+      case 1:
+        certificateToCart(token);
+        break;
+      case 2:
+        transcriptCart(token);
+        break;
+      case 3:
+        cardCart(token);
+        break;
+    }
     setOpen(false);
     document.getElementById("blur").style.filter = "blur(0)";
   };
@@ -245,86 +258,86 @@ export default function CustomizedDialogs(props) {
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "A+"
+        grade: "A+",
       },
       {
         semester: "Fall 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "B+"
+        grade: "B+",
       },
       {
         semester: "Fall 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "C+"
+        grade: "C+",
       },
       {
         semester: "Fall 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "A+"
+        grade: "A+",
       },
       {
         semester: "Fall 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "B+"
+        grade: "B+",
       },
       {
         semester: "Fall 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "A-"
+        grade: "A-",
       },
       {
         semester: "Spring 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "D+"
+        grade: "D+",
       },
       {
         semester: "Spring 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "C+"
+        grade: "C+",
       },
       {
         semester: "Spring 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "A+"
+        grade: "A+",
       },
       {
         semester: "Spring 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "B-"
+        grade: "B-",
       },
       {
         semester: "Spring 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "A+"
+        grade: "A+",
       },
       {
         semester: "Spring 2015-2016",
         courseCode: "MP103 N",
         courseName: "Mechanics-1",
         creditHours: "3",
-        grade: "D-"
-      }
-    ]
+        grade: "D-",
+      },
+    ],
   };
 
   return (
@@ -349,14 +362,14 @@ export default function CustomizedDialogs(props) {
               {getConfirmationTitle(props.id)}
               <span
                 style={{
-                  fontSize: "12px"
+                  fontSize: "12px",
                 }}
               >
                 يرجى التأكد من صحة البيانات المدخلة
               </span>
               <span
                 style={{
-                  fontSize: "12px"
+                  fontSize: "12px",
                 }}
               >
                 ( ثم أضف إلى العربة )
