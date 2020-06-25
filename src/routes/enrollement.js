@@ -167,7 +167,7 @@ router.post('/nominationcard', function (request, response) {
 	var nominationCard = request.body.nominationCard || " ";
 	//var email = request.body.email;
 
-	if (request.session.loggedin) {
+	if (request.user) {
 
 		connection.query('USE AlexUni');
 		connection.query("UPDATE Students SET NominationCard = ? WHERE Email = ? ", [nominationCard, email], function (error, results, fields) {
@@ -183,7 +183,7 @@ router.post('/photo', function (request, response) {
 	var photo = request.body.photo || " ";
 	//var email = request.body.email;
 
-	if (request.session.loggedin) {
+	if (request.user) {
 
 		connection.query('USE AlexUni');
 		connection.query("UPDATE Students SET Photo = ? WHERE Email = ? ", [photo, email], function (error, results, fields) {
@@ -199,7 +199,7 @@ router.post('/highschoolcertificate', function (request, response) {
 	var highschoolcertificate = request.body.highschoolcertificate || " ";
 	//var email = request.body.email;
 
-	if (request.session.loggedin) {
+	if (request.user) {
 
 		connection.query('USE AlexUni');
 		connection.query("UPDATE Students SET highschoolCertificate = ? WHERE Email = ? ", [highschoolcertificate, email], function (error, results, fields) {
@@ -215,7 +215,7 @@ router.post('/birthcertificate', function (request, response) {
 	var birthcertificate = request.body.birthcertificate || " ";
 	//var email = request.body.email;
 
-	if (request.session.loggedin) {
+	if (request.user) {
 
 		connection.query('USE AlexUni');
 		connection.query("UPDATE Students SET birthCertificate = ? WHERE Email = ? ", [birthcertificate, email], function (error, results, fields) {
@@ -231,7 +231,7 @@ router.post('/nationalid', function (request, response) {
 	var nationalid = request.body.nationalid || " ";
 	//var email = request.body.email;
 
-	if (request.session.loggedin) {
+	if (request.user) {
 
 		connection.query('USE AlexUni');
 		connection.query("UPDATE Students SET Nationalid = ? WHERE Email = ? ", [nationalid, email], function (error, results, fields) {
