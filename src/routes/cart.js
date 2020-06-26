@@ -23,6 +23,9 @@ router.get('/cart',function(request,response,next){
         total += row.Amount;
 
       });
+      console.log("bada2t tba3a requests");
+      console.log(requests);
+      console.log("5allast tba3a requests");
       response.status(200).send(requests,total);
     }
     else {
@@ -47,8 +50,9 @@ router.post('/delete-cart',function(request,response,next){
   var reqID = request.body.reqID;
   console.log(reqID);
   connection.query('USE AlexUni');
-  connection.query('DELETE FROM Requests WHERE ID = ?',[reqID]); //hardcoding id till front end is ready
-  response.redirect('/cart');
+  connection.query('DELETE FROM Requests WHERE ID = ?',[reqID]); 
+  //response.redirect('/cart');
+  response.status(200).send(" deleted tmam ");
 
 }
 else{
