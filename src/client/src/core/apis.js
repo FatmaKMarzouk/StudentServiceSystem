@@ -66,6 +66,23 @@ export const getProgramss = (token) => {
     .catch((err) => console.log(err));
 };
 
+export const submitChosenProgram = (token, selectedProgram) => {
+  console.log("2");
+  console.log(selectedProgram);
+  return fetch("http://localhost:5000/submitprog", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ selectedprogram: selectedProgram }),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
 // transcript api
 // api 1
 export const getStudentTranscript = (token) => {

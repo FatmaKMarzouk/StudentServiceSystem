@@ -39,6 +39,8 @@ router.get("/chooseprog", function (request, response, next) {
                 console.log("bada2t teba3a results2");
                 console.log(results2);
                 console.log("bada2t teba3a results2");
+                results2 = JSON.parse(JSON.stringify(results2));
+                console.log(results2);
                 response.status(200).send(results2);
                 // console.log(results2);  //To be shown in drop down menu
               } else {
@@ -72,6 +74,9 @@ router.post("/submitprog", function (request, response, next) {
     var flag = 1;
     var username = request.user.username;
     var program = request.body.selectedprogram;
+
+    console.log("PROGRAM FL BACKENDDDDDDDDD");
+    console.log(program);
     connection.query("USE AlexUni");
     connection.query(
       "SELECT Program FROM Students WHERE ID =?",
