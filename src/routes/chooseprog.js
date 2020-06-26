@@ -17,29 +17,44 @@ router.get("/chooseprog", function (request, response, next) {
   if (request.user) {
     // response.sendFile(__dirname+'/chooseprog.html');
     username = request.user.username;
-    var facultyname=""; 
-    var ssp="";
-    connection.query('USE AlexUni');
-    connection.query('SELECT Faculty,SSP FROM Students WHERE Username = ? ', [username], function(error, results1, fields) {
-			if (results1.length>0) {
-      Object.keys(results1).forEach(function(key) {
-      var row = results1[key];
-      facultyname = row.Faculty;
-      ssp = row.SSP;
-      });
-    connection.query('USE AlexUni');
-    connection.query('SELECT Name FROM Program WHERE FacultyName = ? AND SSP = ?',[facultyname,ssp],function(error,results2,fields){
-      if (results2.length>0){
-        console.log("bada2t teba3a results2");
-        console.log(results2);
-        console.log("bada2t teba3a results2");
-        response.status(200).send(results2);
-        // console.log(results2);  //To be shown in drop down menu
-      }
-      else {
-        response.status(400).send({
-          error:true,
-          message:"no valid program available"});
+    var facultyname = "";
+    var ssp = "";
+    connection.query("USE AlexUni");
+    connection.query(
+      "SELECT Faculty,SSP FROM Students WHERE Username = ? ",
+      [username],
+      function (error, results1, fields) {
+        if (results1.length > 0) {
+          Object.keys(results1).forEach(function (key) {
+            var row = results1[key];
+            facultyname = row.Faculty;
+            ssp = row.SSP;
+          });
+          connection.query("USE AlexUni");
+          connection.query(
+            "SELECT Name FROM Program WHERE FacultyName = ? AND SSP = ?",
+            [facultyname, ssp],
+            function (error, results2, fields) {
+              if (results2.length > 0) {
+                console.log("bada2t teba3a results2");
+                console.log(results2);
+                console.log("bada2t teba3a results2");
+                response.status(200).send(results2);
+                // console.log(results2);  //To be shown in drop down menu
+              } else {
+                response.status(400).send({
+                  error: true,
+                  message: "no valid program available",
+                });
+              }
+            }
+          );
+        } else {
+          response.status(400).send({
+            error: true,
+            message: "Incorrect Data!No Faculty name specified",
+          });
+        }
       }
     );
   } else {
