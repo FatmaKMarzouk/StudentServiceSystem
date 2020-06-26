@@ -65,25 +65,27 @@ const rows = [
   createRow(orders[2].orderName, orders[2].orderPrice),
 ];*/
 
-const invoiceSubtotal = subtotal(orders);
-const invoiceTaxes = TAX_RATE * invoiceSubtotal;
-const invoiceTotal = invoiceTaxes + invoiceSubtotal;
-
 export default function SpanningTable() {
   const classes = useStyles();
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     orderss: [],
   });
+
+  const invoiceSubtotal = subtotal(state.orderss);
+  const invoiceTaxes = TAX_RATE * invoiceSubtotal;
+  const invoiceTotal = invoiceTaxes + invoiceSubtotal;
+
+  const token = getToken();
 
   console.log("haga habla gidan");
 
   useEffect(() => {
-    const token = getToken();
     cartApi(token).then((data) => {
       console.log(data);
       const orderObjects = [];
       data.map((order) => {
         const orderObject = {
+          orderID: order.ID,
           orderName: order.ServiceName,
           orderPrice: order.Amount,
         };
@@ -92,7 +94,11 @@ export default function SpanningTable() {
       setState({ orderss: orderObjects });
     });
     console.log("HELLO");
-  });
+  }, []);
+
+  const handleDeleteRequest = () => {
+    //delete-cart
+  };
 
   return (
     <div id="shopping-cart-container">
@@ -113,9 +119,9 @@ export default function SpanningTable() {
             </TableHead>
             <TableBody>
               {state.orderss.map((order) => (
-                <TableRow>
+                <TableRow key={order.orderID}>
                   <TableCell id="cart-row">
-                    <button id="delete-button">
+                    <button id="delete-button" onClick={handleDeleteRequest}>
                       <DeleteOutlinedIcon />
                     </button>
                   </TableCell>
