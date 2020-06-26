@@ -13,13 +13,10 @@ var resultobject2 = '';
 var allresults = '';
 var faculty = '';
 var program = '';
-var semester = '';
-var gpa = '';
+var namear='';
 
 router.get("/certificateofenrollment", function (req, res, next) {
   if (req.user) {
-    //res.sendFile(__dirname+'/certificateofenrollment.html');
-    //var username = 1;
     var username = req.user.username;
     console.log("REQ.USER TEST");
     console.log(req.user);
@@ -36,11 +33,10 @@ router.get("/certificateofenrollment", function (req, res, next) {
             resultobject1 = row;
             faculty = row.Faculty;
             program = row.Program;
+            namear = row.NameAr;
           });
-          return;
-        }
 
-      });
+
     connection.query("Use IntegratedData");
     connection.query("SELECT GPA,Semester FROM Student WHERE ID = ?",
       [username],
@@ -49,19 +45,99 @@ router.get("/certificateofenrollment", function (req, res, next) {
           Object.keys(results).forEach(function (key) {
             var row = results[key];
             resultobject2 = row;
-            //console.log(row);
-            semester = results.Semester;
-            gpa = results.GPA;
-            return;
           });
 
           allresults = { ...resultobject1, ...resultobject2 };
           console.log("All resultsssssssss");
           console.log(allresults);
           res.status(200).json(allresults);
+
+        // Create an empty Word object:
+        let docx = officegen('docx');
+
+        // Officegen calling this function after finishing to generate the docx document:
+        docx.on('finalize', function (written) {
+          console.log(
+            'Finish to create a Microsoft Word document.'
+          )
+        })
+
+        // Officegen calling this function to report errors:
+        docx.on('error', function (err) {
+          console.log(err)
+        })
+
+        // Create a new paragraph:
+
+
+        pObj = docx.createP({
+          align: 'right'
+        })
+
+        // We can even add images:
+        pObj.addImage(path.resolve(__dirname, 'uni_logoo.png'), {
+          cx: 120,
+          cy: 120
+        })
+        pObj.addLineBreak()
+        pObj = docx.createP({
+          align: 'center'
+        })
+        pObj.addText("(شهادة قيد)")
+        pObj = docx.createP({
+          align: 'right'
+        })
+        pObj.addText(faculty)
+        pObj.addText(" تشهد كلية")
+
+        pObj.addLineBreak()
+        pObj.addText("    بأن الطالب/الطالبة    ")
+        pObj.addText(namear)
+
+
+        pObj.addLineBreak()
+
+        pObj.addText("    مقيد(ة) بالفرقة / الرابعة   ")
+
+        pObj.addLineBreak()
+        pObj.addText(program)
+        pObj.addText("    شعبة / التخصص    ")
+
+        pObj.addLineBreak()
+        pObj.addText(allresults.GPA.toString(10))
+        pObj.addText("   التقدير العام  ")
+
+        pObj.addLineBreak()
+        pObj.addText(allresults.Semester)
+        pObj.addText("   وذلك في العام الجامعي   ")
+
+        pObj.addLineBreak()
+        pObj.addText(" وقد اعطيت له هذه الشهادة بناء علي طلبه من واقع ملف اوراقه وذلك لتقديمها الي ")
+        pObj.addLineBreak()
+        pObj.addText("            المختص")
+
+        pObj.addText("             رئيس القسم")
+
+        pObj.addText("              مدير الادارة    ")
+
+        pObj.addText("            يعتمد   ")
+
+
+        // Let's generate the Word document into a file:
+        let out = fs.createWriteStream('enrollment.docx')
+        out.on('error', function (err) {
+          console.log(err)
+        })
+
+        // Async call to generate the output file:
+        docx.generate(out)
+        console.log('done api 1')
+          }
+
+      });
         }
-      }
-    );
+    });
+
   } else {
     return res.status(400).send({
       error: true,
@@ -69,6 +145,8 @@ router.get("/certificateofenrollment", function (req, res, next) {
     });
   }
 });
+
+
 router.get("/certificatecart", function (req, res, next) {
   if (req.user) {
     var username = req.user.username;
@@ -105,10 +183,13 @@ router.get("/certificatecart", function (req, res, next) {
               var row = results1[key];
               fees = row.Fees;
             });
-            connection.query("USE AlexUni");
-            connection.query("INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName) VALUES( ?,?,?,?,? ) ",
-              [username, "Certificate of Enrollment", JSON.stringify(allresults), fees, faculty]);
-            res.status(200).send("tmaaaaam");
+            console.log("mwkmem");
+            fs.readFile('./enrollment.docx', function (_err, data) {
+              console.log("kamr");
+              connection.query('USE AlexUni');
+              connection.query("INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName,document) VALUES( ?,?,?,?,?,? ) ",[username, "Certificate of Enrollment", JSON.stringify(allresults), fees, faculty, data]);
+             res.status(200).send("submit successfully");
+            })
             // res.redirect("/cart");
           }
           else {
@@ -118,93 +199,15 @@ router.get("/certificatecart", function (req, res, next) {
             });
             //console.log("No such service");
           }
-
-          // Create an empty Word object:
-          let docx = officegen('docx');
-
-          // Officegen calling this function after finishing to generate the docx document:
-          docx.on('finalize', function (written) {
-            console.log(
-              'Finish to create a Microsoft Word document.'
-            )
-          })
-
-          // Officegen calling this function to report errors:
-          docx.on('error', function (err) {
-            console.log(err)
-          })
-
-          // Create a new paragraph:
-
-
-          pObj = docx.createP({
-            align: 'right'
-          })
-
-          // We can even add images:
-          pObj.addImage(path.resolve(__dirname, 'uni_logoo.png'), {
-            cx: 120,
-            cy: 120
-          })
-          pObj.addLineBreak()
-          pObj = docx.createP({
-            align: 'center'
-          })
-          pObj.addText("(شهادة قيد)")
-          pObj = docx.createP({
-            align: 'right'
-          })
-          pObj.addText(allresults.Faculty)
-          pObj.addText(" تشهد كلية")
-
-          pObj.addLineBreak()
-          pObj.addText("    بأن الطالب/الطالبة    ")
-          pObj.addText(allresults.NameAr)
-
-          pObj.addLineBreak()
-          pObj.addText(allresults.Semester)
-          pObj.addText("    مقيد بالفرقة    ")
-
-          pObj.addLineBreak()
-          pObj.addText(allresults.Program)
-          pObj.addText("    شعبة / التخصص    ")
-
-          pObj.addLineBreak()
-
-          pObj.addText(" التقدير العام ")
-
-          pObj.addLineBreak()
-          pObj.addText(" وذلك في العام الجامعي ")
-
-          pObj.addLineBreak()
-          pObj.addText(" وقد اعطيت له هذه الشهادة بناء علي طلبه من واقع ملف اوراقه وذلك لتقديمها الي ")
-          pObj.addLineBreak()
-          pObj.addText("          المختص")
-
-          pObj.addText("          رئيس القسم")
-
-          pObj.addText("          مدير الادارة    ")
-
-          pObj.addText("         يعتمد   ")
-
-
-          // Let's generate the Word document into a file:
-          let out = fs.createWriteStream('enrollment.docx')
-          out.on('error', function (err) {
-            console.log(err)
-          })
-
-          // Async call to generate the output file:
-          docx.generate(out)
         });
-    }
-    else {
+      }
+
+    } else {
       res.status(401).send({
         error: true,
         message: "Please log in to view this page!"
       });
     }
-  }
 });
 /*router.get('/cart-test', function(req,res,next)
 {     if(req.session.loggedin){
