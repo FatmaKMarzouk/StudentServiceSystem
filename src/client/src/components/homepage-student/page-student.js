@@ -22,6 +22,8 @@ import ItemsCarousel from "../items-carousel/items-carousel";
 import ShoppingCart from "../shopping-cart/shopping-cart";
 import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
+import { cartApi } from "../../core/Apis";
+import { getUser, getToken } from "../../Utils/Common";
 
 const useStyles = makeStyles((theme) => ({
   root: {
