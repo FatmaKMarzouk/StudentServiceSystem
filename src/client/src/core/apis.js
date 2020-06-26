@@ -78,6 +78,8 @@ export const submitChosenProgram = (token, selectedProgram) => {
     body: JSON.stringify({ selectedprogram: selectedProgram }),
   })
     .then((response) => {
+      console.log("HEYYYYYY");
+      console.log(response);
       return response.json();
     })
     .catch((err) => console.log(err));

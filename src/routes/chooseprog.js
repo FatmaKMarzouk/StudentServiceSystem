@@ -161,9 +161,10 @@ router.post("/submitprog", function (request, response, next) {
                 "Faculty of Engineering",
               ]
             );
-            response
-              .status(200)
-              .send("Your Program has been selected successfully");
+            response.status(200).send({
+              error: false,
+              message: "Your Program has been selected successfully",
+            });
           }
         }
       }
