@@ -111,7 +111,7 @@ export default function DialogSelect() {
         console.log(data.message);
       } else {
         console.log("IN ELSEEE DATA GETPROGRAMS:: ");
-        console.log(data);
+        console.log(data.message);
       }
     });
   };
