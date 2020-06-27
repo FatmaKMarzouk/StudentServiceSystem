@@ -11,6 +11,7 @@ import {
   getStudentTranscript,
   readCertOfEnrollData,
   getCardDetails,
+  getAnnualFees,
 } from "../../core/Apis";
 
 class Confirmation extends Component {
@@ -35,6 +36,10 @@ class Confirmation extends Component {
       Username: "",
       SSN: "",
       Photo: "",
+    },
+
+    annualFees: {
+      value: "",
     },
   };
   saveAndContinue = (e) => {
@@ -180,6 +185,25 @@ class Confirmation extends Component {
           }
         });
         break;
+
+      case 4:
+        getAnnualFees(token).then((data) => {
+          if (data.error) {
+            console.log("IN ERORRR IN ANNUAL FEES:: ");
+            console.log(data.error);
+          } else {
+            console.log("IN ELSEEE DATA CARD DETAILS:: ");
+            console.log(data);
+            this.setState({
+              annualFees: {
+                ...data,
+              },
+            });
+            console.log("ANNUAl FEES VALUE!!!!!");
+            console.log(this.state.annualFees.value);
+          }
+        });
+
       default:
         return;
     }
@@ -571,7 +595,26 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
         );
 
       case 4:
-        return "Unknown";
+        return (
+          <List
+            style={{
+              textAlign: "right",
+              float: "right",
+            }}
+          >
+            <List.Item id="list-item">
+              <List.Icon name="users" />
+              <List.Content id="form-content">
+                <div className="list-content-block">
+                  <span id="list-attribute-content">
+                    {this.state.annualFees.value}
+                  </span>
+                  <span id="list-attribute-name"> : القيمة المستحقة </span>
+                </div>
+              </List.Content>
+            </List.Item>
+          </List>
+        );
 
       default:
         return "Unknown step";

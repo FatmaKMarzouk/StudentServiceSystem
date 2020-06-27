@@ -138,3 +138,43 @@ export const cardCart = (token) => {
     })
     .catch((err) => console.log(err));
 };
+
+// di api bta3t eny ageeb el kema 3am el 3ala el taleb 3shan a display it fl dialogbox
+// di btetnada fl confirmation.jsx
+
+export const getAnnualFees = (token) => {
+  return fetch(`http://localhost:5000/annualfees`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      console.log("inside getAnnual Fees in APIS response");
+      console.log(response);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+// di api bta3t eny azawed masaref 3am fl cart
+// btetnada f dialogBox.js lama ados adef ela el 3araba
+
+export const annualFeesCart = (token) => {
+  return fetch(`http://localhost:5000/confirmannualfees`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      console.log("inside annualFeesCart response");
+      console.log(response);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
