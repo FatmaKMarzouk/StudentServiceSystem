@@ -13,7 +13,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import Confirmation from "../mainform/Confirmation";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Zoom from "@material-ui/core/Zoom";
-import { readCertOfEnrollData, certificateToCart, transcriptCart, cardCart } from "../../core/Apis";
+import {
+  readCertOfEnrollData,
+  certificateToCart,
+  transcriptCart,
+  cardCart,
+  annualFeesCart,
+} from "../../core/Apis";
 import { getUser, getToken } from "../../Utils/Common";
 import axios from "axios";
 import Upload from "../upload/Upload";
@@ -120,9 +126,7 @@ function getConfirmationTitle(num) {
         <h2 style={{ float: "right", fontWeight: "bold" }}>الكارنية الجامعي</h2>
       );
     case 4:
-      return (
-        <h2 style={{ float: "right", fontWeight: "bold" }}>شهادة إفادة</h2>
-      );
+      return <h2 style={{ float: "right", fontWeight: "bold" }}>مصاريف عام</h2>;
     default:
       return <p> wala title</p>;
   }
@@ -212,7 +216,6 @@ export default function CustomizedDialogs(props) {
     setOpen(true);
   };
   const handleClose = () => {
-
     const token = getToken();
 
     switch (props.id) {
@@ -224,6 +227,9 @@ export default function CustomizedDialogs(props) {
         break;
       case 3:
         cardCart(token);
+        break;
+      case 4:
+        annualFeesCart(token);
         break;
     }
     setOpen(false);

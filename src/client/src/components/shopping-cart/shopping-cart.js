@@ -82,6 +82,7 @@ export default function SpanningTable() {
       console.log(data.total);
       sessionStorage.setItem("total", data.total);
       console.log(data);
+      console.log("nhayet el data");
       const orderObjects = [];
       data.requests.map((order) => {
         const orderObject = {

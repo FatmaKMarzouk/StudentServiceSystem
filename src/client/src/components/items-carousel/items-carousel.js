@@ -128,8 +128,25 @@ export default () => {
             <DialogBox id={3} />
           </div>
         </Paper>
-        <Paper id="items-carousel">
-          <div id="paper-icons">٥</div>
+        <Paper id="items-carousel-container">
+          <div id="items-carousel">
+            <div id="paper-icons">٥</div>
+            <span id="items-carousel-1-title">مصاريف عام</span>
+            <div id="rules">
+              <span style={{ marginBottom: "2%", fontSize: "16px" }}>
+                ...............
+              </span>
+              <span style={{ marginBottom: "1%" }}>.............</span>
+            </div>
+            <div id="service-icon">
+              <img
+                src="studentcard.png"
+                id="service-icon-image"
+                alt="service-icon"
+              ></img>
+            </div>
+            <DialogBox id={4} />
+          </div>
         </Paper>
         <Paper id="items-carousel">
           <div id="paper-icons">٦</div>
