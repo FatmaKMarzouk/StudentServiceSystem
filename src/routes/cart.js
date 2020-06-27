@@ -23,6 +23,7 @@ router.get('/cart',function(request,response,next){
         total += row.Amount;
 
       });
+      sessionStorage('total',total);
       response.status(200).send(requests,total);
     }
     else {
