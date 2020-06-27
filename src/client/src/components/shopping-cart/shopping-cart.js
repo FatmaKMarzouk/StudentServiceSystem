@@ -67,11 +67,10 @@ const rows = [
 
 export default function SpanningTable() {
   const classes = useStyles();
-  const [state, setState] = useState({
-    orderss: [],
-  });
+  const [orderss, setOrderss] = useState([]);
+  const [deleteCount, setDeleteCount] = useState(0);
 
-  const invoiceSubtotal = subtotal(state.orderss);
+  const invoiceSubtotal = subtotal(orderss);
   const invoiceTaxes = TAX_RATE * invoiceSubtotal;
   const invoiceTotal = invoiceTaxes + invoiceSubtotal;
 
@@ -81,12 +80,12 @@ export default function SpanningTable() {
 
   useEffect(() => {
     cartApi(token).then((data) => {
-      console.log("bdayet el data");
       console.log(data.total);
-      sessionStorage.setItem('total', data.total);
-      console.log("nhayet el data");
+      sessionStorage.setItem("total", data.total);
+      console.log(data);
       const orderObjects = [];
-      data.map((order) => {
+      console.log(orderObjects);
+      data.requests.map((order) => {
         const orderObject = {
           orderID: order.ID,
           orderName: order.ServiceName,
@@ -94,12 +93,14 @@ export default function SpanningTable() {
         };
         orderObjects.push(orderObject);
       });
-      setState({ orderss: orderObjects });
+      console.log(orderObjects);
+      setOrderss(orderObjects);
     });
     console.log("HELLO");
-  }, []);
+  }, [deleteCount]);
 
   const handleDeleteRequest = () => {
+    setDeleteCount(deleteCount + 1);
     //delete-cart
   };
 
@@ -121,7 +122,7 @@ export default function SpanningTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {state.orderss.map((order) => (
+              {orderss.map((order) => (
                 <TableRow key={order.orderID}>
                   <TableCell id="cart-row">
                     <button id="delete-button" onClick={handleDeleteRequest}>
