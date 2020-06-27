@@ -169,6 +169,11 @@ export const deleteCart = (token, reqID) => {
   })
     .then((response) => {
       console.log("HEYYYYYY");
+      console.log(response);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
 // di api bta3t eny ageeb el kema 3am el 3ala el taleb 3shan a display it fl dialogbox
 // di btetnada fl confirmation.jsx
 
