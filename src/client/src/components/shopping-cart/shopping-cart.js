@@ -9,8 +9,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
-import { getUser, getToken } from "../../Utils/Common";
-import { cartApi } from "../../core/Apis";
+import { getToken } from "../../Utils/Common";
+import { cartApi, deleteCart } from "../../core/Apis";
 
 const TAX_RATE = 0.07;
 
@@ -74,17 +74,15 @@ export default function SpanningTable() {
   const invoiceTaxes = TAX_RATE * invoiceSubtotal;
   const invoiceTotal = invoiceTaxes + invoiceSubtotal;
 
-  const token = getToken();
-
   console.log("haga habla gidan");
 
   useEffect(() => {
+    const token = getToken();
     cartApi(token).then((data) => {
       console.log(data.total);
       sessionStorage.setItem("total", data.total);
       console.log(data);
       const orderObjects = [];
-      console.log(orderObjects);
       data.requests.map((order) => {
         const orderObject = {
           orderID: order.ID,
@@ -93,15 +91,14 @@ export default function SpanningTable() {
         };
         orderObjects.push(orderObject);
       });
-      console.log(orderObjects);
       setOrderss(orderObjects);
     });
     console.log("HELLO");
   }, [deleteCount]);
 
-  const handleDeleteRequest = () => {
+  const handleDeleteRequest = (reqID) => {
     setDeleteCount(deleteCount + 1);
-    //delete-cart
+    //deleteCart(token, reqID);
   };
 
   return (
@@ -125,7 +122,7 @@ export default function SpanningTable() {
               {orderss.map((order) => (
                 <TableRow key={order.orderID}>
                   <TableCell id="cart-row">
-                    <button id="delete-button" onClick={handleDeleteRequest}>
+                    <button id="delete-button" onClick={handleDeleteRequest()}>
                       <DeleteOutlinedIcon />
                     </button>
                   </TableCell>
