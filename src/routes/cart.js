@@ -26,7 +26,7 @@ router.get('/cart',function(request,response,next){
       console.log("bada2t tba3a requests");
       console.log(requests);
       console.log("5allast tba3a requests");
-      response.status(200).send(requests,total);
+      response.status(200).send({requests,total});
     }
     else {
       response.status(400).send({
