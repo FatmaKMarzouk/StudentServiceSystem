@@ -15,13 +15,14 @@ var fs = require('fs');
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-// router.get('/enrollement', function (request, response, next) {
-// 	response.sendFile(__dirname + '/enrollement.html');
-// 	//console.log('its anhoon11');
+router.get('/enrollement', function (request, response, next) {
+	response.sendFile(__dirname + '/enrollement.html');
+	//console.log('its anhoon11');
 
-// });
+});
 
 var connection = require('../controllers/dbconnection');
+var email;
 
 router.post('/enroll', function (request, response) {
 	console.log("frontend connected");
@@ -31,6 +32,7 @@ router.post('/enroll', function (request, response) {
 		//console.log(request.user);
 		var secusername = request.user.username;
 
+		
 		connection.query('SELECT FacultyName FROM Secretary WHERE ID = ? ', [secusername], function (error, results, fields) {
 
 			if (results.length > 0) {
@@ -46,7 +48,8 @@ router.post('/enroll', function (request, response) {
 
 			//});
 
-			// response.send('Student has been added successfully');
+			//response.send('Student has been added successfully');
+			console.log("student added");
 
 			var nameen = request.body.nameen;
 			var namear = request.body.namear;
@@ -56,17 +59,17 @@ router.post('/enroll', function (request, response) {
 			var parentname = request.body.parentname;
 			var parentssn = request.body.parentssn;
 			var parentrelation = request.body.parentrelation;
-			var email = request.body.email;
+			email = request.body.email;
 			var nationality = request.body.nationality || " ";
 			var birthdate = request.body.birthdate || " ";
 			var phonenumber = request.body.phonenumber || " ";
 			var address = request.body.address || " ";
 			var gender = request.body.gender;
 			var selection = request.body.selection || " ";
-			var birthCerftificate = request.body.birthCerftificate || " ";
-			var nationalid = request.body.nationalid || " ";
-			var nominationCard = request.body.nominationCard || " ";
-			var photo = request.body.photo || "";
+			//var birthCerftificate = request.body.birthCerftificate || " ";
+			//var nationalid = request.body.nationalid || " ";
+			//var nominationCard = request.body.nominationCard || " ";
+			//var photo = request.body.photo || "";
 			var user = '';
 
 
@@ -79,8 +82,8 @@ router.post('/enroll', function (request, response) {
 				result += characters.charAt(Math.floor(Math.random() * charactersLength));
 			}
 			// connection.query('INSERT INTO Students (NameEn,NameAr,Gender,medicalCondition,Email,Nationality,Birthdate,SSN,phoneNumber,Address,Password,Faculty,Program) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ',[nameen, namear, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, result ,'Faculty of Engineering', 'General'] ,  function(error, results, fields){
-			connection.query('INSERT INTO Students (NameEn, NameAr, ParentPhone, Gender, medicalCondition, Email, Nationality, Birthdate, SSN, phoneNumber, Address, Password, Faculty, Program, ParentName, ParentSSN, ParentRelation, birthCertificate, Nationalid, NominationCard, Photo) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ', [nameen, namear, parentphone, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, result, facultysec, 'General', parentname, parentssn, parentrelation, birthCerftificate, nationalid, nominationCard, photo], function (error, results, fields) {
-
+			//connection.query('INSERT INTO Students (NameEn, NameAr, ParentPhone, Gender, medicalCondition, Email, Nationality, Birthdate, SSN, phoneNumber, Address, Password, Faculty, Program, ParentName, ParentSSN, ParentRelation, birthCertificate, Nationalid, NominationCard, Photo) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ', [nameen, namear, parentphone, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, result, facultysec, 'General', parentname, parentssn, parentrelation, birthCerftificate, nationalid, nominationCard, photo], function (error, results, fields) {
+			connection.query('INSERT INTO Students (NameEn, NameAr, ParentPhone, Gender, medicalCondition, Email, Nationality, Birthdate, SSN, phoneNumber, Address, Password, Faculty, Program, ParentName, ParentSSN, ParentRelation) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ', [nameen, namear, parentphone, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, result, facultysec, 'General', parentname, parentssn, parentrelation], function (error, results, fields) {
 
 				if (selection == 'private') {
 					connection.query("UPDATE Students SET SSP = b'1' WHERE Email = ? ", [email], function (error, results, fields) {
@@ -143,9 +146,98 @@ router.post('/enroll', function (request, response) {
 					});
 
 				});
-				response.status(200).send("Student added successfully");
+				//response.status(200).send("Student added successfully");
+				console.log("student added successfully");
 				if (error) throw error;
 			});
 		});
+		console.log("yaaay");
+		response.redirect("/documents");
+	}
+});
+
+router.get('/documents', function (request, response, next) {
+	response.sendFile(__dirname + '/documents.html');
+	//console.log('its anhoon11');
+
+});
+
+router.post('/nominationcard', function (request, response) {
+
+	var nominationCard = request.body.nominationCard || " ";
+	//var email = request.body.email;
+
+	if (request.user) {
+
+		connection.query('USE AlexUni');
+		connection.query("UPDATE Students SET NominationCard = ? WHERE Email = ? ", [nominationCard, email], function (error, results, fields) {
+			console.log("yoooooooh");
+		});
+		response.send("Nomination card added");
+
+	}
+});
+
+router.post('/photo', function (request, response) {
+
+	var photo = request.body.photo || " ";
+	//var email = request.body.email;
+
+	if (request.user) {
+
+		connection.query('USE AlexUni');
+		connection.query("UPDATE Students SET Photo = ? WHERE Email = ? ", [photo, email], function (error, results, fields) {
+			console.log("yoooooooh");
+		});
+		response.send("Photo added");
+
+	}
+});
+
+router.post('/highschoolcertificate', function (request, response) {
+
+	var highschoolcertificate = request.body.highschoolcertificate || " ";
+	//var email = request.body.email;
+
+	if (request.user) {
+
+		connection.query('USE AlexUni');
+		connection.query("UPDATE Students SET highschoolCertificate = ? WHERE Email = ? ", [highschoolcertificate, email], function (error, results, fields) {
+			console.log("yoooooooh");
+		});
+		response.send("High school Certificate added");
+
+	}
+});
+
+router.post('/birthcertificate', function (request, response) {
+
+	var birthcertificate = request.body.birthcertificate || " ";
+	//var email = request.body.email;
+
+	if (request.user) {
+
+		connection.query('USE AlexUni');
+		connection.query("UPDATE Students SET birthCertificate = ? WHERE Email = ? ", [birthcertificate, email], function (error, results, fields) {
+			console.log("yoooooooh");
+		});
+		response.send("Birth Certificate added");
+
+	}
+});
+
+router.post('/nationalid', function (request, response) {
+
+	var nationalid = request.body.nationalid || " ";
+	//var email = request.body.email;
+
+	if (request.user) {
+
+		connection.query('USE AlexUni');
+		connection.query("UPDATE Students SET Nationalid = ? WHERE Email = ? ", [nationalid, email], function (error, results, fields) {
+			console.log("yoooooooh");
+		});
+		response.send("National ID added");
+
 	}
 });

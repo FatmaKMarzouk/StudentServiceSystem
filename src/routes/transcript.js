@@ -89,7 +89,7 @@ router.get("/transcript", function (request, response, next) {
                 throw error;
               }
               if (results2.length > 0) {
-                console.log("loop print");
+                //console.log("loop print");
                 Object.keys(results2).forEach(function (key) {
                   row2arr = results2[key]
                   row2 = { ...row2, ...results2 };
@@ -111,7 +111,8 @@ router.get("/transcript", function (request, response, next) {
                 console.log("loop print end");
 
                 console.log("bada2t teba3a row2\n");
-                console.log(row2);
+                row2 = JSON.parse(JSON.stringify(row2));
+                console.log(row2[18].CourseName);
                 console.log("\n5allast teba3a row2\n");
                 connection.query("USE IntegratedData");
                 connection.query(
