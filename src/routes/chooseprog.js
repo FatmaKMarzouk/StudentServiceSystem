@@ -17,7 +17,7 @@ router.get('/chooseprog', function(request, response,next) {
   if (request.user) {
     // response.sendFile(__dirname+'/chooseprog.html');
     username = request.user.username;
-    var facultyname=""; 
+    var facultyname="";
     var ssp="";
     connection.query('USE AlexUni');
     connection.query('SELECT Faculty,SSP FROM Students WHERE Username = ? ', [username], function(error, results1, fields) {
@@ -108,6 +108,12 @@ router.post('/submitprog', function(request, response,next) {
               });
             }
           }
+        });
+      }
+      else{
+        response.status(400).send({
+          error:true,
+          message:'Your are not registered in your faculty''s database'
         });
       }
     });
