@@ -130,6 +130,7 @@ router.post('/submitprog', function(request, response,next) {
     connection.query('USE AlexUni');
     connection.query('INSERT INTO Requests (StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received,FacultyName) VALUES( ?,?,?,?,?,?,?,?,? ) ',[username,"Choose Program",JSON.stringify(info),info.Fee,"1",info.Date,"1","1","Faculty of Engineering"]);
     console.log("submitprog test 5");
+    console.log("el flag bta3 el response hna ya ali => ");
     response.status(200).send(
       {
       message : "Your Program has been selected successfully"
