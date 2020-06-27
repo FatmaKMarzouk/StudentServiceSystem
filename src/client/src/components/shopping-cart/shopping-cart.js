@@ -83,7 +83,7 @@ export default function SpanningTable() {
     cartApi(token).then((data) => {
       console.log("bdayet el data");
       console.log(data.total);
-      sessionStorage.setItem('total', data.total);
+      sessionStorage.setItem("total", data.total);
       console.log("nhayet el data");
       const orderObjects = [];
       data.map((order) => {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./dialog.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -13,6 +13,9 @@ import Select from "@material-ui/core/Select";
 import Alerts from "../alert/Alert";
 import CloseIcon from "@material-ui/icons/Close";
 import Zoom from "@material-ui/core/Zoom";
+import { getToken } from "../../Utils/Common";
+import { getProgramss, submitChosenProgram } from "../../core/Apis";
+import axios from "axios";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Zoom in="checked" ref={ref} {...props} />;
@@ -34,10 +37,13 @@ const useStyles = makeStyles((theme) => ({
 export default function DialogSelect() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  var [selectedProgram, setSelectedProgram] = React.useState();
+  var [programs2, setPrograms2] = React.useState([]);
   const values = {
     alertNumber: 1,
     alertMessage: "Hey Ass",
   };
+
   const programs = [
     { id: 1, value: "Foundation Year" },
     { id: 2, value: "Computer and Communication Engineering" },
@@ -45,22 +51,78 @@ export default function DialogSelect() {
     { id: 4, value: "Electromechanical Engineering" },
     { id: 5, value: "Gas And Petrochemicals Engineering" },
   ];
-  const handleChange = (event) => {
-    document.getElementById("program-alert").style.display = "block";
+
+  //const handleChange = (event) => {
+  //console.log("AHAM VALUE");
+  //console.log(event.target.value);
+  //setSelectedProgram(event.target.value);
+  //console.log("AHAM Selected Value");
+  //console.log(selectedProgram);
+
+  //document.getElementById("program-alert").style.display = "block";
+  //};
+
+  const getPrograms = () => {
+    const token = getToken();
+    console.log(token);
+    getProgramss(token).then((data) => {
+      if (data.error) {
+        console.log("IN ERORRR GET PROGRAMS:: ");
+        console.log(data.message);
+      } else {
+        console.log("IN ELSEEE DATA GETPROGRAMS:: ");
+        console.log(data);
+        setPrograms2(data);
+        console.log("programs222222!!!!!!");
+        console.log(programs2);
+
+        programs2.forEach((item, i) => {
+          item.id = i + 1;
+        });
+
+        console.log("programs222222 INDEX!!!!!!");
+        console.log(programs2);
+      }
+    });
   };
 
   const handleClickOpen = () => {
+    //getPrograms();
     setOpen(true);
   };
 
   const handleClose = () => {
+    //console.log("HEREEEE");
+    //console.log(selectedProgram);
     setOpen(false);
     document.getElementById("blur").style.filter = "blur(0)";
+  };
+
+  const handleSubmit = () => {
+    //lama ados 3ala tammmm
+
+    const token = getToken();
+    console.log(token);
+    console.log("1");
+    console.log(selectedProgram);
+    submitChosenProgram(token, selectedProgram).then((data) => {
+      if (data.error) {
+        console.log("IN ERORRR GET PROGRAMS:: ");
+        console.log(data.message);
+      } else {
+        console.log("IN ELSEEE DATA GETPROGRAMS:: ");
+        console.log(data.message);
+      }
+    });
   };
 
   const handleEnter = () => {
     document.getElementById("blur").style.filter = "blur(8px)";
   };
+
+  useEffect(() => {
+    getPrograms();
+  }, [open]);
 
   return (
     <div>
@@ -92,15 +154,13 @@ export default function DialogSelect() {
               </InputLabel>
               <Select
                 native
-                onChange={handleChange}
+                onChange={(e) => setSelectedProgram(e.target.value)}
                 input={<Input id="demo-dialog-native" />}
                 style={{ fontFamily: "Cairo" }}
               >
                 <option aria-label="None" value="" />
-                {programs.map((program) => (
-                  <option key={program.id} value={program.id}>
-                    {program.value}
-                  </option>
+                {programs2.map((program) => (
+                  <option key={program.id}>{program.Name}</option>
                 ))}
               </Select>
               <div id="program-alert">
@@ -113,7 +173,7 @@ export default function DialogSelect() {
           {/*<Button onClick={handleClose} color="primary">
             Cancel
                 </Button>*/}
-          <Button id="ok-select-button" onClick={handleClose} color="primary">
+          <Button id="ok-select-button" onClick={handleSubmit} color="primary">
             تم
           </Button>
         </DialogActions>
