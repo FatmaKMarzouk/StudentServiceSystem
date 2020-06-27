@@ -104,3 +104,24 @@ export const cartApi = (token) => {
     })
     .catch((err) => console.log(err));
 };
+
+//api 2
+
+export const deleteCart = (token, reqID) => {
+  console.log("ana f api deleteCart");
+  console.log(reqID);
+  return fetch("http://localhost:5000/delete-cart", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ reqID: reqID }),
+  })
+    .then((response) => {
+      console.log("HEYYYYYY");
+      console.log(response);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
