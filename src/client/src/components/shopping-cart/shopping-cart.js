@@ -96,9 +96,11 @@ export default function SpanningTable() {
     console.log("HELLO");
   }, [deleteCount]);
 
-  const handleDeleteRequest = (reqID) => {
-    setDeleteCount(deleteCount + 1);
-    //deleteCart(token, reqID);
+  const handleDeleteRequest = (token, reqID) => {
+    console.log("Request ID= " + reqID);
+    deleteCart(token, reqID).then(() => {
+      setDeleteCount(deleteCount + 1);
+    });
   };
 
   return (
@@ -119,25 +121,31 @@ export default function SpanningTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {orderss.map((order) => (
-                <TableRow key={order.orderID}>
-                  <TableCell id="cart-row">
-                    <button id="delete-button" onClick={handleDeleteRequest()}>
-                      <DeleteOutlinedIcon />
-                    </button>
-                  </TableCell>
-                  <TableCell id="cart-row" align="left">
-                    {ccyFormat(order.orderPrice)}
-                  </TableCell>
-                  <TableCell id="cart-row" align="right" colSpan={3}>
-                    {order.orderName}
-                  </TableCell>
-                  {/*<TableCell id="cart-row" align="right">
+              {orderss.map((order) => {
+                const reqID = order.orderID;
+                return (
+                  <TableRow key={order.orderID}>
+                    <TableCell id="cart-row">
+                      <button
+                        id="delete-button"
+                        onClick={() => handleDeleteRequest(reqID)}
+                      >
+                        <DeleteOutlinedIcon />
+                      </button>
+                    </TableCell>
+                    <TableCell id="cart-row" align="left">
+                      {ccyFormat(order.orderPrice)}
+                    </TableCell>
+                    <TableCell id="cart-row" align="right" colSpan={3}>
+                      {order.orderName}
+                    </TableCell>
+                    {/*<TableCell id="cart-row" align="right">
                   {row.qty}
             </TableCell>*/}
-                  {/*setHeight(rows.length)*/}
-                </TableRow>
-              ))}
+                    {/*setHeight(rows.length)*/}
+                  </TableRow>
+                );
+              })}
 
               <TableRow id="start-total-rows">
                 <TableCell id="end-total-rows" rowSpan={3} />
