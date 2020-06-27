@@ -16,7 +16,6 @@ export const readCertOfEnrollData = (token) => {
 };
 
 // api 2
-
 export const certificateToCart = (token) => {
   return fetch(`http://localhost:5000/certificatecart`, {
     method: "GET",

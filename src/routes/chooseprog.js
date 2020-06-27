@@ -11,7 +11,6 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 var connection = require("../controllers/dbconnection");
 var username = "";
-
 router.get("/chooseprog", function (request, response, next) {
   console.log("inside chooseprog API");
   if (request.user) {
@@ -39,8 +38,6 @@ router.get("/chooseprog", function (request, response, next) {
                 console.log("bada2t teba3a results2");
                 console.log(results2);
                 console.log("bada2t teba3a results2");
-                results2 = JSON.parse(JSON.stringify(results2));
-                console.log(results2);
                 response.status(200).send(results2);
                 // console.log(results2);  //To be shown in drop down menu
               } else {
@@ -66,28 +63,26 @@ router.get("/chooseprog", function (request, response, next) {
     });
   }
 });
-
 router.post("/submitprog", function (request, response, next) {
   console.log("inside submitprog API");
   var currentprog = "";
   if (request.user) {
+    console.log("submitprog test 1");
+    console.log(request.user.username);
     var flag = 1;
     var username = request.user.username;
     var program = request.body.selectedprogram;
-
-    console.log("PROGRAM FL BACKENDDDDDDDDD");
-    console.log(program);
     connection.query("USE AlexUni");
     connection.query(
-      "SELECT Program FROM Students WHERE ID =?",
+      "SELECT Program FROM Students WHERE Username =?",
       [username],
       function (error, results0, fields) {
         if (results0.length > 0) {
+          console.log("submitprog test 1");
           Object.keys(results0).forEach(function (key) {
             var row = results0[key];
             currentprog = row.Program;
           });
-
           if (currentprog == "General") {
             connection.query("USE IntegratedData");
             connection.query(
@@ -95,6 +90,7 @@ router.post("/submitprog", function (request, response, next) {
               [program],
               function (error, results1, fields) {
                 if (results1.length > 0) {
+                  console.log("submitprog test 2");
                   Object.keys(results1).forEach(function (key) {
                     var row = results1[key];
                     reqgpa = row.ReqGPA;
@@ -104,16 +100,22 @@ router.post("/submitprog", function (request, response, next) {
                     "SELECT GPA FROM Student WHERE ID = ? ",
                     [username],
                     function (error, results2, fields) {
+                      if (error) console.log(error);
                       if (results2.length > 0) {
+                        console.log("submitprog test 3");
                         Object.keys(results2).forEach(function (key) {
                           var row = results2[key];
                           gpa = row.GPA;
                         });
                         if (gpa >= reqgpa) {
+                          console.log("submitprog test 4");
                           connection.query("USE AlexUni");
                           connection.query(
                             "UPDATE Students SET Program = ? WHERE ID =?",
-                            [program, username]
+                            [program, username],
+                            function (error, res, fields) {
+                              if (error) console.log(error);
+                            }
                           );
                         } else {
                           flag = 0;
@@ -161,6 +163,8 @@ router.post("/submitprog", function (request, response, next) {
                 "Faculty of Engineering",
               ]
             );
+            console.log("submitprog test 5");
+            console.log("el flag bta3 el response hna ya ali => ");
             response.status(200).send({
               error: false,
               message: "Your Program has been selected successfully",
