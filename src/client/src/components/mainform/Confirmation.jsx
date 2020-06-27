@@ -196,7 +196,7 @@ class Confirmation extends Component {
             console.log(data);
             this.setState({
               annualFees: {
-                ...data,
+                value: data.message,
               },
             });
             console.log("ANNUAl FEES VALUE!!!!!");
@@ -609,7 +609,7 @@ style={{ float: "right", fontWeight: "bold", fontSize: "20px" }}
                   <span id="list-attribute-content">
                     {this.state.annualFees.value}
                   </span>
-                  <span id="list-attribute-name"> : القيمة المستحقة </span>
+                  {/*<span id="list-attribute-name"> : القيمة المستحقة </span>*/}
                 </div>
               </List.Content>
             </List.Item>
