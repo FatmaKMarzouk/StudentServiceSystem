@@ -121,7 +121,20 @@ export const transcriptCart = (token) => {
 
 // card api
 // api 1
-
+export const cartApi = (token) => {
+  return fetch(`http://localhost:5000/cart`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
 // api 2
 export const cardCart = (token) => {
   return fetch(`http://localhost:5000/cardcart`, {
@@ -154,6 +167,26 @@ export const cartApi = (token) => {
     .catch((err) => console.log(err));
 };
 
+//api 2
+
+export const deleteCart = (token, reqID) => {
+  console.log("ana f api deleteCart");
+  console.log(reqID);
+  return fetch("http://localhost:5000/delete-cart", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ reqID: reqID }),
+  })
+    .then((response) => {
+      console.log("HEYYYYYY");
+      console.log(response);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
 // di api bta3t eny ageeb el kema 3am el 3ala el taleb 3shan a display it fl dialogbox
 // di btetnada fl confirmation.jsx
 
