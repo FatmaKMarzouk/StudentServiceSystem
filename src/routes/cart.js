@@ -53,7 +53,7 @@ router.post('/delete-cart',function(request,response,next){
   connection.query('USE AlexUni');
   connection.query('DELETE FROM Requests WHERE ID = ?',[reqID]); 
   //response.redirect('/cart');
-  response.status(200).send(" deleted tmam ");
+  response.status(200).send({message: " deleted tmam "});
 
 }
 else{

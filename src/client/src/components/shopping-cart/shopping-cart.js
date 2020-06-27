@@ -9,8 +9,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
-import { getUser, getToken } from "../../Utils/Common";
-import { cartApi } from "../../core/Apis";
+import { getToken } from "../../Utils/Common";
+import { cartApi, deleteCart } from "../../core/Apis";
 
 const TAX_RATE = 0.07;
 
@@ -67,26 +67,24 @@ const rows = [
 
 export default function SpanningTable() {
   const classes = useStyles();
-  const [state, setState] = useState({
-    orderss: [],
-  });
+  const [orderss, setOrderss] = useState([]);
+  const [deleteCount, setDeleteCount] = useState(0);
 
-  const invoiceSubtotal = subtotal(state.orderss);
+  const invoiceSubtotal = subtotal(orderss);
   const invoiceTaxes = TAX_RATE * invoiceSubtotal;
   const invoiceTotal = invoiceTaxes + invoiceSubtotal;
-
-  const token = getToken();
 
   console.log("haga habla gidan");
 
   useEffect(() => {
+    const token = getToken();
     cartApi(token).then((data) => {
-      console.log("bdayet el data");
       console.log(data.total);
       sessionStorage.setItem("total", data.total);
+      console.log(data);
       console.log("nhayet el data");
       const orderObjects = [];
-      data.map((order) => {
+      data.requests.map((order) => {
         const orderObject = {
           orderID: order.ID,
           orderName: order.ServiceName,
@@ -94,13 +92,16 @@ export default function SpanningTable() {
         };
         orderObjects.push(orderObject);
       });
-      setState({ orderss: orderObjects });
+      setOrderss(orderObjects);
     });
     console.log("HELLO");
-  }, []);
+  }, [deleteCount]);
 
-  const handleDeleteRequest = () => {
-    //delete-cart
+  const handleDeleteRequest = (token, reqID) => {
+    console.log("Request ID= " + reqID);
+    deleteCart(token, reqID).then(() => {
+      setDeleteCount(deleteCount + 1);
+    });
   };
 
   return (
@@ -121,25 +122,31 @@ export default function SpanningTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {state.orderss.map((order) => (
-                <TableRow key={order.orderID}>
-                  <TableCell id="cart-row">
-                    <button id="delete-button" onClick={handleDeleteRequest}>
-                      <DeleteOutlinedIcon />
-                    </button>
-                  </TableCell>
-                  <TableCell id="cart-row" align="left">
-                    {ccyFormat(order.orderPrice)}
-                  </TableCell>
-                  <TableCell id="cart-row" align="right" colSpan={3}>
-                    {order.orderName}
-                  </TableCell>
-                  {/*<TableCell id="cart-row" align="right">
+              {orderss.map((order) => {
+                const reqID = order.orderID;
+                return (
+                  <TableRow key={order.orderID}>
+                    <TableCell id="cart-row">
+                      <button
+                        id="delete-button"
+                        onClick={() => handleDeleteRequest(reqID)}
+                      >
+                        <DeleteOutlinedIcon />
+                      </button>
+                    </TableCell>
+                    <TableCell id="cart-row" align="left">
+                      {ccyFormat(order.orderPrice)}
+                    </TableCell>
+                    <TableCell id="cart-row" align="right" colSpan={3}>
+                      {order.orderName}
+                    </TableCell>
+                    {/*<TableCell id="cart-row" align="right">
                   {row.qty}
             </TableCell>*/}
-                  {/*setHeight(rows.length)*/}
-                </TableRow>
-              ))}
+                    {/*setHeight(rows.length)*/}
+                  </TableRow>
+                );
+              })}
 
               <TableRow id="start-total-rows">
                 <TableCell id="end-total-rows" rowSpan={3} />

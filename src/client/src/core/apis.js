@@ -154,6 +154,21 @@ export const cartApi = (token) => {
     .catch((err) => console.log(err));
 };
 
+//api 2
+
+export const deleteCart = (token, reqID) => {
+  console.log("ana f api deleteCart");
+  console.log(reqID);
+  return fetch("http://localhost:5000/delete-cart", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ reqID: reqID }),
+  })
+    .then((response) => {
+      console.log("HEYYYYYY");
 // di api bta3t eny ageeb el kema 3am el 3ala el taleb 3shan a display it fl dialogbox
 // di btetnada fl confirmation.jsx
 
