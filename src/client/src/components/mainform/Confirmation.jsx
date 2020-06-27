@@ -191,6 +191,7 @@ class Confirmation extends Component {
           if (data.error) {
             console.log("IN ERORRR IN ANNUAL FEES:: ");
             console.log(data.error);
+            console.log(data.message);
           } else {
             console.log("IN ELSEEE DATA CARD DETAILS:: ");
             console.log(data);

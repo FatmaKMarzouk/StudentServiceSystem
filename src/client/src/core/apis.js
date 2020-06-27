@@ -176,6 +176,8 @@ export const deleteCart = (token, reqID) => {
 // di btetnada fl confirmation.jsx
 
 export const getAnnualFees = (token) => {
+  console.log("Tokenn");
+  console.log(token);
   return fetch(`http://localhost:5000/annualfees`, {
     method: "GET",
     headers: {
@@ -186,7 +188,8 @@ export const getAnnualFees = (token) => {
   })
     .then((response) => {
       console.log("inside getAnnual Fees in APIS response");
-      console.log(response);
+      console.log(response.error);
+      console.log(response.message);
       return response.json();
     })
     .catch((err) => console.log(err));
@@ -205,8 +208,9 @@ export const annualFeesCart = (token) => {
     },
   })
     .then((response) => {
-      console.log("inside annualFeesCart response");
-      console.log(response);
+      console.log("inside annualFeesCart responseeeeeeee");
+      console.log(response.error);
+      console.log(response.message);
       return response.json();
     })
     .catch((err) => console.log(err));
