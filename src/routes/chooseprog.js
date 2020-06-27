@@ -113,7 +113,7 @@ router.post('/submitprog', function(request, response,next) {
       else{
         response.status(400).send({
           error:true,
-          message:'Your are not registered in your faculty''s database'
+          message:'Your are not registered in your faculty database'
         });
       }
     });
