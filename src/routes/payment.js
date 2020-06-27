@@ -23,7 +23,9 @@ const stripeChargeCallback = res => (stripeErr, stripeRes) => {
 
 
 router.post('/payment', function (req, res){
-
+if(req.user)
+{
+  const username=req.user.username;
     const body = {
       source: req.body.token.id,
       amount: req.body.amount,
@@ -33,5 +35,5 @@ router.post('/payment', function (req, res){
     console.log(body.amount);
     console.log("5allast tba3a body.amount");
     stripe.charges.create(body, stripeChargeCallback(res));
-
+  }
 });

@@ -14,7 +14,24 @@ const stripeBtn = () => {
       token: token
   };
 
-  axios
+
+  fetch("http://localhost:5000/payment", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((response) => {
+      console.log("payment api response");
+      console.log(response);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+
+
+  /*axios
       .post("http://localhost:5000/payment",body)
       .then(response => {
         console.log(response);
@@ -24,7 +41,7 @@ const stripeBtn = () => {
         console.log("Payment Error: ", error);
         alert("Payment Error");
       });
-  };
+  };*/
 
   return (
     <StripeCheckout
