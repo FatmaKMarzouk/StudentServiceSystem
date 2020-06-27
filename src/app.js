@@ -11,6 +11,7 @@ var postpone = require("./routes/postpone");
 var homesec = require("./routes/homesec");
 var enrollement = require("./routes/enrollement");
 var chooseprog = require("./routes/chooseprog");
+const cors = require("cors");
 
 var docx = require("docx");
 
@@ -29,7 +30,7 @@ var addsec = require("./routes/addsec");
 var checkout = require("./routes/checkout");
 var card = require("./routes/card");
 var requests = require("./routes/requests");
-
+var payment = require("./routes/payment");
 app.use(express.static(process.env.STATIC_DIR));
 app.use(express.json());
 
@@ -49,6 +50,7 @@ app.use(addsec);
 app.use(cart);
 app.use(checkout);
 app.use(requests);
+app.use(payment)
 
 app.listen(port); //this function does http.createServer
 module.exports = env;

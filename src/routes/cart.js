@@ -23,10 +23,11 @@ router.get('/cart',function(request,response,next){
         total += row.Amount;
 
       });
-      console.log("bada2t tba3a requests");
-      console.log(requests);
-      console.log("5allast tba3a requests");
-      response.status(200).send(requests,total);
+      //sessionStorage.setItem('total',total);
+      console.log("bada2t tba3a total");
+      console.log(total);
+      console.log("5allast tba3a total");
+      response.status(200).send({requests,total});
     }
     else {
       response.status(400).send({

@@ -60,12 +60,15 @@ router.post('/submitprog', function(request, response,next) {
   console.log("inside submitprog API");
   var currentprog="";
   if (request.user) {
+    console.log("submitprog test 1");
+    console.log(request.user.username);
     var flag = 1;
     var username = request.user.username;
     var program = request.body.selectedprogram;
     connection.query('USE AlexUni');
-    connection.query('SELECT Program FROM Students WHERE ID =?',[username],function(error,results0, fields){
+    connection.query('SELECT Program FROM Students WHERE Username =?',[username],function(error,results0, fields){
       if(results0.length>0){
+        console.log("submitprog test 1");
         Object.keys(results0).forEach(function(key){
           var row = results0[key];
           currentprog = row.Program;
@@ -75,20 +78,27 @@ router.post('/submitprog', function(request, response,next) {
     connection.query('USE IntegratedData');
     connection.query('SELECT ReqGPA FROM Program WHERE Name = ? ', [program], function(error, results1, fields) {
 			if (results1.length>0) {
+        console.log("submitprog test 2");
         Object.keys(results1).forEach(function(key) {
         var row = results1[key];
         reqgpa = row.ReqGPA;
         });
         connection.query('USE IntegratedData');
         connection.query('SELECT GPA FROM Student WHERE ID = ? ',[username],function(error, results2, fields){
+          if(error)
+          console.log(error)
           if (results2.length>0){
+            console.log("submitprog test 3");
             Object.keys(results2).forEach(function(key) {
             var row = results2[key];
             gpa = row.GPA;
             });
             if(gpa>=reqgpa){
+              console.log("submitprog test 4");
               connection.query('USE AlexUni');
-              connection.query('UPDATE Students SET Program = ? WHERE ID =?',[program,username]);
+              connection.query('UPDATE Students SET Program = ? WHERE ID =?',[program,username],function(error,res,fields){
+                if(error) console.log(error);
+              });
             }
             else {
               flag = 0;
@@ -119,7 +129,12 @@ router.post('/submitprog', function(request, response,next) {
              }
     connection.query('USE AlexUni');
     connection.query('INSERT INTO Requests (StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received,FacultyName) VALUES( ?,?,?,?,?,?,?,?,? ) ',[username,"Choose Program",JSON.stringify(info),info.Fee,"1",info.Date,"1","1","Faculty of Engineering"]);
-    response.status(200).send("Your Program has been selected successfully");
+    console.log("submitprog test 5");
+    response.status(200).send(
+      {
+      message : "Your Program has been selected successfully"
+      }
+    );
   }
 
 }
