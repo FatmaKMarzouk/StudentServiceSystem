@@ -18,8 +18,8 @@ var total = 0;
 var faculty = "";
 
 router.get('/annualfees',function(request,response,next){
-  if(request.session.loggedin){
-  var username = request.session.username;
+  if(request.user){
+  var username = request.user.username;
   connection.query('USE AlexUni');
   connection.query('SELECT * FROM Payment WHERE StudentID = ?',[username],function(error,results,fields){
     if(results.length>0){
@@ -36,7 +36,7 @@ router.get('/annualfees',function(request,response,next){
       diff = parseInt(diff/365) +1;
 
       if(diff<=0){
-        response.send("You have paid your annual fees");
+        response.status(200).send({message : "You have paid your annual fees"});
       }
       else{
       connection.query('USE AlexUni');
@@ -47,9 +47,8 @@ router.get('/annualfees',function(request,response,next){
             fees = row.Fees;
           });
           total = fees * diff;
-          response.send("You have to pay "+total+" for " +diff+" academic years");
-
-
+          response.status(200).send({
+            message : "You have to pay "+total+" for " +diff+" academic years"});
       }
 
       });
@@ -62,13 +61,15 @@ router.get('/annualfees',function(request,response,next){
 
 }
 else{
-  response.send("Please log in to view this page!");
+  response.status(400).send({
+    error:true,
+    message:"Please log in to view this page!"});
 }
 });
 
 router.get('/confirmannualfees',function(request,response,next){
-  if(request.session.loggedin){
-  var username = request.session.username;
+  if(request.user){
+  var username = request.user.username;
   connection.query('USE AlexUni');
   connection.query('SELECT Faculty FROM Students WHERE Username = ? ', [username], function(error, results2, fields) {
     if (results2.length>0) {
@@ -78,11 +79,13 @@ router.get('/confirmannualfees',function(request,response,next){
     });
   connection.query('USE AlexUni');
   connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount,done,FacultyName) VALUES( ?,?,?,?,? ) ',[username,"Annual Fees",total,"1",faculty]);
-  response.redirect('/cart');
+  response.status(200).send({message:"Your request is added successfully"});
 }
 });
 }
 else{
-  response.send("Please log in to view this page!");
+  response.status(400).send({
+    error:true,
+    message:"Please log in to view this page!"});
 }
 });
