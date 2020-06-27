@@ -1,6 +1,5 @@
 var mysql = require('mysql');
 var cart = require('./cart');
-var total = cart.total;
 var express = require('express');
 var router = express.Router();
 module.exports = router;
@@ -25,12 +24,14 @@ const stripeChargeCallback = res => (stripeErr, stripeRes) => {
 
 router.post('/payment', function (req, res){
 
-    console.log(total);
     const body = {
       source: req.body.token.id,
-      amount: 88,
+      amount: req.body.amount,
       currency: "usd"
     };
+    console.log("bada2t tba3a body.amount");
+    console.log(body.amount);
+    console.log("5allast tba3a body.amount");
     stripe.charges.create(body, stripeChargeCallback(res));
 
 });

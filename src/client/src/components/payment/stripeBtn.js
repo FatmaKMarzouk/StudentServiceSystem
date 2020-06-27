@@ -7,8 +7,9 @@ const stripeBtn = () => {
   const publishableKey = "pk_test_51Gy0PkBVIbnFGJuVSUf8sC63Hu0bWLG3P6A1CkfuGSkomQfbDnz6mRSCGqgyaOQxqlYr1oPLjH3AgFynDxsvHJoy00JzuWWpKh";
 
   const onToken = token => {
+    const total = sessionStorage.getItem('total');
     const body = {
-      amount: amount,
+      amount: total,
       token: token
   };
 
