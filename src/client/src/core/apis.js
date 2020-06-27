@@ -16,6 +16,7 @@ export const readCertOfEnrollData = (token) => {
 };
 
 // api 2
+
 export const certificateToCart = (token) => {
   return fetch(`http://localhost:5000/certificatecart`, {
     method: "GET",
@@ -133,6 +134,21 @@ export const cardCart = (token) => {
   })
     .then((response) => {
       console.log("CARD CART TESTTTTTTTTTTT");
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+export const cartApi = (token) => {
+  return fetch(`http://localhost:5000/cart`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
       return response.json();
     })
     .catch((err) => console.log(err));
