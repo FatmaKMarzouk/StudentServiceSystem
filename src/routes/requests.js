@@ -6,131 +6,180 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var request = require('request');
 
-router.use(bodyParser.urlencoded({extended : true}));
+router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 var connection = require('../controllers/dbconnection');
 var facultysec;
-var resultall = '' ;
-var resultsearch = '' ;
+var resultall = '';
+var resultsearch = '';
 
-router.get('/allrequests',function(request, response) {
+router.get('/allrequests', function (request, response) {
+	if (request.user) {
+		var secusername = request.user.username;
+		connection.query('USE AlexUni');
+		connection.query('SELECT FacultyName FROM Secretary WHERE ID = ? ', [secusername], function (error, results, fields) {
 
-	//console.log("hiiiiiiiiiiiiiiiii");
-    if (request.session.loggedin) {
-		var secusername = request.session.username;
-        connection.query('USE AlexUni');
-		connection.query('SELECT FacultyName FROM Secretary WHERE ID = ? ',[secusername] ,  function(error, results, fields){
-
-			if(results.length>0){
-				Object.keys(results).forEach(function(key){
-				  var row = results[key];
-				  facultysec = row.FacultyName;
-				 // console.log("helloooo");
+			if (results.length > 0) {
+				Object.keys(results).forEach(function (key) {
+					var row = results[key];
+					facultysec = row.FacultyName;
+					// console.log("helloooo");
 				});
-            connection.query('USE AlexUni');
-            connection.query('SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received,document FROM Requests WHERE FacultyName = ? && Paid = ?',[facultysec,'1'] ,  function(error, results, fields){
+				connection.query('USE AlexUni');
+				connection.query('SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received,document FROM Requests WHERE FacultyName = ? && Paid = ?', [facultysec, '1'], function (error, results, fields) {
 
-			    if(results.length>0){
-				   console.log("ana hena");
-				   response.json(results);
-			    }
-			    else {
-			    	response.send("No requests");
-			    }
-		      });
-             }
+					if (results.length > 0) {
+						console.log("ana hena");
+						response.status(200).json(
+							{
+								error: false,
+								results
+							});
+					}
+					else {
+						response.status(401).send({
+							error: true,
+							message: "No requests"
+						});
+					}
+				});
+			}
 			else {
-			 	console.log("3aaaaaaaaaaaa");
-			   }
-        });
+				console.log("3aaaaaaaaaaaa");
+				response.status(401).send({
+					error: true,
+					message: "Something went wrong. Please try again"
+				});
+			}
+		});
 
-	} else{
-		response.send("Please log in to view this page!");
-	  }
+	} else {
+		response.status(401).send({
+			error: true,
+			message: "Please log in to view this page!"
+		});
+	}
 });
 
-router.get('/undonerequests',function(request, response) {
-    if (request.session.loggedin) {
-		var secusername = request.session.username;
+router.get('/undonerequests', function (request, response) {
+	if (request.user) {
+		var secusername = request.user.username;
 		var array = [];
-		
+
 		connection.query('USE AlexUni');
-		connection.query('SELECT FacultyName FROM Secretary WHERE ID = ?',[secusername] ,  function(error, results, fields){
+		connection.query('SELECT FacultyName FROM Secretary WHERE ID = ?', [secusername], function (error, results, fields) {
 
-			if(results.length>0){
-				Object.keys(results).forEach(function(key){
-				  var row = results[key];
-				  facultysec = row.FacultyName;
-				});}
-			else {
-			 	console.log("3aaaaaaaaaaaa");
-			   }
-
-	     	connection.query('USE AlexUni');
-      	    connection.query('SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received,document FROM Requests WHERE FacultyName = ? && done = ? && Paid = ?',[facultysec,'0','1'] ,  function(error, results, fields){
-
-				if(results.length > 0){
-					console.log("ana hena2");
-					Object.keys(results).forEach(function(key){
-					  var row = results[key];
-					  array.push(results[key]);
-					});
-					response.json(array);
-				}
-			 else {
-				response.send("No undone requests");
+			if (results.length > 0) {
+				Object.keys(results).forEach(function (key) {
+					var row = results[key];
+					facultysec = row.FacultyName;
+				});
 			}
+			else {
+				console.log("3aaaaaaaaaaaa");
+				response.status(401).send({
+					error: true,
+					message: "Something went wrong. Please try again"
+				});
+			}
+
+			connection.query('USE AlexUni');
+			connection.query('SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received,document FROM Requests WHERE FacultyName = ? && done = ? && Paid = ?', [facultysec, '0', '1'], function (error, results, fields) {
+
+				if (results.length > 0) {
+					console.log("ana hena2");
+					Object.keys(results).forEach(function (key) {
+						var row = results[key];
+						array.push(results[key]);
+					});
+					response.status(200).send({
+						error: false,
+						array
+					});
+				}
+				else {
+					response.status(401).send({
+						error: true,
+						message: "No undone requests"
+					});
+				}
 
 			});
 		});
 
-	} else{
-		response.send("Please log in to view this page!");
-	  }
-	  
-});
-
-router.get('/search', function(request, response,next) {
-	response.sendFile(__dirname+'/searchrequest.html');
+	} else {
+		response.status(401).send({
+			error: true,
+			message: "Please log in to view this page!"
+		});
+	}
 
 });
-router.post('/searchrequests',function(request, response) {
-	var studentid = request.body.studentid;
-	var array2 = [];
-	console.log("hiiiiiiiiiiiiiiiii");
-    if (request.session.loggedin) {
-		var secusername = request.session.username;
 
-        connection.query('SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received,document FROM Requests WHERE StudentID = ? && Paid=1',[studentid] ,  function(error, results, fields){
+/*router.get('/search', function (request, response, next) {
+	response.sendFile(__dirname + '/searchrequest.html');
 
-			if(results.length > 0){
-				Object.keys(results).forEach(function(key){
-				  var row = results[key];
-				  array2.push(results[key]);
-				});
-				console.log("ana hena3");
-				response.json(array2);
-			}else{
-				response.send("No request with this ID");
-			}
-        });
+});*/
+router.post('/searchrequests', function (request, response) {
+	if (request.user) {
+		var studentid = request.body.studentid;
+		var array2 = [];
+		console.log("hiiiiiiiiiiiiiiiii");
+		if (request.user) {
+			var secusername = request.user.username;
 
-	} else{
-		response.send("Please log in to view this page!");
-	  }
+			connection.query('SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received,document FROM Requests WHERE StudentID = ? && Paid=1', [studentid], function (error, results, fields) {
+
+				if (results.length > 0) {
+					Object.keys(results).forEach(function (key) {
+						var row = results[key];
+						array2.push(results[key]);
+					});
+					console.log("ana hena3");
+					response.status(200).send({
+						error: false,
+						array2
+					});
+				} else {
+					response.status(401).send({
+						error: true,
+						message: "No request with this ID"
+					});
+				}
+			});
+
+		} else {
+			response.status(401).send({
+				error: true,
+				message: "Please log in to view this page!"
+			});
+		}
+	} else {
+		response.status(401).send({
+			error: true,
+			message: "Please log in to view this page!"
+		});
+	}
 });
 
-router.get('/requestdone',function(request, response) {
-	var studentid = request.body.studentid;
-	var array2 = [];
-	console.log("hiiiiiiiiiiiiiiiii");
-    if (request.session.loggedin) {
-		var reqID = request.session.reqID;
-		console.log(reqID);
-		connection.query('UPDATE Requests SET done = 1 WHERE ID = 77',[reqID]);
-
-	} else{
-		response.send("Please log in to view this page!");
-	  }
+router.post('/requestdone', function (request, response) {
+		var studentid = request.body.studentid;
+		var array2 = [];
+		console.log("hiiiiiiiiiiiiiiiii");
+		if (request.user) {
+			var reqID = request.session.reqID;
+			console.log(reqID);
+			connection.query('UPDATE Requests SET done = 1 WHERE ID = ?', [reqID]);
+			response.status(200).send({
+				error: false,
+				message: "Request done"
+			});
+		} else {
+			response.status(401).send({
+				error: true,
+				message: "Please log in to view this page!"
+			});
+		}
+	
 });
