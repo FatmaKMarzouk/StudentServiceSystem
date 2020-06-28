@@ -12,7 +12,7 @@ var homesec = require("./routes/homesec");
 var enrollement = require("./routes/enrollement");
 var chooseprog = require("./routes/chooseprog");
 const cors = require("cors");
-
+app.use(cors());
 var docx = require("docx");
 
 var annualfees = require("./routes/annualfees");

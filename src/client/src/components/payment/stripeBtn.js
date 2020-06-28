@@ -15,24 +15,29 @@ const stripeBtn = () => {
     };
 
 
-    fetch("http://localhost:5000/payment", {
-      method: "post",
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(body),
-    })
-      .then((response) => {
-        console.log("payment api response");
-        console.log(response);
-        return response.json();
-      })
-      .catch((err) => console.log(err));
+//     fetch("http://localhost:5000/payment", {
+//       method: "post",
+//       headers: {
+//         "Content-type": "application/json",
+//         "Authorization": `Bearer ${token}`,
+//       },
+//       body: JSON.stringify(body),
+//     })
+//       .then((response) => {
+//         console.log("payment api response");
+//         console.log(response);
+//         return response.json();
+//       })
+//       .catch((err) => console.log(err));
+// };
 
-
-    /*axios
-        .post("http://localhost:5000/payment",body)
+    axios
+        .post("http://localhost:5000/payment",{headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+            }
+        },body)
         .then(response => {
           console.log(response);
           alert("Payment Success");
@@ -41,7 +46,7 @@ const stripeBtn = () => {
           console.log("Payment Error: ", error);
           alert("Payment Error");
         });
-    };*/
+    };
 
     return (
       <StripeCheckout
@@ -52,5 +57,4 @@ const stripeBtn = () => {
       />
     );
   };
-}
 export default stripeBtn;

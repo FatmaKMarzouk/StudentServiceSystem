@@ -22,7 +22,8 @@ const stripeChargeCallback = res => (stripeErr, stripeRes) => {
 };
 
 
-router.post('/payment', function (req, res){
+router.post('/payment', function (req, res, next){
+console.log("hello")
 if(req.user)
 {
   const username=req.user.username;
