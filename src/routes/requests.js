@@ -168,8 +168,9 @@ router.post('/requestdone', function (request, response) {
 		var array2 = [];
 		console.log("hiiiiiiiiiiiiiiiii");
 		if (request.user) {
-			var reqID = request.session.reqID;
+			var reqID = request.body.reqID;
 			console.log(reqID);
+			connection.query('USE AlexUni');
 			connection.query('UPDATE Requests SET done = 1 WHERE ID = ?', [reqID]);
 			response.status(200).send({
 				error: false,
