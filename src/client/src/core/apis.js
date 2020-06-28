@@ -121,7 +121,20 @@ export const transcriptCart = (token) => {
 
 // card api
 // api 1
-
+export const cartApi = (token) => {
+  return fetch(`http://localhost:5000/cart`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
 // api 2
 export const cardCart = (token) => {
   return fetch(`http://localhost:5000/cardcart`, {
@@ -134,21 +147,6 @@ export const cardCart = (token) => {
   })
     .then((response) => {
       console.log("CARD CART TESTTTTTTTTTTT");
-      return response.json();
-    })
-    .catch((err) => console.log(err));
-};
-
-export const cartApi = (token) => {
-  return fetch(`http://localhost:5000/cart`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then((response) => {
       return response.json();
     })
     .catch((err) => console.log(err));
@@ -178,6 +176,8 @@ export const deleteCart = (token, reqID) => {
 // di btetnada fl confirmation.jsx
 
 export const getAnnualFees = (token) => {
+  console.log("Tokenn");
+  console.log(token);
   return fetch(`http://localhost:5000/annualfees`, {
     method: "GET",
     headers: {
@@ -188,7 +188,8 @@ export const getAnnualFees = (token) => {
   })
     .then((response) => {
       console.log("inside getAnnual Fees in APIS response");
-      console.log(response);
+      console.log(response.error);
+      console.log(response.message);
       return response.json();
     })
     .catch((err) => console.log(err));
@@ -207,8 +208,9 @@ export const annualFeesCart = (token) => {
     },
   })
     .then((response) => {
-      console.log("inside annualFeesCart response");
-      console.log(response);
+      console.log("inside annualFeesCart responseeeeeeee");
+      console.log(response.error);
+      console.log(response.message);
       return response.json();
     })
     .catch((err) => console.log(err));
