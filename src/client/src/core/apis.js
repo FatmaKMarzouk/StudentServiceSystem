@@ -215,3 +215,37 @@ export const annualFeesCart = (token) => {
     })
     .catch((err) => console.log(err));
 };
+
+// SECRETARY REQUESTS
+// api 1
+export const allRequestsApi = (token) => {
+  console.log("ana f api REQUESTS");
+  return fetch(`http://localhost:5000/allrequests`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+// api 2
+export const undoneRequestsApi = (token) => {
+  return fetch(`http://localhost:5000/undonerequests`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
