@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./shopping-cart.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
+import Button from "@material-ui/core/Button";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -99,6 +100,7 @@ export default function SpanningTable() {
 
   const handleDeleteRequest = (token, reqID) => {
     console.log("Request ID= " + reqID);
+    console.log("Token= " + token);
     deleteCart(token, reqID).then(() => {
       setDeleteCount(deleteCount + 1);
     });
@@ -124,15 +126,16 @@ export default function SpanningTable() {
             <TableBody>
               {orderss.map((order) => {
                 const reqID = order.orderID;
+                const token = getToken();
                 return (
                   <TableRow key={order.orderID}>
                     <TableCell id="cart-row">
-                      <button
+                      <Button
                         id="delete-button"
-                        onClick={() => handleDeleteRequest(reqID)}
+                        onClick={() => handleDeleteRequest(token, reqID)}
                       >
                         <DeleteOutlinedIcon />
-                      </button>
+                      </Button>
                     </TableCell>
                     <TableCell id="cart-row" align="left">
                       {ccyFormat(order.orderPrice)}
