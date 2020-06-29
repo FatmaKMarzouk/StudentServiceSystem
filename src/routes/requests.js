@@ -170,7 +170,7 @@ router.post("/searchrequests", function (request, response) {
 });
 
 router.post("/requestdone", function (request, response) {
-  var studentid = request.body.studentid;
+  //var studentid = request.body.studentid;
   var array2 = [];
   console.log("hiiiiiiiiiiiiiiiii");
   if (request.user) {

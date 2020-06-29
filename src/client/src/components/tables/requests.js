@@ -342,6 +342,8 @@ function GetTable(requests) {
   const [selected, setSelected] = React.useState([]);
   const [dense] = React.useState(true);
 
+  const token = getToken();
+
   const numSelected = selected.length;
 
   const handleRequestSort = (event, property) => {
@@ -366,8 +368,8 @@ function GetTable(requests) {
         selected.slice(selectedIndex + 1)
       );
     }
-
     setSelected(newSelected);
+    requestDone(token, request);
   };
 
   const isSelected = (request) => selected.indexOf(request) !== -1;
