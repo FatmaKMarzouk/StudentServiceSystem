@@ -249,3 +249,45 @@ export const undoneRequestsApi = (token) => {
     })
     .catch((err) => console.log(err));
 };
+
+//api 3
+
+export const searchRequests = (token, studentid) => {
+  console.log("ana f api searchRequests");
+  console.log(studentid);
+  return fetch("http://localhost:5000/searchrequests", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ studentid: studentid }),
+  })
+    .then((response) => {
+      console.log("HEYYYYYY");
+      console.log(response);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+//api 4
+
+export const requestDone = (token, reqID) => {
+  console.log("ana f api requestsDone");
+  console.log(reqID);
+  return fetch("http://localhost:5000/requestdone", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ reqID: reqID }),
+  })
+    .then((response) => {
+      console.log("HEYYYYYY");
+      console.log(response);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};

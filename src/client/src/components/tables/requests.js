@@ -18,7 +18,12 @@ import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 import { fade } from "@material-ui/core/styles";
 import { getToken } from "../../Utils/Common";
-import { allRequestsApi, undoneRequestsApi } from "../../core/Apis";
+import {
+  allRequestsApi,
+  undoneRequestsApi,
+  searchRequests,
+  requestDone,
+} from "../../core/Apis";
 
 function createData(request, id) {
   return { request, id };
@@ -208,7 +213,16 @@ function getTableTitle(id) {
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const { numSelected } = props;
+  const token = getToken();
 
+  /*const onChange = (event) => {
+    console.log("Student id=" + event.target.value);
+    const studentid = event.target.value;
+    searchRequests(token, studentid).then((data) => {
+      console.log(data);
+    });
+  };
+*/
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -233,6 +247,7 @@ const EnhancedTableToolbar = (props) => {
             }}
             style={{ fontFamily: "Cairo" }}
             inputProps={{ "aria-label": "search" }}
+            //onChange={onChange}
           />
         </div>
 
@@ -442,13 +457,15 @@ function GetTable(requests) {
 
 export default function EnhancedTable(props) {
   const classes = useStyles();
+  const classess = useToolbarStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("id");
   const [selected, setSelected] = React.useState([]);
   const [requests, setRequests] = React.useState([]);
+  const [allRequests, setAllRequests] = React.useState([]);
+  const token = getToken();
 
   useEffect(() => {
-    const token = getToken();
     switch (props.id) {
       case 1:
         allRequestsApi(token).then((data) => {
@@ -463,6 +480,7 @@ export default function EnhancedTable(props) {
             };
             orderObjects.push(orderObject);
           });
+          setAllRequests(orderObjects);
           setRequests(orderObjects);
         });
         console.log("ALL REQUESTS");
@@ -489,10 +507,71 @@ export default function EnhancedTable(props) {
     }
   }, []);
 
+  const onChange = (event) => {
+    console.log("Student id=" + event.target.value);
+    const studentid = event.target.value;
+    if (event.target.value == "") {
+      console.log("EMPTY SEARCH");
+      setRequests(allRequests);
+    } else {
+      searchRequests(token, studentid).then((data) => {
+        const searchedObjects = [];
+        if (!data.error) {
+          data.array2.map((request) => {
+            const orderObject = {
+              requestID: request.ID,
+              requestName: request.ServiceName,
+              studentID: request.StudentID,
+            };
+            searchedObjects.push(orderObject);
+          });
+        }
+        setRequests(searchedObjects);
+      });
+    }
+  };
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} id={props.id} />
+        <Toolbar
+          className={clsx(classess.root, {
+            /*{
+        [classes.highlight]: numSelected > 0
+      }*/
+          })}
+        >
+          <div id="requests-bar">
+            <div className={classess.search} id="requests-search">
+              <div
+                className={classess.searchIcon}
+                style={{ marginRight: "5px", fontSize: "1px" }}
+              >
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="....بحث"
+                classes={{
+                  root: classess.inputRoot,
+                  input: classess.inputInput,
+                }}
+                style={{ fontFamily: "Cairo" }}
+                inputProps={{ "aria-label": "search" }}
+                onChange={onChange}
+              />
+            </div>
+
+            <Typography
+              className={classess.title}
+              variant="h6"
+              id="tableTitle"
+              component="div"
+            >
+              {getTableTitle(props.id)}
+            </Typography>
+          </div>
+        </Toolbar>
+        {/*<EnhancedTableToolbar numSelected={selected.length} id={props.id} />*/}
         {GetTable(requests)}
       </Paper>
     </div>
