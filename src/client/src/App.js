@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Switch /*, Route, NavLink */ } from "react-router-dom";
+import { BrowserRouter, Switch , Route, NavLink } from "react-router-dom";
 import axios from "axios";
 //import UserDetails from "./components/mainform/UserDetails";
 import Login from "./components/login/Login";
@@ -17,20 +17,23 @@ function App() {
 
   useEffect(() => {
     const token = getToken();
+    console.log("token in App.js UseEffect:"+token);
     if (!token) {
       return;
     }
-
+    console.log("abl el axios.verifytoken");
     axios
-      .get(`http:/localhost:5000/verifyToken?token=${token}`)
+      .get(`http://localhost:5000/verifyToken?token=${token}`)
       .then((response) => {
         setUserSession(response.data.token, response.data.user);
         setAuthLoading(false);
       })
       .catch((error) => {
+        console.log("error in axios.verifytoken catch error:"+error);
         removeUserSession();
         setAuthLoading(false);
       });
+      console.log("b3d el axios.verifytoken");
   }, []);
 
   if (authLoading && getToken()) {
@@ -40,11 +43,10 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <PublicRoute exact path="/" component={Login} />
+        <Route exact path="/" component={Login} />
         <PrivateRoute path="/home" component={SecHome} />
-        <PublicRoute path="/enroll" component={Enrolling} />
-        <PublicRoute path="/payment" component={payment} />
-        <PrivateRoute path="/dummy" component={DummyFile} />
+        <PrivateRoute path="/enroll" component={Enrolling} />
+        <PrivateRoute path="/payment" component={payment} />
       </Switch>
     </BrowserRouter>
   );
