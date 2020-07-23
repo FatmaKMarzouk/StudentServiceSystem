@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -28,6 +28,7 @@ import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Profile from "../profile/profile";
+import { removeUserSession } from "../../Utils/Common";
 
 import "./home-sec.css";
 import Requests from "../tables/requests.js";
@@ -159,17 +160,21 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-function getFunctionContent(func) {
+function GetFunctionContent(func) {
+  const [fetchRequests, setFetchRequests] = useState(0);
   switch (func) {
     case 0:
       return (
         <Grid item xs={12}>
           <Grid container justify="center" spacing="3">
             <Grid key="1" item>
-              <Requests id={0} />
+              <Requests
+                id={0}
+                fetchRequests={() => setFetchRequests(fetchRequests + 1)}
+              />
             </Grid>
             <Grid key="2" item>
-              <Requests id={1} />
+              <Requests id={1} fetchRequests={fetchRequests} />
             </Grid>
           </Grid>
         </Grid>
@@ -230,7 +235,9 @@ export default function SecHome() {
     setActiveFunc(3);
   };
 
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    removeUserSession();
+  };
 
   return (
     <div className={classes.root} id="hide-scrollbar">
@@ -301,7 +308,7 @@ export default function SecHome() {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <div maxWidth="lg" className={classes.container}>
-          {getFunctionContent(activeFunc)}
+          {GetFunctionContent(activeFunc)}
         </div>
       </main>
       <Drawer

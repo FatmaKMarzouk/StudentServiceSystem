@@ -174,6 +174,7 @@ router.post("/users/signin", function (req, res) {
 router.get("/verifyToken", function (req, res) {
   // check header or url parameters or post parameters for token
   var token = req.body.token || req.query.token;
+  console.log("token in verifytoken:"+token);
   if (!token) {
     return res.status(400).json({
       error: true,

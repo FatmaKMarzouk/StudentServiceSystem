@@ -215,3 +215,117 @@ export const annualFeesCart = (token) => {
     })
     .catch((err) => console.log(err));
 };
+
+// SECRETARY REQUESTS
+// api 1
+export const allRequestsApi = (token) => {
+  console.log("ana f api REQUESTS");
+  return fetch(`http://localhost:5000/allrequests`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+// api 2
+export const undoneRequestsApi = (token) => {
+  return fetch(`http://localhost:5000/undonerequests`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+//api 3
+
+export const searchRequests = (token, studentid) => {
+  console.log("ana f api searchRequests");
+  console.log(studentid);
+  return fetch("http://localhost:5000/searchrequests", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ studentid: studentid }),
+  })
+    .then((response) => {
+      console.log("HEYYYYYY");
+      console.log(response);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+export const searchUndoneRequests = (token, studentid) => {
+  console.log("ana f api searchRequests");
+  console.log(studentid);
+  return fetch("http://localhost:5000/searchundonerequests", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ studentid: studentid }),
+  })
+    .then((response) => {
+      console.log("HEYYYYYY");
+      console.log(response);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+//api 4
+
+export const requestDone = (token, reqID) => {
+  console.log("ana f api requestsDone");
+  console.log(reqID);
+  return fetch("http://localhost:5000/requestdone", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ reqID: reqID }),
+  })
+    .then((response) => {
+      console.log("HEYYYYYY");
+      console.log(response);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+export const requestReceived = (token, reqID) => {
+  console.log("ana f api requestsReceived");
+  console.log(reqID);
+  return fetch("http://localhost:5000/requestreceived", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ reqID: reqID }),
+  })
+    .then((response) => {
+      console.log("HEYYYYYY");
+      console.log(response);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};

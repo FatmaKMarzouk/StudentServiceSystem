@@ -4,7 +4,9 @@ import { getToken } from './Common';
 
 // handle the private routes
 function PrivateRoute({ component: Component, ...rest }) {
-  return (
+  const token = getToken();
+  console.log("TOKEN="+token);
+    return (
     <Route
       {...rest}
       render={(props) => getToken() ? <Component {...props} /> : <Redirect to={{ pathname: '/', state: { from: props.location } }} />}
