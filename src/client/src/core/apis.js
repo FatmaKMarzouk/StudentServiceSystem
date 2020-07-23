@@ -271,6 +271,25 @@ export const searchRequests = (token, studentid) => {
     .catch((err) => console.log(err));
 };
 
+export const searchUndoneRequests = (token, studentid) => {
+  console.log("ana f api searchRequests");
+  console.log(studentid);
+  return fetch("http://localhost:5000/searchundonerequests", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ studentid: studentid }),
+  })
+    .then((response) => {
+      console.log("HEYYYYYY");
+      console.log(response);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
 //api 4
 
 export const requestDone = (token, reqID) => {

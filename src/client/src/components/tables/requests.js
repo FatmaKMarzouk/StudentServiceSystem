@@ -22,7 +22,9 @@ import {
   allRequestsApi,
   undoneRequestsApi,
   searchRequests,
+  searchUndoneRequests,
   requestDone,
+  requestReceived,
 } from "../../core/Apis";
 
 function createData(request, id) {
@@ -126,6 +128,12 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
+  {
+    id: "status",
+    numeric: true,
+    disablePadding: true,
+    label: "الحالة",
+  },
   { id: "id", numeric: true, disablePadding: false, label: "الرقم الجامعي" },
   {
     id: "request",
@@ -208,6 +216,13 @@ function getTableTitle(id) {
     default:
       return;
   }
+}
+
+function getRequestStatus(done, received) {
+  console.log("DONE=" + done + "RECEIVED=" + received);
+  if (done && received) return "DONE & RECEIVED";
+  else if (done) return "DONE";
+  else return "NOTHING";
 }
 
 const EnhancedTableToolbar = (props) => {
@@ -335,134 +350,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function GetTable(requests) {
-  const classes = useStyles();
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("id");
-  const [selected, setSelected] = React.useState([]);
-  const [dense] = React.useState(true);
-
-  const token = getToken();
-
-  const numSelected = selected.length;
-
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
-
-  const handleClick = (event, request) => {
-    const selectedIndex = selected.indexOf(request);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, request);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-    requestDone(token, request);
-    //window.location.reload(false);
-  };
-
-  const isSelected = (request) => selected.indexOf(request) !== -1;
-
-  return (
-    <React.Fragment>
-      <div id="requests-container">
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
-            aria-label="enhanced table"
-          >
-            <EnhancedTableHead
-              classes={classes}
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-              rowCount={services.length}
-            />
-            <TableBody>
-              {requests.map((service) => {
-                const isItemSelected = isSelected(service.requestID);
-                //const labelId = `enhanced-table-checkbox-${index}`;
-
-                return (
-                  <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, service.requestID)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={service.requestID}
-                    selected={isItemSelected}
-                    id="requests-rows"
-                  >
-                    <TableCell id="table-body" align="center">
-                      {service.studentID}
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      padding="none"
-                      align="right"
-                      id="table-body"
-                    >
-                      {service.requestName}
-                    </TableCell>
-                    <TableCell padding="checkbox" id="table-body">
-                      <Checkbox
-                        checked={isItemSelected}
-                        inputProps={{
-                          "aria-labelledby": service.requestID,
-                        }}
-                        className="requests-checkbox"
-                        color="default"
-                        classes={{ root: "requests-checkbox" }}
-                      />
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
-      {numSelected > 0 ? (
-        <Typography
-          className={classes.title}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-          style={{ display: "flex", justifyContent: "center" }}
-        >
-          <span id="requests-selected-number">
-            {numSelected} : عدد الاختيار
-          </span>
-        </Typography>
-      ) : (
-        <div></div>
-      )}
-    </React.Fragment>
-  );
-}
-
 export default function EnhancedTable(props) {
   const classes = useStyles();
   const classess = useToolbarStyles();
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("id");
+  const [orderBy, setOrderBy] = React.useState("status");
   const [selected, setSelected] = React.useState([]);
   const [requests, setRequests] = React.useState([]);
   const [allRequests, setAllRequests] = React.useState([]);
@@ -495,9 +387,19 @@ export default function EnhancedTable(props) {
       );
     }
     setSelected(newSelected);
-    requestDone(token, request).then(() => {
-      setRequestCount(requestCount + 1);
-    });
+
+    if (props.id) {
+      requestReceived(token, request).then(() => {
+        setRequestCount(requestCount + 1);
+        setSelected([]);
+      });
+    } else {
+      requestDone(token, request).then(() => {
+        setRequestCount(requestCount + 1);
+        props.fetchRequests();
+        setSelected([]);
+      });
+    }
   };
 
   const isSelected = (request) => selected.indexOf(request) !== -1;
@@ -514,6 +416,8 @@ export default function EnhancedTable(props) {
               requestID: request.ID,
               requestName: request.ServiceName,
               studentID: request.StudentID,
+              done: request.done,
+              received: request.received,
             };
             orderObjects.push(orderObject);
           });
@@ -533,16 +437,19 @@ export default function EnhancedTable(props) {
                 requestID: request.ID,
                 requestName: request.ServiceName,
                 studentID: request.StudentID,
+                done: request.done,
+                received: request.received,
               };
               orderObjects.push(orderObject);
             });
           }
+          setAllRequests(orderObjects);
           setRequests(orderObjects);
         });
         console.log("UNDONE REQUESTS");
         break;
     }
-  }, [requestCount]);
+  }, [requestCount, props.fetchRequests]);
 
   const onChange = (event) => {
     console.log("Student id=" + event.target.value);
@@ -551,20 +458,44 @@ export default function EnhancedTable(props) {
       console.log("EMPTY SEARCH");
       setRequests(allRequests);
     } else {
-      searchRequests(token, studentid).then((data) => {
-        const searchedObjects = [];
-        if (!data.error) {
-          data.array2.map((request) => {
-            const orderObject = {
-              requestID: request.ID,
-              requestName: request.ServiceName,
-              studentID: request.StudentID,
-            };
-            searchedObjects.push(orderObject);
+      switch (props.id) {
+        case 1:
+          searchRequests(token, studentid).then((data) => {
+            const searchedObjects = [];
+            if (!data.error) {
+              data.array2.map((request) => {
+                const orderObject = {
+                  requestID: request.ID,
+                  requestName: request.ServiceName,
+                  studentID: request.StudentID,
+                  done: request.done,
+                  received: request.received,
+                };
+                searchedObjects.push(orderObject);
+              });
+            }
+            setRequests(searchedObjects);
           });
-        }
-        setRequests(searchedObjects);
-      });
+          break;
+        case 0:
+          searchUndoneRequests(token, studentid).then((data) => {
+            const searchedObjects = [];
+            if (!data.error) {
+              data.array2.map((request) => {
+                const orderObject = {
+                  requestID: request.ID,
+                  requestName: request.ServiceName,
+                  studentID: request.StudentID,
+                  done: request.done,
+                  received: request.received,
+                };
+                searchedObjects.push(orderObject);
+              });
+            }
+            setRequests(searchedObjects);
+          });
+          break;
+      }
     }
   };
 
@@ -640,6 +571,9 @@ export default function EnhancedTable(props) {
                       selected={isItemSelected}
                       id="requests-rows"
                     >
+                      <TableCell id="table-body" align="center">
+                        {getRequestStatus(service.done, service.received)}
+                      </TableCell>
                       <TableCell id="table-body" align="center">
                         {service.studentID}
                       </TableCell>

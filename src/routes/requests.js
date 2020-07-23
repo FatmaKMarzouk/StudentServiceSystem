@@ -169,6 +169,50 @@ router.post("/searchrequests", function (request, response) {
   }
 });
 
+router.post("/searchundonerequests", function (request, response) {
+  if (request.user) {
+    var studentid = request.body.studentid;
+    var array2 = [];
+    console.log("hiiiiiiiiiiiiiiiii");
+    if (request.user) {
+      var secusername = request.user.username;
+
+      connection.query(
+        "SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,received,document FROM Requests WHERE StudentID = ? && done = ? && Paid=1",
+        [studentid, "0"],
+        function (error, results, fields) {
+          if (results.length > 0) {
+            Object.keys(results).forEach(function (key) {
+              var row = results[key];
+              array2.push(results[key]);
+            });
+            console.log("ana hena3");
+            response.status(200).send({
+              error: false,
+              array2,
+            });
+          } else {
+            response.status(401).send({
+              error: true,
+              message: "No request with this ID",
+            });
+          }
+        }
+      );
+    } else {
+      response.status(401).send({
+        error: true,
+        message: "Please log in to view this page!",
+      });
+    }
+  } else {
+    response.status(401).send({
+      error: true,
+      message: "Please log in to view this page!",
+    });
+  }
+});
+
 router.post("/requestdone", function (request, response) {
   //var studentid = request.body.studentid;
   var array2 = [];
