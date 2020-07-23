@@ -189,3 +189,24 @@ router.post("/requestdone", function (request, response) {
     });
   }
 });
+
+router.post("/requestreceived", function (request, response) {
+  //var studentid = request.body.studentid;
+  var array2 = [];
+  console.log("hiiiiiiiiiiiiiiiii");
+  if (request.user) {
+    var reqID = request.body.reqID;
+    console.log(reqID);
+    connection.query("USE AlexUni");
+    connection.query("UPDATE Requests SET received = 1 WHERE ID = ?", [reqID]);
+    response.status(200).send({
+      error: false,
+      message: "Request done",
+    });
+  } else {
+    response.status(401).send({
+      error: true,
+      message: "Please log in to view this page!",
+    });
+  }
+});

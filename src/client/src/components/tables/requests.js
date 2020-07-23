@@ -370,6 +370,7 @@ function GetTable(requests) {
     }
     setSelected(newSelected);
     requestDone(token, request);
+    //window.location.reload(false);
   };
 
   const isSelected = (request) => selected.indexOf(request) !== -1;
@@ -465,7 +466,41 @@ export default function EnhancedTable(props) {
   const [selected, setSelected] = React.useState([]);
   const [requests, setRequests] = React.useState([]);
   const [allRequests, setAllRequests] = React.useState([]);
+  const [requestCount, setRequestCount] = React.useState(0);
+  const [dense] = React.useState(true);
   const token = getToken();
+
+  const numSelected = selected.length;
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const handleClick = (event, request) => {
+    const selectedIndex = selected.indexOf(request);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, request);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+    setSelected(newSelected);
+    requestDone(token, request).then(() => {
+      setRequestCount(requestCount + 1);
+    });
+  };
+
+  const isSelected = (request) => selected.indexOf(request) !== -1;
 
   useEffect(() => {
     switch (props.id) {
@@ -493,7 +528,7 @@ export default function EnhancedTable(props) {
           console.log("nhayet el data");
           const orderObjects = [];
           if (!data.error) {
-            data.results.map((request) => {
+            data.array.map((request) => {
               const orderObject = {
                 requestID: request.ID,
                 requestName: request.ServiceName,
@@ -507,7 +542,7 @@ export default function EnhancedTable(props) {
         console.log("UNDONE REQUESTS");
         break;
     }
-  }, []);
+  }, [requestCount]);
 
   const onChange = (event) => {
     console.log("Student id=" + event.target.value);
@@ -573,8 +608,83 @@ export default function EnhancedTable(props) {
             </Typography>
           </div>
         </Toolbar>
-        {/*<EnhancedTableToolbar numSelected={selected.length} id={props.id} />*/}
-        {GetTable(requests)}
+        <div id="requests-container">
+          <TableContainer>
+            <Table
+              className={classes.table}
+              aria-labelledby="tableTitle"
+              size={dense ? "small" : "medium"}
+              aria-label="enhanced table"
+            >
+              <EnhancedTableHead
+                classes={classes}
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
+                rowCount={services.length}
+              />
+              <TableBody>
+                {requests.map((service) => {
+                  const isItemSelected = isSelected(service.requestID);
+                  //const labelId = `enhanced-table-checkbox-${index}`;
+
+                  return (
+                    <TableRow
+                      hover
+                      onClick={(event) => handleClick(event, service.requestID)}
+                      role="checkbox"
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={service.requestID}
+                      selected={isItemSelected}
+                      id="requests-rows"
+                    >
+                      <TableCell id="table-body" align="center">
+                        {service.studentID}
+                      </TableCell>
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        padding="none"
+                        align="right"
+                        id="table-body"
+                      >
+                        {service.requestName}
+                      </TableCell>
+                      <TableCell padding="checkbox" id="table-body">
+                        <Checkbox
+                          checked={isItemSelected}
+                          inputProps={{
+                            "aria-labelledby": service.requestID,
+                          }}
+                          className="requests-checkbox"
+                          color="default"
+                          classes={{ root: "requests-checkbox" }}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+        {numSelected > 0 ? (
+          <Typography
+            className={classes.title}
+            color="inherit"
+            variant="subtitle1"
+            component="div"
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <span id="requests-selected-number">
+              {numSelected} : عدد الاختيار
+            </span>
+          </Typography>
+        ) : (
+          <div></div>
+        )}
       </Paper>
     </div>
   );

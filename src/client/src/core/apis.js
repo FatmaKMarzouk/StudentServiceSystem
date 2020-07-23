@@ -291,3 +291,22 @@ export const requestDone = (token, reqID) => {
     })
     .catch((err) => console.log(err));
 };
+
+export const requestReceived = (token, reqID) => {
+  console.log("ana f api requestsReceived");
+  console.log(reqID);
+  return fetch("http://localhost:5000/requestreceived", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ reqID: reqID }),
+  })
+    .then((response) => {
+      console.log("HEYYYYYY");
+      console.log(response);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
