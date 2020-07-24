@@ -10,7 +10,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import Alerts from "../alert/Alert";
+import Alert from "@material-ui/lab/Alert";
 import CloseIcon from "@material-ui/icons/Close";
 import Zoom from "@material-ui/core/Zoom";
 import { getToken } from "../../Utils/Common";
@@ -39,10 +39,8 @@ export default function DialogSelect() {
   const [open, setOpen] = React.useState(false);
   var [selectedProgram, setSelectedProgram] = React.useState();
   var [programs2, setPrograms2] = React.useState([]);
-  const values = {
-    alertNumber: 1,
-    alertMessage: "Hey Ass",
-  };
+  const [alertMessage, setAlertMessage] = React.useState("");
+  const [alertSeverity, setAlertSeverity] = React.useState("");
 
   const programs = [
     { id: 1, value: "Foundation Year" },
@@ -100,7 +98,6 @@ export default function DialogSelect() {
 
   const handleSubmit = () => {
     //lama ados 3ala tammmm
-
     const token = getToken();
     console.log(token);
     console.log("1");
@@ -109,11 +106,16 @@ export default function DialogSelect() {
       if (data.error) {
         console.log("IN ERORRR GET PROGRAMS:: ");
         console.log(data.message);
+        setAlertMessage(data.message);
+        setAlertSeverity("error");
       } else {
         console.log("IN ELSEEE DATA GETPROGRAMS:: ");
         console.log(data.message);
+        setAlertMessage(data.message);
+        setAlertSeverity("success");
       }
     });
+    document.getElementById("program-alert").style.display = "block";
   };
 
   const handleEnter = () => {
@@ -164,7 +166,9 @@ export default function DialogSelect() {
                 ))}
               </Select>
               <div id="program-alert">
-                <Alerts variant="outlined" severity="success" values={values} />
+                <Alert variant="outlined" severity={alertSeverity}>
+                  {alertMessage}
+                </Alert>
               </div>
             </FormControl>
           </form>

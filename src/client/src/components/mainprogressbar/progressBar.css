@@ -89,9 +89,21 @@
   width: 140px;
 }
 
+#add-secretary-button {
+  border-radius: 5px;
+  background-color: #388e3c;
+  color: whitesmoke;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 3%;
+  font-family: "Cairo";
+  height: 36px;
+  width: 140px;
+}
+
 .column {
   float: right;
-  padding-bottom: 15px;
+  /*padding-bottom: 15px;*/
   /*padding-left: 25px;*/
   width: 100%;
   text-align: center;
@@ -121,7 +133,7 @@
 }
 
 #mainform-vertical-divider {
-  height: 112.3%;
+  height: 100%;
   background-color: #003366;
   margin-right: 30px;
   width: 2px;
@@ -140,7 +152,7 @@
 
 #form-labels {
   display: flex;
-  padding-bottom: 3%;
+  /*padding-bottom: 3%;*/
   margin-left: 25px;
 }
 
@@ -149,6 +161,7 @@
   flex-direction: column;
   align-items: flex-end;
   padding-top: 20px;
+  padding-bottom: 3%;
 }
 
 #outlined-required {

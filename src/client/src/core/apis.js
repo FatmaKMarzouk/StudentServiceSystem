@@ -147,6 +147,7 @@ export const cardCart = (token) => {
   })
     .then((response) => {
       console.log("CARD CART TESTTTTTTTTTTT");
+      console.log(response);
       return response.json();
     })
     .catch((err) => console.log(err));

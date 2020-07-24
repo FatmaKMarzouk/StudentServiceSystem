@@ -80,20 +80,22 @@ export default function SpanningTable() {
   useEffect(() => {
     const token = getToken();
     cartApi(token).then((data) => {
-      console.log(data.total);
-      sessionStorage.setItem("total", data.total);
-      console.log(data);
-      console.log("nhayet el data");
-      const orderObjects = [];
-      data.requests.map((order) => {
-        const orderObject = {
-          orderID: order.ID,
-          orderName: order.ServiceName,
-          orderPrice: order.Amount,
-        };
-        orderObjects.push(orderObject);
-      });
-      setOrderss(orderObjects);
+      if (!data.error) {
+        console.log(data.total);
+        sessionStorage.setItem("total", data.total);
+        console.log(data);
+        console.log("nhayet el data");
+        const orderObjects = [];
+        data.requests.map((order) => {
+          const orderObject = {
+            orderID: order.ID,
+            orderName: order.ServiceName,
+            orderPrice: order.Amount,
+          };
+          orderObjects.push(orderObject);
+        });
+        setOrderss(orderObjects);
+      }
     });
     console.log("HELLO");
   }, [deleteCount]);

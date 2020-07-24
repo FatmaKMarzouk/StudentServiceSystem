@@ -568,7 +568,6 @@ class UserDetails extends Component {
                 <Divider
                   orientation="vertical"
                   id="mainform-vertical-divider"
-                  style={{ height: "130.2%" }}
                 />
               </div>
               <div id="form-labels-column">
