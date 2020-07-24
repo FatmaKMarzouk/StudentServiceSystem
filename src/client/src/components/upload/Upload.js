@@ -108,13 +108,19 @@ class Upload extends Component {
           //const data = new FormData();
           // data.append("file", file);
           axios
-            .post("http://localhost:5000/upload", formData, {})
+            .post("http://localhost:5000/upload", formData, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
             .then((res) => {
               console.log("El raga3");
               console.log(res.statusText);
             });
 
-          /* fetch("http://localhost:5000/upload", {
+          break;
+
+        /* fetch("http://localhost:5000/upload", {
             mode: "no-cors",
             method: "POST",
             body: formData,
@@ -129,7 +135,7 @@ class Upload extends Component {
             })
             .catch((err) => console.log(err));*/
 
-          /* console.log("Heyyyyooooo");
+        /* console.log("Heyyyyooooo");
           //console.log(formData);
           req.open("POST", "http://localhost:5000/upload");
           req.setRequestHeader("Content-Type", "multipart/form-data;");
@@ -138,45 +144,58 @@ class Upload extends Component {
           console.log("request.response");
           console.log(req.response);*/
 
-          break;
-        /*
         case 2:
-          console.log("Heyyyyooooo");
-          console.log(formData);
-          req.open("POST", "http://localhost:5000/highschoolcertificate");
-          req.setRequestHeader("Authorization", `Bearer ${token}`);
-          req.send(formData);
-          console.log("request.response");
-          console.log(req.response);
+          axios
+            .post("http://localhost:5000/highschoolcertificate", formData, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((res) => {
+              console.log("El raga3");
+              console.log(res.statusText);
+            });
+
           break;
         case 3:
-          console.log("Heyyyyooooo");
-          console.log(formData);
-          req.open("POST", "http://localhost:5000/birthcertificate");
-          req.setRequestHeader("Authorization", `Bearer ${token}`);
-          req.send(formData);
-          console.log("request.response");
-          console.log(req.response);
+          axios
+            .post("http://localhost:5000/birthcertificate", formData, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((res) => {
+              console.log("El raga3");
+              console.log(res.statusText);
+            });
           break;
+
         case 4:
-          console.log("Heyyyyooooo");
-          console.log(formData);
-          req.open("POST", "http://localhost:5000/nationalid");
-          req.setRequestHeader("Authorization", `Bearer ${token}`);
-          req.send(formData);
-          console.log("request.response");
-          console.log(req.response);
+          axios
+            .post("http://localhost:5000/nationalid", formData, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((res) => {
+              console.log("El raga3");
+              console.log(res.statusText);
+            });
+
           break;
         case 5:
-          console.log("Heyyyyooooo");
-          console.log(formData);
-          req.open("POST", "http://localhost:5000/photo");
-          req.setRequestHeader("Authorization", `Bearer ${token}`);
-          req.send(formData);
-          console.log("request.response");
-          console.log(req.response);
+          axios
+            .post("http://localhost:5000/photo", formData, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((res) => {
+              console.log("El raga3");
+              console.log(res.statusText);
+            });
           break;
-*/
+
         default:
           console.log("Default");
           break;
@@ -242,9 +261,7 @@ class Upload extends Component {
 
   getInputID(id) {
     switch (id) {
-      case 0:
-        return;
-      case 1:
+      case 6:
         return (
           <div id="upload-input-id">
             <TextField
@@ -260,6 +277,8 @@ class Upload extends Component {
             <label id="upload-id-label">: الرقم الجامعي </label>
           </div>
         );
+      default:
+        return;
     }
   }
 
@@ -293,7 +312,7 @@ class Upload extends Component {
                 />
               </div>
             </div>
-            {this.getInputID(this.props.id)}
+            {this.getInputID(this.props.step)}
           </div>
         </div>
       </div>
