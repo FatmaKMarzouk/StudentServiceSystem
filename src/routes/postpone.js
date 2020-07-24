@@ -25,7 +25,14 @@ router.get("/postpone", function (request, response, next) {
 var connection = require("../controllers/dbconnection");
 
 router.post("/uploaddoc", upload.single("armydoc"), function (req, response) {
+  console.log("Inside Armyyy uploaddoc");
+
   armydoc = req.file;
+
+  console.log("ARMY DOCUMENT");
+  console.log(req.file);
+  console.log("STUDENT ID");
+  console.log(req.stdId);
 
   connection.query("USE AlexUni");
   stdId = req.body.stdId;
