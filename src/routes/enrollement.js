@@ -203,32 +203,28 @@ router.post("/enroll", function (request, response) {
 
                 transporter.sendMail(mailOptions, (error, info) => {
                   if (error) {
-                    return console.log(error);
+
                   }
                   console.log("Message sent: %s", info.messageId);
-                  console.log(
-                    "Preview URL: %s",
-                    nodemailer.getTestMessageUrl(info)
-                  );
 
-                  res.render("contact", { msg: "Email has been sent" });
+                //  res.render("contact", { msg: "Email has been sent" });
                 });
+                if (error) {
+                  response.status(200).send({
+                    error: true,
+                    message: "Student not added",
+                  });
+                } else {
+                  response.status(200).send({
+                    error: false,
+                    message: "Student added successfully",
+                  });
+
+                }
               }
             );
 
-            if (error) {
-              response.status(200).send({
-                error: true,
-                message: "Student not added",
-              });
-            } else {
-              response.status(200).send({
-                error: false,
-                message: "Student added successfully",
-              });
 
-              console.log("student added successfully");
-            }
           }
         );
       }
