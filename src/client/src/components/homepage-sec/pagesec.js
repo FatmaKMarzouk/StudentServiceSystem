@@ -10,6 +10,7 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import Container from "@material-ui/core/Container";
 import MenuIcon from "@material-ui/icons/Menu";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 //import { mainListItems, secondaryListItems } from "./listItems";
@@ -21,6 +22,7 @@ import { withStyles } from "@material-ui/core/styles";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import EnrollingNewStudent from "../functionalities-sec/EnrollingNewStudent";
+import AddSecretary from "../functionalities-sec/AddSecretary";
 import Upload from "../upload/Upload";
 import ListItem from "@material-ui/core/ListItem";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
@@ -193,6 +195,8 @@ function GetFunctionContent(func) {
       );
     case 3:
       return <Profile />;
+    case 4:
+      return <AddSecretary />;
     default:
       return "Unknown step";
   }
@@ -233,6 +237,10 @@ export default function SecHome() {
 
   const handleProfile = () => {
     setActiveFunc(3);
+  };
+
+  const handleAddSec = () => {
+    setActiveFunc(4);
   };
 
   const handleLogout = () => {
@@ -364,6 +372,25 @@ export default function SecHome() {
                   }}
                 >
                   تأجيل التجنيد العسكري
+                </span>
+              </ListItemText>
+            </ListItem>
+            <ListItem button onClick={handleAddSec}>
+              <ListItemIcon>
+                <AddCircleIcon
+                  style={{ marginRight: "10%", color: "white" }}
+                  fontSize="medium"
+                />
+              </ListItemIcon>
+              <ListItemText style={{ textAlign: "right" }}>
+                <span
+                  style={{
+                    color: "white",
+                    fontFamily: "Cairo",
+                    fontSize: "12px",
+                  }}
+                >
+                  إضافة سكرتيرة
                 </span>
               </ListItemText>
             </ListItem>

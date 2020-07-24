@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Confirmation from "../mainform/Confirmation";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
+import Alert from "@material-ui/lab/Alert";
 import Zoom from "@material-ui/core/Zoom";
 import {
   readCertOfEnrollData,
@@ -136,6 +137,9 @@ export default function CustomizedDialogs(props) {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [alertMessage, setAlertMessage] = React.useState("");
+  const [alertSeverity, setAlertSeverity] = React.useState("");
+  const [openAlert, setOpenAlert] = React.useState(false);
   /*const [userData, setUserData] = useState({
     NameAr: "",
     Faculty: "",
@@ -215,24 +219,70 @@ export default function CustomizedDialogs(props) {
   const handleClickOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
+    setOpen(false);
+    setOpenAlert(false);
+    document.getElementById("blur").style.filter = "blur(0)";
+  };
+
+  const handleAddToCart = () => {
     const token = getToken();
 
     switch (props.id) {
       case 1:
-        certificateToCart(token);
+        certificateToCart(token).then((data) => {
+          if (data.error) {
+            console.log("IN ERORRR STUDENT CARD:: ");
+            console.log(data.message);
+            setAlertMessage(data.message);
+            setAlertSeverity("error");
+          } else {
+            console.log("IN ELSEEE DATA STUDENTCARD:: ");
+            console.log(data.message);
+            setAlertMessage(data.message);
+            setAlertSeverity("success");
+          }
+          setOpenAlert(true);
+        });
         break;
       case 2:
-        transcriptCart(token);
+        transcriptCart(token).then((data) => {
+          if (data.error) {
+            console.log("IN ERORRR STUDENT CARD:: ");
+            console.log(data.message);
+            setAlertMessage(data.message);
+            setAlertSeverity("error");
+          } else {
+            console.log("IN ELSEEE DATA STUDENTCARD:: ");
+            console.log(data.message);
+            setAlertMessage(data.message);
+            setAlertSeverity("success");
+          }
+          setOpenAlert(true);
+        });
         break;
       case 3:
-        cardCart(token);
+        cardCart(token).then((data) => {
+          if (data.error) {
+            console.log("IN ERORRR STUDENT CARD:: ");
+            console.log(data.message);
+            setAlertMessage(data.message);
+            setAlertSeverity("error");
+          } else {
+            console.log("IN ELSEEE DATA STUDENTCARD:: ");
+            console.log(data.message);
+            setAlertMessage(data.message);
+            setAlertSeverity("success");
+          }
+          setOpenAlert(true);
+        });
         break;
       case 4:
         annualFeesCart(token);
         break;
     }
-    setOpen(false);
+    //setOpen(false);
     document.getElementById("blur").style.filter = "blur(0)";
   };
 
@@ -393,13 +443,25 @@ export default function CustomizedDialogs(props) {
             <Button
               id="add-to-cart-button"
               autoFocus
-              onClick={handleClose}
+              onClick={handleAddToCart}
               color="primary"
               style={{ marginRight: "auto" }}
             >
               <AddShoppingCartIcon />
               <span style={{ marginLeft: "5%" }}>أضف إلى العربة</span>
             </Button>
+            <Dialog
+              open={openAlert}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogContent>
+                <Alert variant="outlined" severity={alertSeverity}>
+                  {alertMessage}
+                </Alert>
+              </DialogContent>
+            </Dialog>
           </DialogActions>
         </Dialog>
       </div>
