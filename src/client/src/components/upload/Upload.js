@@ -251,6 +251,12 @@ class Upload extends Component {
         console.log(data.message);
 
       });*/
+      this.setState({
+        files: [],
+        successfullUploaded: false,
+        uploading: false,
+      });
+      document.getElementById("files-container").style.display = "none";
     });
   }
 
