@@ -190,3 +190,9 @@ button:disabled {
   margin-left: 10px;
   margin-bottom: 0;
 }
+
+#successfully-upload {
+  display: none;
+  direction: ltr;
+  margin: 2%;
+}

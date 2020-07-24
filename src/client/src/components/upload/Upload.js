@@ -7,6 +7,10 @@ import TextField from "@material-ui/core/TextField";
 import { getToken } from "../../Utils/Common";
 import axios from "axios";
 import { uploadFile } from "../../core/Apis";
+import Alert from "@material-ui/lab/Alert";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
 
 class Upload extends Component {
   constructor(props) {
@@ -255,8 +259,10 @@ class Upload extends Component {
         files: [],
         successfullUploaded: false,
         uploading: false,
+        open: true,
       });
       document.getElementById("files-container").style.display = "none";
+      document.getElementById("successfully-upload").style.display = "flex";
     });
   }
 
@@ -329,6 +335,10 @@ class Upload extends Component {
     }
   }
 
+  componentDidMount() {
+    document.getElementById("successfully-upload").style.display = "none";
+  }
+
   render() {
     return (
       <div className="Upload">
@@ -360,6 +370,18 @@ class Upload extends Component {
               </div>
             </div>
             {this.getInputID(this.props.stepNum)}
+          </div>
+          <div id="successfully-upload">
+            <Alert
+              variant="outlined"
+              severity="success"
+              style={{
+                fontFamily: "Cairo",
+                fontSize: "12px",
+              }}
+            >
+              Successfully Uploaded - {this.props.value}
+            </Alert>
           </div>
         </div>
       </div>

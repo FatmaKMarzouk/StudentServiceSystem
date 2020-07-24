@@ -228,6 +228,9 @@ export default function CustomizedSteppers() {
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (activeStep > 0) {
+      document.getElementById("successfully-upload").style.display = "none";
+    }
   };
 
   const handleBack = () => {
