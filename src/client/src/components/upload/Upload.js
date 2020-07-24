@@ -90,14 +90,14 @@ class Upload extends Component {
       console.log(file);
 
       const formData = new FormData();
-      formData.append("nominationCard", file, file.name);
+      formData.append("file", file);
 
       for (var key of formData.entries()) {
         console.log(key[0] + ", " + key[1].name);
       }
 
       console.log("AHAM CONSOLE FEHOM2");
-      console.log(file);
+      console.log(formData);
 
       const token = getToken();
       console.log("tokennnnn");
@@ -105,13 +105,18 @@ class Upload extends Component {
 
       switch (this.props.stepNum) {
         case 1:
-          fetch("http://localhost:5000/nominationcard", {
-            //mode: "no-cors",
+          //const data = new FormData();
+          // data.append("file", file);
+          axios
+            .post("http://localhost:5000/upload", formData, {})
+            .then((res) => {
+              console.log("El raga3");
+              console.log(res.statusText);
+            });
+
+          /* fetch("http://localhost:5000/upload", {
+            mode: "no-cors",
             method: "POST",
-            headers: {
-              "Content-type": "multipart/form-data",
-              Authorization: `Bearer ${token}`,
-            },
             body: formData,
           })
             .then((response) => {
@@ -122,15 +127,17 @@ class Upload extends Component {
               console.log(response.message);
               return response.json();
             })
-            .catch((err) => console.log(err));
-          /*console.log("Heyyyyooooo");
+            .catch((err) => console.log(err));*/
+
+          /* console.log("Heyyyyooooo");
           //console.log(formData);
-          req.open("POST", "http://localhost:5000/nominationcard");
+          req.open("POST", "http://localhost:5000/upload");
           req.setRequestHeader("Content-Type", "multipart/form-data;");
-          req.setRequestHeader("Authorization", `Bearer ${token}`);
+          //req.setRequestHeader("Authorization", `Bearer ${token}`);
           req.send(formData);
           console.log("request.response");
           console.log(req.response);*/
+
           break;
         /*
         case 2:
