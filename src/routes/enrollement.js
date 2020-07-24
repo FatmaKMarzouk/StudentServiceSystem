@@ -24,22 +24,23 @@ var upload = multer({ storage: storage }).single("file");
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-router.post("/upload", function (req, res) {
+router.post('/upload',function(req, res) {
   console.log("bdayet upload");
   console.log(upload.filename);
   console.log("nhayet upload");
   upload(req, res, function (err) {
     console.log("gowa el upload");
-    if (err instanceof multer.MulterError) {
-      console.log("awl error" + err);
-      return res.status(500).json(err);
-    } else if (err) {
-      console.log("tany error" + err);
-      return res.status(500).json(err);
-    }
-    console.log("gowa el upload lsssssa");
-    return res.status(200).send(req.file);
-  });
+         if (err instanceof multer.MulterError) {
+           console.log("awl error"+err);
+             return res.status(500).json(err)
+         } else if (err) {
+          console.log("tany error"+err);
+             return res.status(500).json(err)
+         }
+         console.log("gowa el upload lsssssa");
+    return res.status(200).send(req.file)
+
+  })
 });
 
 router.get("/enrollement", function (request, response, next) {
@@ -54,17 +55,15 @@ router.post("/enroll", function (request, response) {
   console.log("frontend connected");
 
   if (request.user) {
-    console.log("Heyyyyy22");
     var secusername = request.user.username;
-    console.log("bdayet secusername");
     console.log(secusername);
-    console.log("nhayet secusername");
-    connection.query("USE AlexUni");
+		connection.query('USE AlexUni');
     connection.query(
       "SELECT FacultyName FROM Secretary WHERE ID = ? ",
       [secusername],
       function (error, results, fields) {
-        if (error) throw error;
+        if(error)
+        throw error
         else if (results.length > 0) {
           Object.keys(results).forEach(function (key) {
             var row = results[key];
@@ -72,16 +71,10 @@ router.post("/enroll", function (request, response) {
             console.log(facultysec);
           });
         } else {
-          console.log("3aaaaaaaaaaaa");
+          console.log("no such faculty name");
         }
 
-        //});
-
-        //response.send('Student has been added successfully');
-        console.log("student added");
-
         var nameen = request.body.studentinfo.nameen;
-
         var namear = request.body.studentinfo.namear;
         var ssn = request.body.studentinfo.ssn;
         var medicalcondition = request.body.studentinfo.medicalcondition || " ";
@@ -96,14 +89,6 @@ router.post("/enroll", function (request, response) {
         var address = request.body.studentinfo.address || " ";
         var gender = request.body.studentinfo.gender;
         var selection = request.body.studentinfo.selection || " ";
-
-        console.log("Name ------------------------------->>>>>:");
-        console.log(namear);
-
-        //var birthCerftificate = request.body.birthCerftificate || " ";
-        //var nationalid = request.body.nationalid || " ";
-        //var nominationCard = request.body.nominationCard || " ";
-        //var photo = request.body.photo || "";
         var user = "";
 
         connection.query("USE AlexUni");
@@ -207,6 +192,7 @@ router.post("/enroll", function (request, response) {
                   }
                   console.log("Message sent: %s", info.messageId);
 
+
                 //  res.render("contact", { msg: "Email has been sent" });
                 });
                 if (error) {
@@ -220,10 +206,13 @@ router.post("/enroll", function (request, response) {
                     message: "Student added successfully",
                   });
 
+                  console.log("student added successfully");
                 }
               }
             );
-
+if(!error){
+  console.log("yady el neela");
+}
 
           }
         );

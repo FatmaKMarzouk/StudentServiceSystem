@@ -9,7 +9,7 @@ var home = require("./routes/home");
 var login = require("./routes/login");
 var postpone = require("./routes/postpone");
 var homesec = require("./routes/homesec");
-var enrollement = require("./routes/enrollement");
+var enrollement = require("./routes/enrolling");
 var chooseprog = require("./routes/chooseprog");
 const cors = require("cors");
 
