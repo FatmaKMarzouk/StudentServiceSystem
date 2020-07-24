@@ -7,13 +7,37 @@ var bodyParser = require("body-parser");
 var session = require("express-session");
 var nodemailer = require("nodemailer");
 var facultysec;
-var multer = require("multer");
-var upload = multer({ dest: "uploads/" });
 var request = require("request");
 var fs = require("fs");
+var multer = require("multer");
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+  cb(null, 'public')
+},
+filename: function (req, file, cb) {
+  cb(null, Date.now() + '-' +file.originalname )
+}
+});
+
+var upload = multer({ storage: storage }).single('file')
+
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
+
+router.post('/upload',function(req, res) {
+     
+  upload(req, res, function (err) {
+         if (err instanceof multer.MulterError) {
+             return res.status(500).json(err)
+         } else if (err) {
+             return res.status(500).json(err)
+         }
+    return res.status(200).send(req.file)
+
+  })
+
+});
 
 router.get("/enrollement", function (request, response, next) {
   response.sendFile(__dirname + "/enrollement.html");
