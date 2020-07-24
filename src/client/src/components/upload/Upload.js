@@ -89,26 +89,28 @@ class Upload extends Component {
       console.log("Test 4");
       console.log(file);
 
-      const formData = new FormData();
-      formData.append("file", file);
-
-      for (var key of formData.entries()) {
+      /*for (var key of formData.entries()) {
         console.log(key[0] + ", " + key[1].name);
       }
 
       console.log("AHAM CONSOLE FEHOM2");
       console.log(formData);
-
+*/
       const token = getToken();
       console.log("tokennnnn");
       console.log(token);
+      console.log("tokennnnn");
+
+      console.log(this.props.stepNum);
 
       switch (this.props.stepNum) {
         case 1:
+          const formData1 = new FormData();
+          formData1.append("file", file);
           //const data = new FormData();
           // data.append("file", file);
           axios
-            .post("http://localhost:5000/upload", formData, {
+            .post("http://localhost:5000/nominationcard", formData1, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -145,8 +147,10 @@ class Upload extends Component {
           console.log(req.response);*/
 
         case 2:
+          const formData2 = new FormData();
+          formData2.append("file", file);
           axios
-            .post("http://localhost:5000/highschoolcertificate", formData, {
+            .post("http://localhost:5000/highschoolcertificate", formData2, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -158,8 +162,10 @@ class Upload extends Component {
 
           break;
         case 3:
+          const formData3 = new FormData();
+          formData3.append("file", file);
           axios
-            .post("http://localhost:5000/birthcertificate", formData, {
+            .post("http://localhost:5000/birthcertificate", formData3, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -171,8 +177,10 @@ class Upload extends Component {
           break;
 
         case 4:
+          const formData4 = new FormData();
+          formData4.append("file", file);
           axios
-            .post("http://localhost:5000/nationalid", formData, {
+            .post("http://localhost:5000/nationalid", formData4, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -184,8 +192,41 @@ class Upload extends Component {
 
           break;
         case 5:
+          const formData5 = new FormData();
+          formData5.append("file", file);
           axios
-            .post("http://localhost:5000/photo", formData, {
+            .post("http://localhost:5000/photo", formData5, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((res) => {
+              console.log("El raga3");
+              console.log(res.statusText);
+            });
+          break;
+
+        case 6:
+          console.log("Sara 1");
+          const student = {
+            stdId: "1",
+          };
+          const json = JSON.stringify(student);
+          const blob = new Blob([json], {
+            type: "application/json",
+          });
+          const formData6 = new FormData();
+
+          formData6.append("armydoc", file);
+          formData6.append("document", blob);
+
+          console.log("Sara 2 -->> loop");
+          for (var key of formData6.entries()) {
+            console.log(key[0] + ", " + key[1]);
+          }
+
+          axios
+            .post("http://localhost:5000/uploaddoc", formData6, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -210,6 +251,12 @@ class Upload extends Component {
         console.log(data.message);
 
       });*/
+      this.setState({
+        files: [],
+        successfullUploaded: false,
+        uploading: false,
+      });
+      document.getElementById("files-container").style.display = "none";
     });
   }
 
@@ -312,7 +359,7 @@ class Upload extends Component {
                 />
               </div>
             </div>
-            {this.getInputID(this.props.step)}
+            {this.getInputID(this.props.stepNum)}
           </div>
         </div>
       </div>
