@@ -35,19 +35,6 @@ class AddSecretary extends Component {
                 </Form.Field>
                 <Form.Field>
                   <div id="enrolling-form-field">
-                    <label id="userDetails-label">الرقم القومى</label>
-                    <TextField
-                      required
-                      id="outlined-required"
-                      variant="outlined"
-                      onChange={this.handleChange()}
-                      margin="dense"
-                      style={{ width: "280px" }}
-                    />
-                  </div>
-                </Form.Field>
-                <Form.Field>
-                  <div id="enrolling-form-field">
                     <label id="userDetails-label">البريد الإلكتروني</label>
                     <TextField
                       required
@@ -70,20 +57,7 @@ class AddSecretary extends Component {
               <div id="form-labels-column">
                 <Form.Field>
                   <div id="enrolling-form-field">
-                    <label id="userDetails-label">رقم التليفون</label>
-                    <TextField
-                      required
-                      id="outlined-required"
-                      variant="outlined"
-                      onChange={this.handleChange()}
-                      margin="dense"
-                      style={{ width: "280px" }}
-                    />
-                  </div>
-                </Form.Field>
-                <Form.Field>
-                  <div id="enrolling-form-field">
-                    <label id="userDetails-label">النوع</label>
+                    <label id="userDetails-label">الوظيفة</label>
                     <TextField
                       id="outlined-required"
                       select
@@ -97,27 +71,13 @@ class AddSecretary extends Component {
                         width: "280px",
                       }}
                     >
-                      <MenuItem key="female" value="female">
-                        Female
+                      <MenuItem key="admin" value="admin">
+                        Admin
                       </MenuItem>
-                      <MenuItem key="male" value="male">
-                        Male
+                      <MenuItem key="secretary" value="secretary">
+                        Secretary
                       </MenuItem>
                     </TextField>
-                  </div>
-                </Form.Field>
-
-                <Form.Field>
-                  <div id="enrolling-form-field">
-                    <label id="userDetails-label">العنوان</label>
-                    <TextField
-                      required
-                      id="outlined-required"
-                      variant="outlined"
-                      onChange={this.handleChange()}
-                      margin="dense"
-                      style={{ width: "280px" }}
-                    />
                   </div>
                 </Form.Field>
                 <Button
