@@ -25,13 +25,19 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 router.post('/upload',function(req, res) {
-     console.log(upload)
+  console.log("bdayet upload");
+  console.log(upload.filename);
+  console.log("nhayet upload");
   upload(req, res, function (err) {
+    console.log("gowa el upload");
          if (err instanceof multer.MulterError) {
+           console.log("awl error"+err);
              return res.status(500).json(err)
          } else if (err) {
+          console.log("tany error"+err);
              return res.status(500).json(err)
          }
+         console.log("gowa el upload lsssssa");
     return res.status(200).send(req.file)
 
   })
