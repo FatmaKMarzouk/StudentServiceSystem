@@ -26,7 +26,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 router.post('/upload',function(req, res) {
-     
+     console.log(upload)
   upload(req, res, function (err) {
          if (err instanceof multer.MulterError) {
              return res.status(500).json(err)
@@ -52,16 +52,18 @@ router.post("/enroll", function (request, response) {
 
   if (request.user) {
     console.log("Heyyyyy22");
-
-    //console.log("request.user test");
-    //console.log(request.user);
     var secusername = request.user.username;
-
+    console.log("bdayet secusername");
+    console.log(secusername);
+    console.log("nhayet secusername");
+		connection.query('USE AlexUni');
     connection.query(
       "SELECT FacultyName FROM Secretary WHERE ID = ? ",
       [secusername],
       function (error, results, fields) {
-        if (results.length > 0) {
+        if(error)
+        throw error
+        else if (results.length > 0) {
           Object.keys(results).forEach(function (key) {
             var row = results[key];
             facultysec = row.FacultyName;
@@ -213,7 +215,7 @@ router.post("/enroll", function (request, response) {
             );
 
             if (error) {
-              response.status(400).send({
+              response.status(200).send({
                 error: true,
                 message: "Student not added",
               });
