@@ -232,6 +232,7 @@ export const postStudentInfo = (token, newStudentInfo) => {
     .then((response) => {
       console.log("FOUR");
       console.log("response hena");
+      console.log(response);
       console.log(response.error);
       console.log(response.message);
       return response.json();
