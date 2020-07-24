@@ -24,23 +24,22 @@ var upload = multer({ storage: storage }).single("file");
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-router.post('/upload',function(req, res) {
+router.post("/upload", function (req, res) {
   console.log("bdayet upload");
   console.log(upload.filename);
   console.log("nhayet upload");
   upload(req, res, function (err) {
     console.log("gowa el upload");
-         if (err instanceof multer.MulterError) {
-           console.log("awl error"+err);
-             return res.status(500).json(err)
-         } else if (err) {
-          console.log("tany error"+err);
-             return res.status(500).json(err)
-         }
-         console.log("gowa el upload lsssssa");
-    return res.status(200).send(req.file)
-
-  })
+    if (err instanceof multer.MulterError) {
+      console.log("awl error" + err);
+      return res.status(500).json(err);
+    } else if (err) {
+      console.log("tany error" + err);
+      return res.status(500).json(err);
+    }
+    console.log("gowa el upload lsssssa");
+    return res.status(200).send(req.file);
+  });
 });
 
 router.get("/enrollement", function (request, response, next) {
@@ -60,13 +59,12 @@ router.post("/enroll", function (request, response) {
     console.log("bdayet secusername");
     console.log(secusername);
     console.log("nhayet secusername");
-		connection.query('USE AlexUni');
+    connection.query("USE AlexUni");
     connection.query(
       "SELECT FacultyName FROM Secretary WHERE ID = ? ",
       [secusername],
       function (error, results, fields) {
-        if(error)
-        throw error
+        if (error) throw error;
         else if (results.length > 0) {
           Object.keys(results).forEach(function (key) {
             var row = results[key];
