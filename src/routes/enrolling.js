@@ -188,7 +188,7 @@ router.post("/enroll", function (request, response) {
 // ------------------------------------------------------------------------------------------------
 router.post("/nominationcard", function (request, response) {
   console.log("Inside Nomination Card");
-  var nominationCard = request.body.nominationCard || " ";
+  var nominationCard = request.body.nominationCard;
 
   console.log("Nomination Cardddddzzzzzzzzz");
   console.log(nominationCard.name);
@@ -210,7 +210,7 @@ router.post("/nominationcard", function (request, response) {
 
 //---------------------------------------------------------------------------------------------------------------
 router.post("/photo", function (request, response) {
-  var photo = request.body.photo || " ";
+  var photo = request.body.photo;
   //var email = request.body.email;
 
   if (request.user) {
@@ -228,7 +228,7 @@ router.post("/photo", function (request, response) {
 
 //----------------------------------------------------------------------------------------------------------------
 router.post("/highschoolcertificate", function (request, response) {
-  var highschoolcertificate = request.body.highschoolcertificate || " ";
+  var highschoolcertificate = request.body.highschoolcertificate;
   //var email = request.body.email;
 
   if (request.user) {
@@ -246,7 +246,7 @@ router.post("/highschoolcertificate", function (request, response) {
 
 //--------------------------------------------------------------------------------------------------------------
 router.post("/birthcertificate", function (request, response) {
-  var birthcertificate = request.body.birthcertificate || " ";
+  var birthcertificate = request.body.birthcertificate;
   //var email = request.body.email;
 
   if (request.user) {
