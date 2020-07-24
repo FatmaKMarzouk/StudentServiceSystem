@@ -87,7 +87,10 @@ router.get("/cardcart", function (req, res, next) {
           "Faculty of Engineering",
         ]
       );
-      res.status(200).send("cardcart tmaam");
+      res.status(200).send({
+        error: false,
+        message: "Successfully added to cart!",
+      });
       //res.redirect('/cart');
     }
   } else {

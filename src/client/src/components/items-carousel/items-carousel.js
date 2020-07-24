@@ -17,7 +17,7 @@ export default () => {
         infiniteLoop
         gutter={10}
         numberOfCards={4}
-        slidesToScroll={4}
+        slidesToScroll={1}
         activeItemIndex={activeItemIndex}
         requestToChangeActive={setActiveItemIndex}
         rightChevron={
@@ -147,24 +147,6 @@ export default () => {
             </div>
             <DialogBox id={4} />
           </div>
-        </Paper>
-        <Paper id="items-carousel">
-          <div id="paper-icons">٦</div>
-        </Paper>
-        <Paper id="items-carousel">
-          <div id="paper-icons">٧</div>
-        </Paper>
-        <Paper id="items-carousel">
-          <div id="paper-icons">٨</div>
-        </Paper>
-        <Paper id="items-carousel">
-          <div id="paper-icons">٩</div>
-        </Paper>
-        <Paper id="items-carousel">
-          <div id="paper-icons">١٠</div>
-        </Paper>
-        <Paper id="items-carousel">
-          <div id="paper-icons">١١</div>
         </Paper>
       </ItemsCarousel>
     </div>

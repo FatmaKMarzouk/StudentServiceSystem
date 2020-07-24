@@ -60,7 +60,7 @@ router.get("/transcript", function (request, response, next) {
         // if no username, then student not registered
         if (results.length > 0) {
           Object.keys(results).forEach(function (key) {
-            row1arr = results[key]
+            row1arr = results[key];
             row1 = { ...row1, ...results };
             // info.push(results[key]);
             id = row1arr.ID;
@@ -91,7 +91,7 @@ router.get("/transcript", function (request, response, next) {
               if (results2.length > 0) {
                 //console.log("loop print");
                 Object.keys(results2).forEach(function (key) {
-                  row2arr = results2[key]
+                  row2arr = results2[key];
                   row2 = { ...row2, ...results2 };
                   courses = row2arr.CourseName;
                   grade = row2arr.Grade;
@@ -123,7 +123,7 @@ router.get("/transcript", function (request, response, next) {
                     if (results4.length > 0) {
                       Object.keys(results4).forEach(function (key) {
                         //  termGpa.push(results4[key]);
-                        row4arr = results4[key]
+                        row4arr = results4[key];
                         row4 = { ...row4, ...results4 };
                         sems = row4arr.Semester;
                         gpa = row4arr.GPA;
@@ -242,69 +242,67 @@ router.get("/transcript", function (request, response, next) {
     });
   }
 });
-router.get('/transcriptconfirm', function (request, response, fields) 
-{
-  if (request.user) 
-  {
+router.get("/transcriptconfirm", function (request, response, fields) {
+  if (request.user) {
     var username = request.user.username;
     var paid = "";
     var flag = 1;
-    connection.query('USE AlexUni');
-    connection.query('SELECT Paid FROM Payment WHERE StudentID = ? ', [username], function (error, results3, fields) 
-    {
-      if (error)
-        throw error;
-      if (results3.length > 0) 
-      {
-        Object.keys(results3).forEach(function (key) 
-        {
-          var row3 = results3[key];
+    connection.query("USE AlexUni");
+    connection.query(
+      "SELECT Paid FROM Payment WHERE StudentID = ? ",
+      [username],
+      function (error, results3, fields) {
+        if (error) throw error;
+        if (results3.length > 0) {
+          Object.keys(results3).forEach(function (key) {
+            var row3 = results3[key];
 
-          paid = row3.Paid;
-        });
+            paid = row3.Paid;
+          });
           // flag 1
           if (paid) {
             if (flag == 1) {
-              fs.readFile('./transcript.docx', function (err, data) {
-
-                connection.query('USE AlexUni');
-                connection.query('INSERT INTO Requests (StudentID,ServiceName,Amount,FacultyName,document) VALUES( ?,?,?,?,? ) ', [username, "Request Transcript", "50", "Faculty of Engineering", data]);
+              fs.readFile("./transcript.docx", function (err, data) {
+                connection.query("USE AlexUni");
+                connection.query(
+                  "INSERT INTO Requests (StudentID,ServiceName,Amount,FacultyName,document) VALUES( ?,?,?,?,? ) ",
+                  [
+                    username,
+                    "Request Transcript",
+                    "50",
+                    "Faculty of Engineering",
+                    data,
+                  ]
+                );
                 //response.redirect('/cart');
-                response.status(200).send("submit successfully");
-              })
+                response.status(200).send({
+                  error: false,
+                  message: "Successfully added to cart!",
+                });
+              });
             }
-          }
-          else 
-          {
+          } else {
             flag = 0;
             response.status(400).send({
               error: true,
-              message: "You haven't paid fees"
+              message: "You haven't paid fees",
             });
           }
-
-
+        } else {
+          response.status(400).send({
+            error: true,
+            message: "No data Retrieved",
+          });
+        }
       }
-      else 
-      {
-        response.status(400).send({
-          error: true,
-          message: "No data Retrieved"
-        });
-      }
-    });
-  } 
-  else 
-  {
+    );
+  } else {
     response.status(400).send({
       error: true,
-      message: "Please log in"
+      message: "Please log in",
     });
   }
 });
-
-
-
 
 // flag 1
 /* // Create an empty Word object:

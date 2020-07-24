@@ -16,6 +16,8 @@ import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
+import PrintIcon from "@material-ui/icons/Print";
+import Button from "@material-ui/core/Button";
 import { fade } from "@material-ui/core/styles";
 import { getToken } from "../../Utils/Common";
 import {
@@ -26,106 +28,6 @@ import {
   requestDone,
   requestReceived,
 } from "../../core/Apis";
-
-function createData(request, id) {
-  return { request, id };
-}
-
-const services = [
-  {
-    serviceName: "شهادة قيد",
-    studentID: 4249,
-  },
-  {
-    serviceName: "ترانسكريبت المواد",
-    studentID: 4237,
-  },
-  {
-    serviceName: "شهادة قيد",
-    studentID: 4005,
-  },
-  {
-    serviceName: "ترانسكريبت المواد",
-    studentID: 4274,
-  },
-  {
-    serviceName: "شهادة قيد",
-    studentID: 4283,
-  },
-  {
-    serviceName: "ترانسكريبت المواد",
-    studentID: 3889,
-  },
-  {
-    serviceName: "شهادة قيد",
-    studentID: 3781,
-  },
-  {
-    serviceName: "ترانسكريبت المواد",
-    studentID: 4001,
-  },
-];
-
-const allServices = [
-  {
-    serviceName: "شهادة قيد",
-    studentID: 4000,
-  },
-  {
-    serviceName: "ترانسكريبت المواد",
-    studentID: 4001,
-  },
-  {
-    serviceName: "شهادة قيد",
-    studentID: 4002,
-  },
-  {
-    serviceName: "ترانسكريبت المواد",
-    studentID: 4003,
-  },
-  {
-    serviceName: "شهادة قيد",
-    studentID: 4004,
-  },
-  {
-    serviceName: "ترانسكريبت المواد",
-    studentID: 4005,
-  },
-  {
-    serviceName: "شهادة قيد",
-    studentID: 4006,
-  },
-  {
-    serviceName: "ترانسكريبت المواد",
-    studentID: 4007,
-  },
-];
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
 
 const headCells = [
   {
@@ -145,9 +47,6 @@ const headCells = [
 
 function EnhancedTableHead(props) {
   const { classes, order, orderBy, onRequestSort } = props;
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
 
   return (
     <TableHead>
@@ -164,13 +63,6 @@ function EnhancedTableHead(props) {
           </TableCell>
         ))}
         <TableCell padding="checkbox" id="table-header"></TableCell>
-        {/* <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ "aria-label": "select all desserts" }}
-          />
-              </TableCell>*/}
       </TableRow>
     </TableHead>
   );
@@ -370,6 +262,8 @@ export default function EnhancedTable(props) {
     setOrderBy(property);
   };
 
+  const handlePrint = (reqID) => {};
+
   const handleClick = (event, request) => {
     const selectedIndex = selected.indexOf(request);
     let newSelected = [];
@@ -418,12 +312,24 @@ export default function EnhancedTable(props) {
               studentID: request.StudentID,
               done: request.done,
               received: request.received,
+              file: request.document.data,
             };
             orderObjects.push(orderObject);
+            var array = new Uint8Array(orderObject.file);
+            var blob = new Blob([array], { type: "application/octet-stream" });
+            /*var url = URL.createObjectURL(blob);
+            window.open(url);*/
+            var link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            // set the name of the file
+            link.download = "createdocument.docx";
+            // clicking the anchor element will download the file
+            link.click();
           });
           setAllRequests(orderObjects);
           setRequests(orderObjects);
         });
+
         console.log("ALL REQUESTS");
         break;
       case 0:
@@ -553,7 +459,7 @@ export default function EnhancedTable(props) {
                 order={order}
                 orderBy={orderBy}
                 onRequestSort={handleRequestSort}
-                rowCount={services.length}
+                rowCount={requests.length}
               />
               <TableBody>
                 {requests.map((service) => {
