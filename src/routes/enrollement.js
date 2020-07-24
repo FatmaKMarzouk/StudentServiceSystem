@@ -24,8 +24,7 @@ var upload = multer({ storage: storage }).single("file");
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-router.post('/upload',function(req, res) {
-
+router.post("/upload", function (req, res) {
   console.log("bdayet upload");
   console.log(req.user);
   console.log("nhayet upload");
@@ -62,13 +61,12 @@ router.post("/enroll", function (request, response) {
     console.log("bdayet secusername");
     console.log(secusername);
     console.log("nhayet secusername");
-		connection.query('USE AlexUni');
+    connection.query("USE AlexUni");
     connection.query(
       "SELECT FacultyName FROM Secretary WHERE ID = ? ",
       [secusername],
       function (error, results, fields) {
-        if(error)
-        throw error
+        if (error) throw error;
         else if (results.length > 0) {
           Object.keys(results).forEach(function (key) {
             var row = results[key];
@@ -207,32 +205,28 @@ router.post("/enroll", function (request, response) {
 
                 transporter.sendMail(mailOptions, (error, info) => {
                   if (error) {
-                    return console.log(error);
+
                   }
                   console.log("Message sent: %s", info.messageId);
-                  console.log(
-                    "Preview URL: %s",
-                    nodemailer.getTestMessageUrl(info)
-                  );
 
-                  res.render("contact", { msg: "Email has been sent" });
+                //  res.render("contact", { msg: "Email has been sent" });
                 });
+                if (error) {
+                  response.status(200).send({
+                    error: true,
+                    message: "Student not added",
+                  });
+                } else {
+                  response.status(200).send({
+                    error: false,
+                    message: "Student added successfully",
+                  });
+
+                }
               }
             );
 
-            if (error) {
-              response.status(200).send({
-                error: true,
-                message: "Student not added",
-              });
-            } else {
-              response.status(200).send({
-                error: false,
-                message: "Student added successfully",
-              });
 
-              console.log("student added successfully");
-            }
           }
         );
       }
