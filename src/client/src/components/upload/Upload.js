@@ -4,6 +4,9 @@ import "./Upload.css";
 import Progress from "../progress/Progress";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
+import { getToken } from "../../Utils/Common";
+import axios from "axios";
+import { uploadFile } from "../../core/Apis";
 
 class Upload extends Component {
   constructor(props) {
@@ -31,8 +34,14 @@ class Upload extends Component {
   async uploadFiles() {
     this.setState({ uploadProgress: {}, uploading: true });
     const promises = [];
+    console.log("SARA SAKRRRR");
+    console.log(this.state.files);
     this.state.files.forEach((file) => {
+      console.log("Test 1");
+      console.log(file);
       promises.push(this.sendRequest(file));
+      console.log("PROMISES");
+      console.log(promises);
     });
     try {
       await Promise.all(promises);
@@ -45,7 +54,11 @@ class Upload extends Component {
   }
 
   sendRequest(file) {
+    console.log("Test 2");
+    console.log(file);
     return new Promise((resolve, reject) => {
+      console.log("Test 3");
+      console.log(file);
       const req = new XMLHttpRequest();
 
       req.upload.addEventListener("progress", (event) => {
@@ -73,11 +86,104 @@ class Upload extends Component {
         reject(req.response);
       });
 
-      const formData = new FormData();
-      formData.append("file", file, file.name);
+      console.log("Test 4");
+      console.log(file);
 
-      req.open("POST", "http://localhost:8000/upload");
-      req.send(formData);
+      const formData = new FormData();
+      formData.append("nominationCard", file, file.name);
+
+      for (var key of formData.entries()) {
+        console.log(key[0] + ", " + key[1].name);
+      }
+
+      console.log("AHAM CONSOLE FEHOM2");
+      console.log(file);
+
+      const token = getToken();
+      console.log("tokennnnn");
+      console.log(token);
+
+      switch (this.props.stepNum) {
+        case 1:
+          fetch("http://localhost:5000/nominationcard", {
+            //mode: "no-cors",
+            method: "POST",
+            headers: {
+              "Content-type": "multipart/form-data",
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          })
+            .then((response) => {
+              console.log("Test 4");
+              console.log(file);
+              console.log("Nomination Response");
+              console.log("response hena");
+              console.log(response.message);
+              return response.json();
+            })
+            .catch((err) => console.log(err));
+          /*console.log("Heyyyyooooo");
+          //console.log(formData);
+          req.open("POST", "http://localhost:5000/nominationcard");
+          req.setRequestHeader("Content-Type", "multipart/form-data;");
+          req.setRequestHeader("Authorization", `Bearer ${token}`);
+          req.send(formData);
+          console.log("request.response");
+          console.log(req.response);*/
+          break;
+        /*
+        case 2:
+          console.log("Heyyyyooooo");
+          console.log(formData);
+          req.open("POST", "http://localhost:5000/highschoolcertificate");
+          req.setRequestHeader("Authorization", `Bearer ${token}`);
+          req.send(formData);
+          console.log("request.response");
+          console.log(req.response);
+          break;
+        case 3:
+          console.log("Heyyyyooooo");
+          console.log(formData);
+          req.open("POST", "http://localhost:5000/birthcertificate");
+          req.setRequestHeader("Authorization", `Bearer ${token}`);
+          req.send(formData);
+          console.log("request.response");
+          console.log(req.response);
+          break;
+        case 4:
+          console.log("Heyyyyooooo");
+          console.log(formData);
+          req.open("POST", "http://localhost:5000/nationalid");
+          req.setRequestHeader("Authorization", `Bearer ${token}`);
+          req.send(formData);
+          console.log("request.response");
+          console.log(req.response);
+          break;
+        case 5:
+          console.log("Heyyyyooooo");
+          console.log(formData);
+          req.open("POST", "http://localhost:5000/photo");
+          req.setRequestHeader("Authorization", `Bearer ${token}`);
+          req.send(formData);
+          console.log("request.response");
+          console.log(req.response);
+          break;
+*/
+        default:
+          console.log("Default");
+          break;
+      }
+
+      //req.open("POST", "http://localhost:8000/upload");
+      //req.send(formData);
+      //console.log(formData);
+
+      /* uploadFile(token, formData, 1).then((data) => {
+        console.log("HENA EL MESSAGE BTA3T EL NOMMMI");
+        console.log(data.message);
+
+      });*/
     });
   }
 

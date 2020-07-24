@@ -215,3 +215,59 @@ export const annualFeesCart = (token) => {
     })
     .catch((err) => console.log(err));
 };
+
+export const postStudentInfo = (token, newStudentInfo) => {
+  console.log("THREE");
+  console.log("HENA el newStudentInfo:::");
+  console.log(newStudentInfo);
+
+  return fetch("http://localhost:5000/enroll", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ studentinfo: newStudentInfo }),
+  })
+    .then((response) => {
+      console.log("FOUR");
+      console.log("response hena");
+      console.log(response.error);
+      console.log(response.message);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+export const uploadFile = (token, uploadedFile, step) => {
+  console.log("HENA el uploadedFile:::");
+  console.log(uploadedFile);
+
+  switch (step) {
+    case 1:
+      return fetch("http://localhost:5000/nominationcard", {
+        mode: "no-cors",
+        method: "post",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: { nominationCard: uploadedFile },
+      })
+        .then((response) => {
+          console.log("Nomination Response");
+          console.log("response hena");
+          console.log(response.message);
+          return response.json();
+        })
+        .catch((err) => console.log(err));
+
+    case 2:
+      return;
+    case 3:
+      return;
+    case 4:
+      return;
+    case 5:
+      return;
+  }
+};

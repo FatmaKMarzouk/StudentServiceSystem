@@ -12,6 +12,7 @@ import {
   readCertOfEnrollData,
   getCardDetails,
   getAnnualFees,
+  postStudentInfo,
 } from "../../core/Apis";
 
 class Confirmation extends Component {
@@ -41,10 +42,46 @@ class Confirmation extends Component {
     annualFees: {
       value: "",
     },
+
+    newStudentInfo: {
+      namear: "",
+      ssn: "",
+      medicalcondition: "",
+      parentphone: "",
+      parentname: "",
+      parentssn: "",
+      parentrelation: "",
+      email: "",
+      nationality: "",
+      birthdate: "",
+      phonenumber: "",
+      address: "",
+      gender: "",
+      selection: "",
+    },
   };
   saveAndContinue = (e) => {
     e.preventDefault();
     this.props.nextStep();
+  };
+
+  submitNewStudent = (e) => {
+    console.log("ONE");
+    e.preventDefault();
+    console.log("TWO");
+
+    const token = getToken();
+    console.log("token in useEffect");
+    console.log(token);
+
+    postStudentInfo(token, this.state.newStudentInfo).then((data) => {
+      console.log("FIVE");
+      if (data.error) {
+        console.log(data.message);
+      } else {
+        console.log(data.message);
+      }
+    });
   };
 
   back = (e) => {
@@ -111,6 +148,9 @@ class Confirmation extends Component {
 
   loadUserData = (username, token) => {
     switch (this.props.id) {
+      case 0:
+        this.setState({ newStudentInfo: this.props.values });
+        break;
       case 1:
         readCertOfEnrollData(token).then((data) => {
           if (data.error) {
@@ -271,7 +311,34 @@ class Confirmation extends Component {
         gpa,
         enrollmentDestination,
         courses,
+        namear,
+        ssn,
+        phonenumber,
+        parentname,
+        parentssn,
+        parentrelation,
+        birthdate,
+        medicalcondition,
+        parentphone,
+        selection,
       },
+
+      /* newStudentValues: {
+        namear,
+        ssn,
+        email,
+        gender,
+        address,
+        phonenumber,
+        nationality,
+        parentname,
+        parentssn,
+        parentrelation,
+        birthdate,
+        medicalcondition,
+        parentphone,
+        selection,
+      },*/
     } = this.props;
     {
       console.log(`confirmation id ${this.props.id}`);
@@ -304,55 +371,55 @@ class Confirmation extends Component {
                 <List.Item>
                   <List.Icon name="users" />
                   <List.Content id="confirmation-list-item">
-                    الاسم الرباعي :{fullName}
+                    الاسم الرباعي :{this.state.newStudentInfo.namear}
                   </List.Content>
                 </List.Item>
                 <List.Item>
                   <List.Icon name="users" />
                   <List.Content id="confirmation-list-item">
-                    الرقم القومى : {nationalId}
+                    الرقم القومى : {this.state.newStudentInfo.ssn}
                   </List.Content>
                 </List.Item>
                 <List.Item>
                   <List.Icon name="Email" />
                   <List.Content id="confirmation-list-item">
-                    الإيميل :{email}
+                    الإيميل :{this.state.newStudentInfo.email}
                   </List.Content>
                 </List.Item>
                 <List.Item>
                   <List.Icon name="users" />
                   <List.Content id="confirmation-list-item">
-                    النوع : {gender}
+                    النوع : {this.state.newStudentInfo.gender}
                   </List.Content>
                 </List.Item>
                 <List.Item>
                   <List.Icon name="users" />
                   <List.Content id="confirmation-list-item">
-                    العنوان : {address}
+                    العنوان : {this.state.newStudentInfo.address}
                   </List.Content>
                 </List.Item>
                 <List.Item>
                   <List.Icon name="users" />
                   <List.Content id="confirmation-list-item">
-                    رقم التليفون : {phoneNumber}
+                    رقم التليفون : {this.state.newStudentInfo.phonenumber}
                   </List.Content>
                 </List.Item>
                 <List.Item>
                   <List.Icon name="users" />
                   <List.Content id="confirmation-list-item">
-                    الجنسية : {nationality}
+                    الجنسية : {this.state.newStudentInfo.nationality}
                   </List.Content>
                 </List.Item>
                 <List.Item>
                   <List.Icon name="users" />
                   <List.Content id="confirmation-list-item">
-                    تاريخ الميلاد : {birthDate}
+                    تاريخ الميلاد : {this.state.newStudentInfo.birthdate}
                   </List.Content>
                 </List.Item>
                 <List.Item>
                   <List.Icon name="users" />
                   <List.Content id="confirmation-list-item">
-                    الحالة الصحية : {medicalCondition}
+                    الحالة الصحية : {this.state.newStudentInfo.medicalcondition}
                   </List.Content>
                 </List.Item>
                 <Divider id="confirm-divider" />
@@ -360,25 +427,25 @@ class Confirmation extends Component {
                 <List.Item>
                   <List.Icon name="users" />
                   <List.Content id="confirmation-list-item">
-                    اسم ولي الأمر : {guardianName}
+                    اسم ولي الأمر : {this.state.newStudentInfo.parentname}
                   </List.Content>
                 </List.Item>
                 <List.Item>
                   <List.Icon name="users" />
                   <List.Content id="confirmation-list-item">
-                    الرقم القومى : {guardianId}
+                    الرقم القومى : {this.state.newStudentInfo.parentssn}
                   </List.Content>
                 </List.Item>
                 <List.Item>
                   <List.Icon name="users" />
                   <List.Content id="confirmation-list-item">
-                    صلة القرابة : {relativeRelation}
+                    صلة القرابة : {this.state.newStudentInfo.parentrelation}
                   </List.Content>
                 </List.Item>
                 <List.Item>
                   <List.Icon name="calendar" />
                   <List.Content id="confirmation-list-item">
-                    رقم التليفون : {guardianPhoneNumber}
+                    رقم التليفون : {this.state.newStudentInfo.parentphone}
                   </List.Content>
                 </List.Item>
               </List>
@@ -389,7 +456,7 @@ class Confirmation extends Component {
               >
                 رجوع
               </Button>
-              <Button id="progress-button" onClick={this.saveAndContinue}>
+              <Button id="progress-button" onClick={this.submitNewStudent}>
                 تأكيد
               </Button>
             </div>
