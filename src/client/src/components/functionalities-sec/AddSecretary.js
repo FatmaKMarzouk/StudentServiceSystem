@@ -5,12 +5,62 @@ import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import EmailIcon from "@material-ui/icons/Email";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import { getToken } from "../../Utils/Common";
+import { postSecretaryInfo } from "../../core/Apis";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import Alert from "@material-ui/lab/Alert";
+
 //import { nationalities } from "./Nationalities";
 
 class AddSecretary extends Component {
-  handleSubmit = () => {};
+  state = {
+    name: "",
+    email: "",
+    admin: "",
+    alertMessage: "",
+    alertSeverity: "",
+    openAlert: false,
+  };
 
-  handleChange = () => {};
+  handleSubmit = () => {
+    const token = getToken();
+    console.log("token ");
+    console.log(token);
+
+    postSecretaryInfo(token, this.state).then((data) => {
+      console.log("FIVE");
+      if (data.error) {
+        this.setState({
+          alertMessage: data.message,
+          alertSeverity: "error",
+          openAlert: true,
+        });
+        console.log(data.message);
+      } else {
+        this.setState({
+          alertMessage: data.message,
+          alertSeverity: "success",
+          openAlert: true,
+        });
+        console.log(data.message);
+      }
+    });
+  };
+
+  handleClose = () => {
+    this.setState({ openAlert: false });
+  };
+
+  handleChange = (input) => (event) => {
+    console.log("in handle change");
+    console.log("input");
+    console.log(input);
+    console.log("event.target.value");
+    console.log(event.target.value);
+
+    this.setState({ [input]: event.target.value });
+  };
 
   render() {
     return (
@@ -27,7 +77,7 @@ class AddSecretary extends Component {
                       required
                       id="outlined-required"
                       variant="outlined"
-                      onChange={this.handleChange()}
+                      onChange={this.handleChange("name")}
                       margin="dense"
                       style={{ width: "280px" }}
                     />
@@ -41,7 +91,7 @@ class AddSecretary extends Component {
                       id="outlined-required"
                       variant="outlined"
                       type="email"
-                      onChange={this.handleChange()}
+                      onChange={this.handleChange("email")}
                       margin="dense"
                       style={{ width: "280px" }}
                     />
@@ -62,7 +112,7 @@ class AddSecretary extends Component {
                       id="outlined-required"
                       select
                       required
-                      onChange={this.handleChange()}
+                      onChange={this.handleChange("admin")}
                       variant="outlined"
                       margin="dense"
                       style={{
@@ -91,6 +141,18 @@ class AddSecretary extends Component {
             </div>
           </div>
         </Form>
+        <Dialog
+          open={this.state.openAlert}
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogContent style={{ padding: 0 }}>
+            <Alert variant="outlined" severity={this.state.alertSeverity}>
+              {this.state.alertMessage}
+            </Alert>
+          </DialogContent>
+        </Dialog>
       </div>
     );
   }

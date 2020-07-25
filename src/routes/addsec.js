@@ -72,9 +72,9 @@ router.get("/addsec", function (request, response, next) {
 
 router.post("/add", function (request, response) {
   if (request.user) {
-    var name = request.body.name;
-    var email = request.body.email;
-    var admin = request.body.admin;
+    var name = request.body.secretaryinfo.name;
+    var email = request.body.secretaryinfo.email;
+    var admin = request.body.secretaryinfo.admin;
 
     connection.query("USE AlexUni");
 
