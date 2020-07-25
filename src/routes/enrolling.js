@@ -231,20 +231,20 @@ router.post("/nominationcard", function (request, response) {
 router.post("/photo", function (request, response) {
 console.log("Inside photo");
   if (request.user) {
-    upload(req, res, function (err) {
-      const photo = req.file;
-    if (err instanceof multer.MulterError) {
-      console.log("awl error" + err);
-      return res.status(500).json(err)
-    } else if (err) {
-      console.log("tany error" + err);
-      return res.status(500).json(err)
+    upload(request, response, function (error) {
+      const photo = request.file;
+    if (error instanceof multer.MulterError) {
+      console.log("awl error" + error);
+      return res.status(500).json(error)
+    } else if (error) {
+      console.log("tany error" + error);
+      return res.status(500).json(error)
     }
     connection.query("USE AlexUni");
-    fs.readFile(photo.path, function(error, dat){
+    fs.readFile(photo.path, function(error, data){
       connection.query(
         "UPDATE Students SET Photo = ? WHERE Email = ? ",
-        [photo, email],
+        [data, email],
         function (error, results, fields) {
           if(error)
           console.log("photo query error: "+ error);
@@ -314,7 +314,7 @@ router.post("/birthcertificate", function (request, response) {
         return response.status(500).json(error)
       }
       console.log("birthcertificatezzzzzzzzz");
-      console.log(nominationCard);
+      console.log(birthcertificate);
       console.log("Email in nominationcard: " + email);
       connection.query("USE AlexUni");
       fs.readFile(birthcertificate.path, function(error,data){
@@ -352,7 +352,7 @@ router.post("/nationalid", function (request, response) {
         return response.status(500).json(error)
       }
       console.log("nationalidzzzzzzzzz");
-      console.log(nominationCard);
+      console.log(nationalid);
       console.log("Email in nationalid: " + email);
       connection.query("USE AlexUni");
       fs.readFile(nationalid.path, function(error,data){
