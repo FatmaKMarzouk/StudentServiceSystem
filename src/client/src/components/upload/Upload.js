@@ -4,6 +4,13 @@ import "./Upload.css";
 import Progress from "../progress/Progress";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
+import { getToken } from "../../Utils/Common";
+import axios from "axios";
+import { uploadFile } from "../../core/Apis";
+import Alert from "@material-ui/lab/Alert";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
 
 class Upload extends Component {
   constructor(props) {
@@ -31,8 +38,14 @@ class Upload extends Component {
   async uploadFiles() {
     this.setState({ uploadProgress: {}, uploading: true });
     const promises = [];
+    console.log("SARA SAKRRRR");
+    console.log(this.state.files);
     this.state.files.forEach((file) => {
+      console.log("Test 1");
+      console.log(file);
       promises.push(this.sendRequest(file));
+      console.log("PROMISES");
+      console.log(promises);
     });
     try {
       await Promise.all(promises);
@@ -45,7 +58,11 @@ class Upload extends Component {
   }
 
   sendRequest(file) {
+    console.log("Test 2");
+    console.log(file);
     return new Promise((resolve, reject) => {
+      console.log("Test 3");
+      console.log(file);
       const req = new XMLHttpRequest();
 
       req.upload.addEventListener("progress", (event) => {
@@ -73,11 +90,179 @@ class Upload extends Component {
         reject(req.response);
       });
 
-      const formData = new FormData();
-      formData.append("file", file, file.name);
+      console.log("Test 4");
+      console.log(file);
 
-      req.open("POST", "http://localhost:8000/upload");
-      req.send(formData);
+      /*for (var key of formData.entries()) {
+        console.log(key[0] + ", " + key[1].name);
+      }
+
+      console.log("AHAM CONSOLE FEHOM2");
+      console.log(formData);
+*/
+      const token = getToken();
+      console.log("tokennnnn");
+      console.log(token);
+      console.log("tokennnnn");
+
+      console.log(this.props.stepNum);
+
+      switch (this.props.stepNum) {
+        case 1:
+          const formData1 = new FormData();
+          formData1.append("file", file);
+          //const data = new FormData();
+          // data.append("file", file);
+          axios
+            .post("http://localhost:5000/nominationcard", formData1, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((res) => {
+              console.log("El raga3");
+              console.log(res.statusText);
+            });
+
+          break;
+
+        /* fetch("http://localhost:5000/upload", {
+            mode: "no-cors",
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => {
+              console.log("Test 4");
+              console.log(file);
+              console.log("Nomination Response");
+              console.log("response hena");
+              console.log(response.message);
+              return response.json();
+            })
+            .catch((err) => console.log(err));*/
+
+        /* console.log("Heyyyyooooo");
+          //console.log(formData);
+          req.open("POST", "http://localhost:5000/upload");
+          req.setRequestHeader("Content-Type", "multipart/form-data;");
+          //req.setRequestHeader("Authorization", `Bearer ${token}`);
+          req.send(formData);
+          console.log("request.response");
+          console.log(req.response);*/
+
+        case 2:
+          const formData2 = new FormData();
+          formData2.append("file", file);
+          axios
+            .post("http://localhost:5000/highschoolcertificate", formData2, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((res) => {
+              console.log("El raga3");
+              console.log(res.statusText);
+            });
+
+          break;
+        case 3:
+          const formData3 = new FormData();
+          formData3.append("file", file);
+          axios
+            .post("http://localhost:5000/birthcertificate", formData3, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((res) => {
+              console.log("El raga3");
+              console.log(res.statusText);
+            });
+          break;
+
+        case 4:
+          const formData4 = new FormData();
+          formData4.append("file", file);
+          axios
+            .post("http://localhost:5000/nationalid", formData4, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((res) => {
+              console.log("El raga3");
+              console.log(res.statusText);
+            });
+
+          break;
+        case 5:
+          const formData5 = new FormData();
+          formData5.append("file", file);
+          axios
+            .post("http://localhost:5000/photo", formData5, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((res) => {
+              console.log("El raga3");
+              console.log(res.statusText);
+            });
+          break;
+
+        case 6:
+          console.log("Sara 1");
+          const student = {
+            stdId: "1",
+          };
+          const json = JSON.stringify(student);
+          const blob = new Blob([json], {
+            type: "application/json",
+          });
+          const formData6 = new FormData();
+
+          formData6.append("armydoc", file);
+          formData6.append("document", blob);
+
+          console.log("Sara 2 -->> loop");
+          for (var key of formData6.entries()) {
+            console.log(key[0] + ", " + key[1]);
+          }
+
+          axios
+            .post("http://localhost:5000/uploaddoc", formData6, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((res) => {
+              console.log("El raga3");
+              console.log(res.statusText);
+            });
+          break;
+
+        default:
+          console.log("Default");
+          break;
+      }
+
+      //req.open("POST", "http://localhost:8000/upload");
+      //req.send(formData);
+      //console.log(formData);
+
+      /* uploadFile(token, formData, 1).then((data) => {
+        console.log("HENA EL MESSAGE BTA3T EL NOMMMI");
+        console.log(data.message);
+
+      });*/
+      this.setState({
+        files: [],
+        successfullUploaded: false,
+        uploading: false,
+        open: true,
+      });
+      document.getElementById("files-container").style.display = "none";
+      document.getElementById("successfully-upload").style.display = "flex";
     });
   }
 
@@ -129,9 +314,7 @@ class Upload extends Component {
 
   getInputID(id) {
     switch (id) {
-      case 0:
-        return;
-      case 1:
+      case 6:
         return (
           <div id="upload-input-id">
             <TextField
@@ -147,7 +330,13 @@ class Upload extends Component {
             <label id="upload-id-label">: الرقم الجامعي </label>
           </div>
         );
+      default:
+        return;
     }
+  }
+
+  componentDidMount() {
+    document.getElementById("successfully-upload").style.display = "none";
   }
 
   render() {
@@ -180,7 +369,19 @@ class Upload extends Component {
                 />
               </div>
             </div>
-            {this.getInputID(this.props.id)}
+            {this.getInputID(this.props.stepNum)}
+          </div>
+          <div id="successfully-upload">
+            <Alert
+              variant="outlined"
+              severity="success"
+              style={{
+                fontFamily: "Cairo",
+                fontSize: "12px",
+              }}
+            >
+              Successfully Uploaded - {this.props.value}
+            </Alert>
           </div>
         </div>
       </div>
