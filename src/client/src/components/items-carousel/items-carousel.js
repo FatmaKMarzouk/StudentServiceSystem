@@ -134,13 +134,15 @@ export default () => {
             <span id="items-carousel-1-title">مصاريف عام</span>
             <div id="rules">
               <span style={{ marginBottom: "2%", fontSize: "16px" }}>
-                ...............
+                : ملحوظة
               </span>
-              <span style={{ marginBottom: "1%" }}>.............</span>
+              <span style={{ marginBottom: "1%" }}>
+                يضاف غرامة على كل عام دراسي لم يتم الدفع به
+              </span>
             </div>
             <div id="service-icon">
               <img
-                src="studentcard.png"
+                src="annualfees1.png"
                 id="service-icon-image"
                 alt="service-icon"
               ></img>

@@ -18,6 +18,7 @@ import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 import PrintIcon from "@material-ui/icons/Print";
 import Button from "@material-ui/core/Button";
+import GetAppIcon from "@material-ui/icons/GetApp";
 import { fade } from "@material-ui/core/styles";
 import { getToken } from "../../Utils/Common";
 import {
@@ -51,6 +52,7 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow id="requests-headers">
+        <TableCell padding="checkbox" id="table-header"></TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -112,9 +114,9 @@ function getTableTitle(id) {
 
 function getRequestStatus(done, received) {
   console.log("DONE=" + done + "RECEIVED=" + received);
-  if (done && received) return "DONE & RECEIVED";
-  else if (done) return "DONE";
-  else return "NOTHING";
+  if (done && received) return "تم الاستلام";
+  else if (done) return "تم الانتهاء";
+  else return "-";
 }
 
 const EnhancedTableToolbar = (props) => {
@@ -262,8 +264,6 @@ export default function EnhancedTable(props) {
     setOrderBy(property);
   };
 
-  const handlePrint = (reqID) => {};
-
   const handleClick = (event, request) => {
     const selectedIndex = selected.indexOf(request);
     let newSelected = [];
@@ -296,6 +296,15 @@ export default function EnhancedTable(props) {
     }
   };
 
+  const handleDownload = (file, requestName, studentID) => {
+    var array = new Uint8Array(file);
+    var blob = new Blob([array], {
+      type: "application/octet-stream",
+    });
+    var download = require("downloadjs");
+    download(blob, requestName + "_" + studentID + ".docx");
+  };
+
   const isSelected = (request) => selected.indexOf(request) !== -1;
 
   useEffect(() => {
@@ -315,16 +324,25 @@ export default function EnhancedTable(props) {
               file: request.document.data,
             };
             orderObjects.push(orderObject);
-            var array = new Uint8Array(orderObject.file);
-            var blob = new Blob([array], { type: "application/octet-stream" });
-            /*var url = URL.createObjectURL(blob);
+            /*if (orderObject.file.length > 0) {
+              var array = new Uint8Array(orderObject.file);
+              var blob = new Blob([array], {
+                type: "application/octet-stream",
+              });
+              var download = require("downloadjs");
+              download(
+                blob,
+                orderObject.requestName + "_" + orderObject.studentID + ".docx"
+              );
+              /*var url = URL.createObjectURL(blob);
             window.open(url);*/
-            var link = document.createElement("a");
+            /*var link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
             // set the name of the file
-            link.download = "createdocument.docx";
+            //link.download = "createdocument.docx";
             // clicking the anchor element will download the file
             link.click();
+            }*/
           });
           setAllRequests(orderObjects);
           setRequests(orderObjects);
@@ -469,7 +487,6 @@ export default function EnhancedTable(props) {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, service.requestID)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -477,6 +494,24 @@ export default function EnhancedTable(props) {
                       selected={isItemSelected}
                       id="requests-rows"
                     >
+                      <TableCell padding="checkbox" id="table-header">
+                        {service.requestName === "Choose Program" ? (
+                          <div></div>
+                        ) : (
+                          <Button
+                            id="requests-download-button"
+                            onClick={() =>
+                              handleDownload(
+                                service.file,
+                                service.requestName,
+                                service.studentID
+                              )
+                            }
+                          >
+                            <GetAppIcon style={{ fontSize: "20px" }} />
+                          </Button>
+                        )}
+                      </TableCell>
                       <TableCell id="table-body" align="center">
                         {getRequestStatus(service.done, service.received)}
                       </TableCell>
@@ -501,6 +536,9 @@ export default function EnhancedTable(props) {
                           className="requests-checkbox"
                           color="default"
                           classes={{ root: "requests-checkbox" }}
+                          onClick={(event) =>
+                            handleClick(event, service.requestID)
+                          }
                         />
                       </TableCell>
                     </TableRow>

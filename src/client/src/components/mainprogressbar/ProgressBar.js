@@ -273,26 +273,28 @@ export default function CustomizedSteppers() {
           </div>
         ) : (
           <div>
-            <Typography className={classes.instructions}>
+            <div className={classes.instructions}>
               {getStepContent(activeStep)}
-            </Typography>
-            <Button
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              className={classes.button}
-              id="progress-bar-buttons"
-            >
-              رجوع
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleNext}
-              className={classes.button}
-              id="progress-bar-buttons"
-            >
-              {activeStep === steps.length - 1 ? "حفظ" : "استمرار"}
-            </Button>
+            </div>
+            <div id="progress-bar-buttons-container">
+              <Button
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                className={classes.button}
+                id="progress-bar-buttons"
+              >
+                رجوع
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleNext}
+                className={classes.button}
+                id="progress-bar-buttons"
+              >
+                {activeStep === steps.length - 1 ? "حفظ" : "استمرار"}
+              </Button>
+            </div>
           </div>
         )}
       </div>
