@@ -231,7 +231,7 @@ class Upload extends Component {
 
           const stdId = 1;
           axios
-            .post(`http://localhost:5000/uploaddoc/${stdId}`, formData6, {
+            .post(`http://localhost:5000/uploaddoc?stdId=${stdId}`, formData6, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -239,6 +239,8 @@ class Upload extends Component {
             .then((res) => {
               console.log("El raga3");
               console.log(res.statusText);
+            }).catch((error) => {
+              console.log("uploaddoc api error: " + error)
             });
           break;
 
