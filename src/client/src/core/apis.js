@@ -391,3 +391,47 @@ export const requestReceived = (token, reqID) => {
     .catch((err) => console.log(err));
 };
 // ------------------------------------------------------------------------------------------------
+
+//add sec
+
+export const addSecretary = (token) => {
+  return fetch(`http://localhost:5000/addsec`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      console.log("Inside add Seccccc Response");
+      console.log(response);
+      console.log(response.error);
+      console.log(response.message);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+export const postSecretaryInfo = (token, newSecretaryInfo) => {
+  console.log("HENA el newSecretaryInfo:::");
+  console.log(newSecretaryInfo);
+
+  return fetch("http://localhost:5000/add", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ secretaryinfo: newSecretaryInfo }),
+  })
+    .then((response) => {
+      console.log("FOUR");
+      console.log("RESPONSE el ADD");
+      console.log(response);
+      console.log(response.error);
+      console.log(response.message);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};

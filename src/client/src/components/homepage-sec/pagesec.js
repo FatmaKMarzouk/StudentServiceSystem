@@ -30,7 +30,9 @@ import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Profile from "../profile/profile";
-import { removeUserSession } from "../../Utils/Common";
+import { removeUserSession, getToken } from "../../Utils/Common";
+
+import { addSecretary } from "../../core/Apis";
 
 import "./home-sec.css";
 import Requests from "../tables/requests.js";
@@ -243,7 +245,22 @@ export default function SecHome() {
   };
 
   const handleAddSec = () => {
-    setActiveFunc(4);
+    const token = getToken();
+    console.log("token");
+    console.log(token);
+
+    addSecretary(token).then((data) => {
+      console.log("In pagesec.js");
+      if (data.error) {
+        console.log("In pagesec.js error");
+        console.log(data.message);
+        setActiveFunc(5);
+      } else {
+        console.log("In pagesec.js success");
+        console.log(data.message);
+        setActiveFunc(4);
+      }
+    });
   };
 
   const handleLogout = () => {

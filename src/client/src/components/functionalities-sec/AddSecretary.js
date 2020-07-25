@@ -5,12 +5,42 @@ import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import EmailIcon from "@material-ui/icons/Email";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import { getToken } from "../../Utils/Common";
+import { postSecretaryInfo } from "../../core/Apis";
+
 //import { nationalities } from "./Nationalities";
 
 class AddSecretary extends Component {
-  handleSubmit = () => {};
+  state = {
+    name: "",
+    email: "",
+    admin: "",
+  };
 
-  handleChange = () => {};
+  handleSubmit = () => {
+    const token = getToken();
+    console.log("token ");
+    console.log(token);
+
+    postSecretaryInfo(token, this.state).then((data) => {
+      console.log("FIVE");
+      if (data.error) {
+        console.log(data.message);
+      } else {
+        console.log(data.message);
+      }
+    });
+  };
+
+  handleChange = (input) => (event) => {
+    console.log("in handle change");
+    console.log("input");
+    console.log(input);
+    console.log("event.target.value");
+    console.log(event.target.value);
+
+    this.setState({ [input]: event.target.value });
+  };
 
   render() {
     return (
@@ -27,7 +57,7 @@ class AddSecretary extends Component {
                       required
                       id="outlined-required"
                       variant="outlined"
-                      onChange={this.handleChange()}
+                      onChange={this.handleChange("name")}
                       margin="dense"
                       style={{ width: "280px" }}
                     />
@@ -41,7 +71,7 @@ class AddSecretary extends Component {
                       id="outlined-required"
                       variant="outlined"
                       type="email"
-                      onChange={this.handleChange()}
+                      onChange={this.handleChange("email")}
                       margin="dense"
                       style={{ width: "280px" }}
                     />
@@ -62,7 +92,7 @@ class AddSecretary extends Component {
                       id="outlined-required"
                       select
                       required
-                      onChange={this.handleChange()}
+                      onChange={this.handleChange("admin")}
                       variant="outlined"
                       margin="dense"
                       style={{
