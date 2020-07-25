@@ -20,6 +20,7 @@ class Upload extends Component {
       uploading: false,
       uploadProgress: {},
       successfullUploaded: false,
+      stdId: 0,
     };
 
     this.onFilesAdded = this.onFilesAdded.bind(this);
@@ -221,7 +222,7 @@ class Upload extends Component {
           });*/
           const formData6 = new FormData();
 
-          formData6.append("armydoc", file);
+          formData6.append("file", file);
           //formData6.append("document", blob);
 
           console.log("Sara 2 -->> loop");
@@ -231,16 +232,21 @@ class Upload extends Component {
 
           const stdId = 1;
           axios
-            .post(`http://localhost:5000/uploaddoc?stdId=${stdId}`, formData6, {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            })
+            .post(
+              `http://localhost:5000/uploaddoc?stdId=${this.state.stdId}`,
+              formData6,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
             .then((res) => {
               console.log("El raga3");
               console.log(res.statusText);
-            }).catch((error) => {
-              console.log("uploaddoc api error: " + error)
+            })
+            .catch((error) => {
+              console.log("uploaddoc api error: " + error);
             });
           break;
 
@@ -315,6 +321,15 @@ class Upload extends Component {
     }
   }
 
+  handleChange = () => (event) => {
+    console.log("in handle change Upload");
+
+    console.log("event.target.value");
+    console.log(event.target.value);
+
+    this.setState({ stdId: event.target.value });
+  };
+
   getInputID(id) {
     switch (id) {
       case 6:
@@ -325,6 +340,7 @@ class Upload extends Component {
               id="outlined-basic"
               variant="outlined"
               margin="dense"
+              onChange={this.handleChange()}
               style={{
                 width: "130px",
                 textAlign: "center",

@@ -38,25 +38,28 @@ router.post("/uploaddoc", function (request, response) {
   console.log("Inside Armyyy uploaddoc");
   if (request.user) {
     const stdId = request.query.stdId || request.body.stdId;
-    console.log("query: "+request.body);
+    console.log("query: " + request.body);
 
     upload(request, response, function (error) {
       const armydoc = request.file;
       console.log("stdId: " + stdId);
+      console.log("ArmyDoc: " + armydoc);
       console.log("gowa el upload");
       if (error instanceof multer.MulterError) {
         console.log("awl error: " + error.field);
-        return response.status(500).json(error)
+        return response.status(500).json(error);
       } else if (error) {
         console.log("tany error" + error);
-        return response.status(500).json(error)
+        return response.status(500).json(error);
       }
       connection.query("USE AlexUni");
       fs.readFile(armydoc.path, function (error, data) {
         connection.query(
-          "UPDATE Students SET armypostpone = b'1', postponedoc = ? WHERE ID = ? ", [data, stdId], function (error, results, fields) {
+          "UPDATE Students SET armypostpone = b'1', postponedoc = ? WHERE ID = ? ",
+          [data, stdId],
+          function (error, results, fields) {
             if (error) {
-              console.log("error in query postpone: "+error);
+              console.log("error in query postpone: " + error);
             }
             // else {
             //   console.log("Army postponed el mfrood added");
@@ -67,16 +70,14 @@ router.post("/uploaddoc", function (request, response) {
             // }
           }
         );
-        if (error)
-          console.log("error in fs postpone army: " + error);
+        if (error) console.log("error in fs postpone army: " + error);
       });
       console.log("gowa el upload lsssssa");
       return response.status(200).send({
         error: false,
-        message: "Postpone Army document uploaded"
+        message: "Postpone Army document uploaded",
       });
-
-    })
+    });
     //-------------------------------------------------------------------------
     /*console.log("ARMY DOCUMENT");
     console.log(req.file);
@@ -105,7 +106,7 @@ router.post("/uploaddoc", function (request, response) {
   } else {
     response.status(400).send({
       error: true,
-      message: "Please Login to view this page"
+      message: "Please Login to view this page",
     });
   }
 });
