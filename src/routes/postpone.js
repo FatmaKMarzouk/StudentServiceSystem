@@ -42,10 +42,10 @@ router.post("/uploaddoc", function (request, response) {
 
     upload(request, response, function (error) {
       const armydoc = request.file;
-      console.log("stdId: " + stdId);
+      console.log("stdId: " + armydoc);
       console.log("gowa el upload");
       if (error instanceof multer.MulterError) {
-        console.log("awl error: " + error.field);
+        console.log("awl error: " + error);
         return response.status(500).json(error)
       } else if (error) {
         console.log("tany error" + error);
