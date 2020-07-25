@@ -33,8 +33,8 @@ class UserDetails extends Component {
                       required
                       id="outlined-required"
                       variant="outlined"
-                      onChange={this.props.handleChange("fullName")}
-                      defaultValue={values.fullName}
+                      onChange={this.props.handleChange("namear")}
+                      defaultValue={values.namear}
                       margin="dense"
                       style={{ width: "280px" }}
                     />
@@ -47,8 +47,8 @@ class UserDetails extends Component {
                       required
                       id="outlined-required"
                       variant="outlined"
-                      onChange={this.props.handleChange("nationalId")}
-                      defaultValue={values.nationalId}
+                      onChange={this.props.handleChange("ssn")}
+                      defaultValue={values.ssn}
                       margin="dense"
                       style={{ width: "280px" }}
                     />
@@ -84,8 +84,8 @@ class UserDetails extends Component {
                       required
                       id="outlined-required"
                       variant="outlined"
-                      onChange={this.props.handleChange("phoneNumber")}
-                      defaultValue={values.phoneNumber}
+                      onChange={this.props.handleChange("phonenumber")}
+                      defaultValue={values.phonenumber}
                       margin="dense"
                       style={{ width: "280px" }}
                     />
@@ -100,8 +100,8 @@ class UserDetails extends Component {
                       id="outlined-required"
                       variant="outlined"
                       type="date"
-                      onChange={this.props.handleChange("birthDate")}
-                      defaultValue={values.birthDate}
+                      onChange={this.props.handleChange("birthdate")}
+                      defaultValue={values.birthdate}
                       margin="dense"
                       style={{
                         color: "#003366",
@@ -126,7 +126,7 @@ class UserDetails extends Component {
                       select
                       required
                       onChange={this.props.handleChange("nationality")}
-                      defaultValue={values.gender}
+                      defaultValue={values.nationality}
                       variant="outlined"
                       margin="dense"
                       style={{
@@ -492,8 +492,8 @@ class UserDetails extends Component {
                     <TextField
                       id="outlined-required"
                       variant="outlined"
-                      onChange={this.props.handleChange("medicalCondition")}
-                      defaultValue={values.medicalCondition}
+                      onChange={this.props.handleChange("medicalcondition")}
+                      defaultValue={values.medicalcondition}
                       margin="dense"
                       style={{ width: "280px" }}
                     />
@@ -506,8 +506,8 @@ class UserDetails extends Component {
                       id="outlined-required"
                       select
                       required
-                      onChange={this.props.handleChange("gender")}
-                      defaultValue={values.gender}
+                      onChange={this.props.handleChange("selection")}
+                      defaultValue={values.selection}
                       variant="outlined"
                       margin="dense"
                       style={{
@@ -541,8 +541,8 @@ class UserDetails extends Component {
                       required
                       id="outlined-required"
                       variant="outlined"
-                      onChange={this.props.handleChange("guardianName")}
-                      defaultValue={values.guardianName}
+                      onChange={this.props.handleChange("parentname")}
+                      defaultValue={values.parentname}
                       margin="dense"
                       style={{ width: "280px" }}
                     />
@@ -556,8 +556,8 @@ class UserDetails extends Component {
                       required
                       id="outlined-required"
                       variant="outlined"
-                      onChange={this.props.handleChange("guardianId")}
-                      defaultValue={values.guardianId}
+                      onChange={this.props.handleChange("parentssn")}
+                      defaultValue={values.parentssn}
                       margin="dense"
                       style={{ width: "280px" }}
                     />
@@ -578,8 +578,8 @@ class UserDetails extends Component {
                       required
                       id="outlined-required"
                       variant="outlined"
-                      onChange={this.props.handleChange("guardianPhoneNumber")}
-                      defaultValue={values.guardianPhoneNumber}
+                      onChange={this.props.handleChange("parentphone")}
+                      defaultValue={values.parentphone}
                       margin="dense"
                       style={{ width: "280px" }}
                     />
@@ -593,8 +593,8 @@ class UserDetails extends Component {
                       required
                       id="outlined-required"
                       variant="outlined"
-                      onChange={this.props.handleChange("relativeRelation")}
-                      defaultValue={values.relativeRelation}
+                      onChange={this.props.handleChange("parentrelation")}
+                      defaultValue={values.parentrelation}
                       margin="dense"
                       style={{ width: "280px" }}
                     />

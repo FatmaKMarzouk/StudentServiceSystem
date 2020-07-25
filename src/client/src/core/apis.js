@@ -14,9 +14,7 @@ export const readCertOfEnrollData = (token) => {
     })
     .catch((err) => console.log(err));
 };
-
 // api 2
-
 export const certificateToCart = (token) => {
   return fetch(`http://localhost:5000/certificatecart`, {
     method: "GET",
@@ -33,7 +31,9 @@ export const certificateToCart = (token) => {
     })
     .catch((err) => console.log(err));
 };
-
+// ------------------------------------------------------------------------------------------------
+// card api
+// api 1
 export const getCardDetails = (token) => {
   return fetch(`http://localhost:5000/card`, {
     method: "GET",
@@ -45,92 +45,6 @@ export const getCardDetails = (token) => {
   })
     .then((response) => {
       console.log("CARD TESTT");
-      return response.json();
-    })
-    .catch((err) => console.log(err));
-};
-
-export const getProgramss = (token) => {
-  return fetch(`http://localhost:5000/chooseprog`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then((response) => {
-      console.log("prog TESTTTTTTT amm");
-      return response.json();
-    })
-    .catch((err) => console.log(err));
-};
-
-export const submitChosenProgram = (token, selectedProgram) => {
-  console.log("2");
-  console.log(selectedProgram);
-  return fetch("http://localhost:5000/submitprog", {
-    method: "post",
-    headers: {
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ selectedprogram: selectedProgram }),
-  })
-    .then((response) => {
-      console.log("HEYYYYYY");
-      console.log(response);
-      return response.json();
-    })
-    .catch((err) => console.log(err));
-};
-
-// transcript api
-// api 1
-export const getStudentTranscript = (token) => {
-  return fetch(`http://localhost:5000/transcript`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .catch((err) => console.log(err));
-};
-
-// api 2
-export const transcriptCart = (token) => {
-  return fetch(`http://localhost:5000/transcriptconfirm`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then((response) => {
-      console.log("TRANSCRIPT TESTTTTTTTTTTT");
-      return response.json();
-    })
-    .catch((err) => console.log(err));
-};
-
-// card api
-// api 1
-export const cartApi = (token) => {
-  return fetch(`http://localhost:5000/cart`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then((response) => {
       return response.json();
     })
     .catch((err) => console.log(err));
@@ -152,9 +66,94 @@ export const cardCart = (token) => {
     })
     .catch((err) => console.log(err));
 };
-
+// ------------------------------------------------------------------------------------------------
+// chooseprog apis
+// api 1
+export const getProgramss = (token) => {
+  return fetch(`http://localhost:5000/chooseprog`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      console.log("prog TESTTTTTTT amm");
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+// api 2
+export const submitChosenProgram = (token, selectedProgram) => {
+  console.log("2");
+  console.log(selectedProgram);
+  return fetch("http://localhost:5000/submitprog", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ selectedprogram: selectedProgram }),
+  })
+    .then((response) => {
+      console.log("HEYYYYYY");
+      console.log(response);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+// ------------------------------------------------------------------------------------------------
+// transcript api
+// api 1
+export const getStudentTranscript = (token) => {
+  return fetch(`http://localhost:5000/transcript`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+// api 2
+export const transcriptCart = (token) => {
+  return fetch(`http://localhost:5000/transcriptconfirm`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      console.log("TRANSCRIPT TESTTTTTTTTTTT");
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+// ------------------------------------------------------------------------------------------------
+// cart api
+// api 1
+export const cartApi = (token) => {
+  return fetch(`http://localhost:5000/cart`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
 //api 2
-
 export const deleteCart = (token, reqID) => {
   console.log("ana f api deleteCart");
   console.log(reqID);
@@ -173,9 +172,11 @@ export const deleteCart = (token, reqID) => {
     })
     .catch((err) => console.log(err));
 };
+// ------------------------------------------------------------------------------------------------
+//annual fees api
 // di api bta3t eny ageeb el kema 3am el 3ala el taleb 3shan a display it fl dialogbox
 // di btetnada fl confirmation.jsx
-
+//api 1
 export const getAnnualFees = (token) => {
   console.log("Tokenn");
   console.log(token);
@@ -195,10 +196,9 @@ export const getAnnualFees = (token) => {
     })
     .catch((err) => console.log(err));
 };
-
 // di api bta3t eny azawed masaref 3am fl cart
 // btetnada f dialogBox.js lama ados adef ela el 3araba
-
+//api 2
 export const annualFeesCart = (token) => {
   return fetch(`http://localhost:5000/confirmannualfees`, {
     method: "GET",
@@ -216,7 +216,72 @@ export const annualFeesCart = (token) => {
     })
     .catch((err) => console.log(err));
 };
+// ------------------------------------------------------------------------------------------------
+//enroll new students apis
+//api 1
+export const postStudentInfo = (token, newStudentInfo) => {
+  console.log("THREE");
+  console.log("HENA el newStudentInfo:::");
+  console.log(newStudentInfo);
 
+  return fetch("http://localhost:5000/enroll", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ studentinfo: newStudentInfo }),
+  })
+    .then((response) => {
+      console.log("FOUR");
+      console.log("response hena");
+      console.log(response);
+      console.log(response.error);
+      console.log(response.message);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+//api 2
+// upload apis of: 
+// 1. nominationcar
+// 2. photo
+// 3. highschoolcertificate
+// 4. birthcertificate
+// 5. nationalid
+export const uploadFile = (token, uploadedFile, step) => {
+  console.log("HENA el uploadedFile:::");
+  console.log(uploadedFile);
+
+  switch (step) {
+    case 1:
+      return fetch("http://localhost:5000/nominationcard", {
+        mode: "no-cors",
+        method: "post",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: { nominationCard: uploadedFile },
+      })
+        .then((response) => {
+          console.log("Nomination Response");
+          console.log("response hena");
+          console.log(response.message);
+          return response.json();
+        })
+        .catch((err) => console.log(err));
+
+    case 2:
+      return;
+    case 3:
+      return;
+    case 4:
+      return;
+    case 5:
+      return;
+  }
+};
+// ------------------------------------------------------------------------------------------------
 // SECRETARY REQUESTS
 // api 1
 export const allRequestsApi = (token) => {
@@ -234,7 +299,6 @@ export const allRequestsApi = (token) => {
     })
     .catch((err) => console.log(err));
 };
-
 // api 2
 export const undoneRequestsApi = (token) => {
   return fetch(`http://localhost:5000/undonerequests`, {
@@ -250,9 +314,7 @@ export const undoneRequestsApi = (token) => {
     })
     .catch((err) => console.log(err));
 };
-
 //api 3
-
 export const searchRequests = (token, studentid) => {
   console.log("ana f api searchRequests");
   console.log(studentid);
@@ -271,7 +333,7 @@ export const searchRequests = (token, studentid) => {
     })
     .catch((err) => console.log(err));
 };
-
+//api 4
 export const searchUndoneRequests = (token, studentid) => {
   console.log("ana f api searchRequests");
   console.log(studentid);
@@ -290,9 +352,7 @@ export const searchUndoneRequests = (token, studentid) => {
     })
     .catch((err) => console.log(err));
 };
-
-//api 4
-
+//api 5
 export const requestDone = (token, reqID) => {
   console.log("ana f api requestsDone");
   console.log(reqID);
@@ -311,7 +371,7 @@ export const requestDone = (token, reqID) => {
     })
     .catch((err) => console.log(err));
 };
-
+//api 6
 export const requestReceived = (token, reqID) => {
   console.log("ana f api requestsReceived");
   console.log(reqID);
@@ -330,3 +390,4 @@ export const requestReceived = (token, reqID) => {
     })
     .catch((err) => console.log(err));
 };
+// ------------------------------------------------------------------------------------------------

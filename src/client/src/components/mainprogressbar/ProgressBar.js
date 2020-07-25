@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import "./progressBar.css";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
@@ -189,31 +189,31 @@ function getStepContent(step) {
     case 1:
       return (
         <div className="Card">
-          <Upload value="بطاقة الترشيح" />
+          <Upload stepNum={1} value="بطاقة الترشيح" />
         </div>
       );
     case 2:
       return (
         <div className="Card">
-          <Upload value=" شهادة الثانوية العامة" />
+          <Upload stepNum={2} value=" شهادة الثانوية العامة" />
         </div>
       );
     case 3:
       return (
         <div className="Card">
-          <Upload value="شهادة الميلاد" />
+          <Upload stepNum={3} value="شهادة الميلاد" />
         </div>
       );
     case 4:
       return (
         <div className="Card">
-          <Upload value="البطاقة الشخصية" />
+          <Upload stepNum={4} value="البطاقة الشخصية" />
         </div>
       );
     case 5:
       return (
         <div className="Card">
-          <Upload value="الصور الشخصية" />
+          <Upload stepNum={5} value="الصور الشخصية" />
         </div>
       );
     default:
@@ -228,6 +228,9 @@ export default function CustomizedSteppers() {
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (activeStep > 0) {
+      document.getElementById("successfully-upload").style.display = "none";
+    }
   };
 
   const handleBack = () => {
