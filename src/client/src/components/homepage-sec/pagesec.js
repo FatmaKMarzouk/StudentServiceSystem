@@ -197,6 +197,9 @@ function GetFunctionContent(func) {
       return <Profile />;
     case 4:
       return <AddSecretary />;
+
+    case 5:
+      return <h1>TESST ERRORR!!</h1>;
     default:
       return "Unknown step";
   }
