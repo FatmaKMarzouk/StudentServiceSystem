@@ -7,6 +7,9 @@ import EmailIcon from "@material-ui/icons/Email";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { getToken } from "../../Utils/Common";
 import { postSecretaryInfo } from "../../core/Apis";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import Alert from "@material-ui/lab/Alert";
 
 //import { nationalities } from "./Nationalities";
 
@@ -15,6 +18,9 @@ class AddSecretary extends Component {
     name: "",
     email: "",
     admin: "",
+    alertMessage: "",
+    alertSeverity: "",
+    openAlert: false,
   };
 
   handleSubmit = () => {
@@ -25,11 +31,25 @@ class AddSecretary extends Component {
     postSecretaryInfo(token, this.state).then((data) => {
       console.log("FIVE");
       if (data.error) {
+        this.setState({
+          alertMessage: data.message,
+          alertSeverity: "error",
+          openAlert: true,
+        });
         console.log(data.message);
       } else {
+        this.setState({
+          alertMessage: data.message,
+          alertSeverity: "success",
+          openAlert: true,
+        });
         console.log(data.message);
       }
     });
+  };
+
+  handleClose = () => {
+    this.setState({ openAlert: false });
   };
 
   handleChange = (input) => (event) => {
@@ -121,6 +141,18 @@ class AddSecretary extends Component {
             </div>
           </div>
         </Form>
+        <Dialog
+          open={this.state.openAlert}
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogContent style={{ padding: 0 }}>
+            <Alert variant="outlined" severity={this.state.alertSeverity}>
+              {this.state.alertMessage}
+            </Alert>
+          </DialogContent>
+        </Dialog>
       </div>
     );
   }
