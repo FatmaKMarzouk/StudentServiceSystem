@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./requests.css";
 import PropTypes from "prop-types";
 import clsx from "clsx";
@@ -17,6 +17,15 @@ import Checkbox from "@material-ui/core/Checkbox";
 import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 import { fade } from "@material-ui/core/styles";
+import { getToken } from "../../Utils/Common";
+import {
+  allRequestsApi,
+  undoneRequestsApi,
+  searchRequests,
+  searchUndoneRequests,
+  requestDone,
+  requestReceived,
+} from "../../core/Apis";
 
 function createData(request, id) {
   return { request, id };
@@ -119,6 +128,12 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
+  {
+    id: "status",
+    numeric: true,
+    disablePadding: true,
+    label: "الحالة",
+  },
   { id: "id", numeric: true, disablePadding: false, label: "الرقم الجامعي" },
   {
     id: "request",
@@ -203,10 +218,26 @@ function getTableTitle(id) {
   }
 }
 
+function getRequestStatus(done, received) {
+  console.log("DONE=" + done + "RECEIVED=" + received);
+  if (done && received) return "DONE & RECEIVED";
+  else if (done) return "DONE";
+  else return "NOTHING";
+}
+
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const { numSelected } = props;
+  const token = getToken();
 
+  /*const onChange = (event) => {
+    console.log("Student id=" + event.target.value);
+    const studentid = event.target.value;
+    searchRequests(token, studentid).then((data) => {
+      console.log(data);
+    });
+  };
+*/
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -231,6 +262,7 @@ const EnhancedTableToolbar = (props) => {
             }}
             style={{ fontFamily: "Cairo" }}
             inputProps={{ "aria-label": "search" }}
+            //onChange={onChange}
           />
         </div>
 
@@ -318,12 +350,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function GetTable(id) {
+export default function EnhancedTable(props) {
   const classes = useStyles();
+  const classess = useToolbarStyles();
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("id");
+  const [orderBy, setOrderBy] = React.useState("status");
   const [selected, setSelected] = React.useState([]);
+  const [requests, setRequests] = React.useState([]);
+  const [allRequests, setAllRequests] = React.useState([]);
+  const [requestCount, setRequestCount] = React.useState(0);
   const [dense] = React.useState(true);
+  const token = getToken();
 
   const numSelected = selected.length;
 
@@ -349,197 +386,239 @@ function GetTable(id) {
         selected.slice(selectedIndex + 1)
       );
     }
-
     setSelected(newSelected);
+
+    if (props.id) {
+      requestReceived(token, request).then(() => {
+        setRequestCount(requestCount + 1);
+        setSelected([]);
+      });
+    } else {
+      requestDone(token, request).then(() => {
+        setRequestCount(requestCount + 1);
+        props.fetchRequests();
+        setSelected([]);
+      });
+    }
   };
 
   const isSelected = (request) => selected.indexOf(request) !== -1;
-  switch (id) {
-    case 0:
-      return (
-        <React.Fragment>
-          <div id="requests-container">
-            <TableContainer>
-              <Table
-                className={classes.table}
-                aria-labelledby="tableTitle"
-                size={dense ? "small" : "medium"}
-                aria-label="enhanced table"
-              >
-                <EnhancedTableHead
-                  classes={classes}
-                  numSelected={selected.length}
-                  order={order}
-                  orderBy={orderBy}
-                  onRequestSort={handleRequestSort}
-                  rowCount={services.length}
-                />
-                <TableBody>
-                  {services.map((service) => {
-                    const isItemSelected = isSelected(service.studentID);
-                    //const labelId = `enhanced-table-checkbox-${index}`;
 
-                    return (
-                      <TableRow
-                        hover
-                        onClick={(event) =>
-                          handleClick(event, service.studentID)
-                        }
-                        role="checkbox"
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
-                        key={service.studentID}
-                        selected={isItemSelected}
-                        id="requests-rows"
-                      >
-                        <TableCell id="table-body" align="center">
-                          {service.studentID}
-                        </TableCell>
-                        <TableCell
-                          component="th"
-                          id={service.studentID}
-                          scope="row"
-                          padding="none"
-                          align="right"
-                          id="table-body"
-                        >
-                          {service.serviceName}
-                        </TableCell>
-                        <TableCell padding="checkbox" id="table-body">
-                          <Checkbox
-                            checked={isItemSelected}
-                            inputProps={{
-                              "aria-labelledby": service.studentID,
-                            }}
-                            className="requests-checkbox"
-                            color="default"
-                            classes={{ root: "requests-checkbox" }}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
-          {numSelected > 0 ? (
-            <Typography
-              className={classes.title}
-              color="inherit"
-              variant="subtitle1"
-              component="div"
-              style={{ display: "flex", justifyContent: "center" }}
-            >
-              <span id="requests-selected-number">
-                {numSelected} : عدد الاختيار
-              </span>
-            </Typography>
-          ) : (
-            <div></div>
-          )}
-        </React.Fragment>
-      );
-    case 1:
-      return (
-        <React.Fragment>
-          <div id="requests-container">
-            <TableContainer>
-              <Table
-                className={classes.table}
-                aria-labelledby="tableTitle"
-                size={dense ? "small" : "medium"}
-                aria-label="enhanced table"
-              >
-                <EnhancedTableHead
-                  classes={classes}
-                  numSelected={selected.length}
-                  order={order}
-                  orderBy={orderBy}
-                  onRequestSort={handleRequestSort}
-                  rowCount={allServices.length}
-                />
-                <TableBody>
-                  {allServices.map((service) => {
-                    const isItemSelected = isSelected(service.studentID);
-                    //const labelId = `enhanced-table-checkbox-${index}`;
+  useEffect(() => {
+    switch (props.id) {
+      case 1:
+        allRequestsApi(token).then((data) => {
+          console.log(data);
+          console.log("nhayet el data");
+          const orderObjects = [];
+          data.results.map((request) => {
+            const orderObject = {
+              requestID: request.ID,
+              requestName: request.ServiceName,
+              studentID: request.StudentID,
+              done: request.done,
+              received: request.received,
+            };
+            orderObjects.push(orderObject);
+          });
+          setAllRequests(orderObjects);
+          setRequests(orderObjects);
+        });
+        console.log("ALL REQUESTS");
+        break;
+      case 0:
+        undoneRequestsApi(token).then((data) => {
+          console.log(data);
+          console.log("nhayet el data");
+          const orderObjects = [];
+          if (!data.error) {
+            data.array.map((request) => {
+              const orderObject = {
+                requestID: request.ID,
+                requestName: request.ServiceName,
+                studentID: request.StudentID,
+                done: request.done,
+                received: request.received,
+              };
+              orderObjects.push(orderObject);
+            });
+          }
+          setAllRequests(orderObjects);
+          setRequests(orderObjects);
+        });
+        console.log("UNDONE REQUESTS");
+        break;
+    }
+  }, [requestCount, props.fetchRequests]);
 
-                    return (
-                      <TableRow
-                        hover
-                        onClick={(event) =>
-                          handleClick(event, service.studentID)
-                        }
-                        role="checkbox"
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
-                        key={service.studentID}
-                        selected={isItemSelected}
-                        id="requests-rows"
-                      >
-                        <TableCell id="table-body" align="center">
-                          {service.studentID}
-                        </TableCell>
-                        <TableCell
-                          component="th"
-                          id={service.studentID}
-                          scope="row"
-                          padding="none"
-                          align="right"
-                          id="table-body"
-                        >
-                          {service.serviceName}
-                        </TableCell>
-                        <TableCell padding="checkbox" id="table-body">
-                          <Checkbox
-                            checked={isItemSelected}
-                            inputProps={{
-                              "aria-labelledby": service.studentID,
-                            }}
-                            className="requests-checkbox"
-                            color="default"
-                            classes={{ root: "requests-checkbox" }}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
-          {numSelected > 0 ? (
-            <Typography
-              className={classes.title}
-              color="inherit"
-              variant="subtitle1"
-              component="div"
-              style={{ display: "flex", justifyContent: "center" }}
-            >
-              <span id="requests-selected-number">
-                {numSelected} : عدد الاختيار
-              </span>
-            </Typography>
-          ) : (
-            <div></div>
-          )}
-        </React.Fragment>
-      );
-  }
-}
-
-export default function EnhancedTable(props) {
-  const classes = useStyles();
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("id");
-  const [selected, setSelected] = React.useState([]);
+  const onChange = (event) => {
+    console.log("Student id=" + event.target.value);
+    const studentid = event.target.value;
+    if (event.target.value == "") {
+      console.log("EMPTY SEARCH");
+      setRequests(allRequests);
+    } else {
+      switch (props.id) {
+        case 1:
+          searchRequests(token, studentid).then((data) => {
+            const searchedObjects = [];
+            if (!data.error) {
+              data.array2.map((request) => {
+                const orderObject = {
+                  requestID: request.ID,
+                  requestName: request.ServiceName,
+                  studentID: request.StudentID,
+                  done: request.done,
+                  received: request.received,
+                };
+                searchedObjects.push(orderObject);
+              });
+            }
+            setRequests(searchedObjects);
+          });
+          break;
+        case 0:
+          searchUndoneRequests(token, studentid).then((data) => {
+            const searchedObjects = [];
+            if (!data.error) {
+              data.array2.map((request) => {
+                const orderObject = {
+                  requestID: request.ID,
+                  requestName: request.ServiceName,
+                  studentID: request.StudentID,
+                  done: request.done,
+                  received: request.received,
+                };
+                searchedObjects.push(orderObject);
+              });
+            }
+            setRequests(searchedObjects);
+          });
+          break;
+      }
+    }
+  };
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} id={props.id} />
+        <Toolbar
+          className={clsx(classess.root, {
+            /*{
+        [classes.highlight]: numSelected > 0
+      }*/
+          })}
+        >
+          <div id="requests-bar">
+            <div className={classess.search} id="requests-search">
+              <div
+                className={classess.searchIcon}
+                style={{ marginRight: "5px", fontSize: "1px" }}
+              >
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="....بحث"
+                classes={{
+                  root: classess.inputRoot,
+                  input: classess.inputInput,
+                }}
+                style={{ fontFamily: "Cairo" }}
+                inputProps={{ "aria-label": "search" }}
+                onChange={onChange}
+              />
+            </div>
 
-        {GetTable(props.id)}
+            <Typography
+              className={classess.title}
+              variant="h6"
+              id="tableTitle"
+              component="div"
+            >
+              {getTableTitle(props.id)}
+            </Typography>
+          </div>
+        </Toolbar>
+        <div id="requests-container">
+          <TableContainer>
+            <Table
+              className={classes.table}
+              aria-labelledby="tableTitle"
+              size={dense ? "small" : "medium"}
+              aria-label="enhanced table"
+            >
+              <EnhancedTableHead
+                classes={classes}
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
+                rowCount={services.length}
+              />
+              <TableBody>
+                {requests.map((service) => {
+                  const isItemSelected = isSelected(service.requestID);
+                  //const labelId = `enhanced-table-checkbox-${index}`;
+
+                  return (
+                    <TableRow
+                      hover
+                      onClick={(event) => handleClick(event, service.requestID)}
+                      role="checkbox"
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={service.requestID}
+                      selected={isItemSelected}
+                      id="requests-rows"
+                    >
+                      <TableCell id="table-body" align="center">
+                        {getRequestStatus(service.done, service.received)}
+                      </TableCell>
+                      <TableCell id="table-body" align="center">
+                        {service.studentID}
+                      </TableCell>
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        padding="none"
+                        align="right"
+                        id="table-body"
+                      >
+                        {service.requestName}
+                      </TableCell>
+                      <TableCell padding="checkbox" id="table-body">
+                        <Checkbox
+                          checked={isItemSelected}
+                          inputProps={{
+                            "aria-labelledby": service.requestID,
+                          }}
+                          className="requests-checkbox"
+                          color="default"
+                          classes={{ root: "requests-checkbox" }}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+        {numSelected > 0 ? (
+          <Typography
+            className={classes.title}
+            color="inherit"
+            variant="subtitle1"
+            component="div"
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <span id="requests-selected-number">
+              {numSelected} : عدد الاختيار
+            </span>
+          </Typography>
+        ) : (
+          <div></div>
+        )}
       </Paper>
     </div>
   );

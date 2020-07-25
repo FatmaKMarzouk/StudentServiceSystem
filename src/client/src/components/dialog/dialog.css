@@ -55,8 +55,8 @@
 #dialog-content {
   overflow: hidden;
   color: #003366;
-  padding-right: 3%;
-  padding-left: 3%;
+  /*padding-right: 3%;
+  padding-left: 3%;*/
   height: auto;
 }
 

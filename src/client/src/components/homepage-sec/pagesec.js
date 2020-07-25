@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -10,6 +10,7 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import Container from "@material-ui/core/Container";
 import MenuIcon from "@material-ui/icons/Menu";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 //import { mainListItems, secondaryListItems } from "./listItems";
@@ -21,6 +22,7 @@ import { withStyles } from "@material-ui/core/styles";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import EnrollingNewStudent from "../functionalities-sec/EnrollingNewStudent";
+import AddSecretary from "../functionalities-sec/AddSecretary";
 import Upload from "../upload/Upload";
 import ListItem from "@material-ui/core/ListItem";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
@@ -28,6 +30,7 @@ import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Profile from "../profile/profile";
+import { removeUserSession } from "../../Utils/Common";
 
 import "./home-sec.css";
 import Requests from "../tables/requests.js";
@@ -159,17 +162,21 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-function getFunctionContent(func) {
+function GetFunctionContent(func) {
+  const [fetchRequests, setFetchRequests] = useState(0);
   switch (func) {
     case 0:
       return (
         <Grid item xs={12}>
           <Grid container justify="center" spacing="3">
             <Grid key="1" item>
-              <Requests id={0} />
+              <Requests
+                id={0}
+                fetchRequests={() => setFetchRequests(fetchRequests + 1)}
+              />
             </Grid>
             <Grid key="2" item>
-              <Requests id={1} />
+              <Requests id={1} fetchRequests={fetchRequests} />
             </Grid>
           </Grid>
         </Grid>
@@ -188,6 +195,8 @@ function getFunctionContent(func) {
       );
     case 3:
       return <Profile />;
+    case 4:
+      return <AddSecretary />;
     default:
       return "Unknown step";
   }
@@ -230,7 +239,13 @@ export default function SecHome() {
     setActiveFunc(3);
   };
 
-  const handleLogout = () => {};
+  const handleAddSec = () => {
+    setActiveFunc(4);
+  };
+
+  const handleLogout = () => {
+    removeUserSession();
+  };
 
   return (
     <div className={classes.root} id="hide-scrollbar">
@@ -301,7 +316,7 @@ export default function SecHome() {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <div maxWidth="lg" className={classes.container}>
-          {getFunctionContent(activeFunc)}
+          {GetFunctionContent(activeFunc)}
         </div>
       </main>
       <Drawer
@@ -357,6 +372,25 @@ export default function SecHome() {
                   }}
                 >
                   تأجيل التجنيد العسكري
+                </span>
+              </ListItemText>
+            </ListItem>
+            <ListItem button onClick={handleAddSec}>
+              <ListItemIcon>
+                <AddCircleIcon
+                  style={{ marginRight: "10%", color: "white" }}
+                  fontSize="medium"
+                />
+              </ListItemIcon>
+              <ListItemText style={{ textAlign: "right" }}>
+                <span
+                  style={{
+                    color: "white",
+                    fontFamily: "Cairo",
+                    fontSize: "12px",
+                  }}
+                >
+                  إضافة سكرتيرة
                 </span>
               </ListItemText>
             </ListItem>

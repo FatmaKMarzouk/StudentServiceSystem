@@ -71,7 +71,7 @@ router.get("/cardcart", function (req, res, next) {
       res.status(400).send({
         error: true,
         message:
-          "You are not eligible for extracting certificate of enrollment as fees are not paid.",
+          "You are not eligible for extracting a student card as fees are not paid.",
       });
     }
 
@@ -81,7 +81,7 @@ router.get("/cardcart", function (req, res, next) {
         "INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName) VALUES( ?,?,?,?,? ) ",
         [
           username,
-          "Certificate of Enrollment",
+          "Student Card",
           JSON.stringify(allresults),
           "50",
           "Faculty of Engineering",

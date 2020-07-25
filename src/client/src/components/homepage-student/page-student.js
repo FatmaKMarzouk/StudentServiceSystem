@@ -23,7 +23,7 @@ import ShoppingCart from "../shopping-cart/shopping-cart";
 import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
 import { cartApi } from "../../core/Apis";
-import { getUser, getToken } from "../../Utils/Common";
+import { getUser, getToken, removeUserSession } from "../../Utils/Common";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -188,6 +188,11 @@ export default function StudentHome(props) {
     setOpenM(false);
   };
 
+  const handleLogout = () => {
+    setOpenM(false);
+    removeUserSession();
+  };
+
   return (
     <React.Fragment>
       <CssBaseline />
@@ -257,7 +262,7 @@ export default function StudentHome(props) {
                       <MenuItem onClick={handleProfile} id="menu-list-items">
                         My account
                       </MenuItem>
-                      <MenuItem onClick={handleClose} id="menu-list-items">
+                      <MenuItem onClick={handleLogout} id="menu-list-items">
                         Logout
                       </MenuItem>
                     </MenuList>
