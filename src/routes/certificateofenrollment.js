@@ -1,4 +1,6 @@
 var connection = require("../controllers/dbconnection");
+//var msopdf = require('node-msoffice-pdf');
+var convertapi = require('convertapi')('hG9EhwYoIPrtKMrw');
 var mysql = require("mysql");
 var express = require("express");
 var router = express.Router();
@@ -183,13 +185,24 @@ router.get("/certificatecart", function (req, res, next) {
               var row = results1[key];
               fees = row.Fees;
             });
-            console.log("mwkmem");
-            fs.readFile('./enrollment.docx', function (_err, data) {
-              console.log("kamr");
-              connection.query('USE AlexUni');
-              connection.query("INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName,document) VALUES( ?,?,?,?,?,? ) ",[username, "Certificate of Enrollment", JSON.stringify(allresults), fees, faculty, data]);
-             res.status(200).send("submit successfully");
+
+            convertapi.convert('pdf', { File: './enrollment.docx' })
+            .then(function(result) {
+              return result.file.save('./enrollment.pdf');
             })
+            .then(function(file) {
+              console.log("File saved: " + file);
+              fs.readFile('./enrollment.pdf', function (_err, data) {
+                connection.query('USE AlexUni');
+                connection.query("INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName,document) VALUES( ?,?,?,?,?,? ) ",[username, "Certificate of Enrollment", JSON.stringify(allresults), fees, faculty, data]);
+               res.status(200).send("submit successfully");
+              })
+            })
+            .catch(function(e) {
+              console.error(e.toString());
+            });
+
+
             // res.redirect("/cart");
           }
           else {
