@@ -243,7 +243,7 @@ export const postStudentInfo = (token, newStudentInfo) => {
     .catch((err) => console.log(err));
 };
 //api 2
-// upload apis of: 
+// upload apis of:
 // 1. nominationcar
 // 2. photo
 // 3. highschoolcertificate

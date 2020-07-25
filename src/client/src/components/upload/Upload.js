@@ -212,25 +212,26 @@ class Upload extends Component {
 
         case 6:
           console.log("Sara 1");
-          const student = {
+          /*const student = {
             stdId: "1",
           };
           const json = JSON.stringify(student);
           const blob = new Blob([json], {
             type: "application/json",
-          });
+          });*/
           const formData6 = new FormData();
 
           formData6.append("armydoc", file);
-          formData6.append("document", blob);
+          //formData6.append("document", blob);
 
           console.log("Sara 2 -->> loop");
           for (var key of formData6.entries()) {
             console.log(key[0] + ", " + key[1]);
           }
 
+          const stdId = 1;
           axios
-            .post("http://localhost:5000/uploaddoc", formData6, {
+            .post(`http://localhost:5000/uploaddoc/${stdId}`, formData6, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },

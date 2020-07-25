@@ -24,7 +24,10 @@ router.get("/postpone", function (request, response, next) {
 });
 var connection = require("../controllers/dbconnection");
 
-router.post("/uploaddoc", upload.single("armydoc"), function (req, response) {
+router.post("/uploaddoc/:stdId", upload.single("armydoc"), function (
+  req,
+  response
+) {
   console.log("Inside Armyyy uploaddoc");
 
   armydoc = req.file;
