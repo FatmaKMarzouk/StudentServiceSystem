@@ -171,13 +171,13 @@ router.get("/transcript", function (request, response, next) {
                       pObj = docx.createP({
                         align: "left",
                       });
-                      pObj.addText("Studnet's name :" + name);
+                      pObj.addText("Student's name :" + name);
                       //pObj.addText(name,{color : '0000A0', bold: true, underline: true})
                       pObj.addLineBreak();
                       pObj.addText("Student's ID : " + id);
 
                       pObj.addLineBreak();
-                      pObj.addText("Student's program: " + prog);
+                      pObj.addText("Student's program : " + prog);
 
                       pObj.addLineBreak();
                       pObj.addText(
