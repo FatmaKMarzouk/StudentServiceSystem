@@ -19,27 +19,28 @@ var storage = multer.diskStorage({
   },
 });
 var connection = require("../controllers/dbconnection");
+const { response } = require("express");
 var email;
 
 var upload = multer({ storage: storage }).single("file");
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-router.post('/upload', function (req, res) {
+router.post('/upload', function (request, response) {
   console.log("bdayet upload");
   console.log(upload.filename);
   console.log("nhayet upload");
-  upload(req, res, function (err) {
+  upload(request, response, function (error) {
     console.log("gowa el upload");
-    if (err instanceof multer.MulterError) {
-      console.log("awl error" + err);
-      return res.status(500).json(err)
-    } else if (err) {
-      console.log("tany error" + err);
-      return res.status(500).json(err)
+    if (error instanceof multer.MulterError) {
+      console.log("awl error" + error);
+      return response.status(500).json(error)
+    } else if (error) {
+      console.log("tany error" + error);
+      return res.status(500).json(error)
     }
     console.log("gowa el upload lsssssa");
-    return res.status(200).send(req.file)
+    return response.status(200).send(request.file)
 
   })
 });

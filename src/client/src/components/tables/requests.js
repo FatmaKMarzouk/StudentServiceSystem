@@ -321,17 +321,19 @@ export default function EnhancedTable(props) {
           console.log(data);
           console.log("nhayet el data");
           const orderObjects = [];
-          data.results.map((request) => {
-            const orderObject = {
-              requestID: request.ID,
-              requestName: request.ServiceName,
-              studentID: request.StudentID,
-              done: request.done,
-              received: request.received,
-              file: request.document,
-            };
-            orderObjects.push(orderObject);
-          });
+          if (!data.error) {
+            data.results.map((request) => {
+              const orderObject = {
+                requestID: request.ID,
+                requestName: request.ServiceName,
+                studentID: request.StudentID,
+                done: request.done,
+                received: request.received,
+                file: request.document,
+              };
+              orderObjects.push(orderObject);
+            });
+          }
           setAllRequests(orderObjects);
           setRequests(orderObjects);
         });
