@@ -207,7 +207,7 @@ function GetFunctionContent(func) {
   }
 }
 
-export default function SecHome() {
+export default function SecHome(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -265,6 +265,7 @@ export default function SecHome() {
 
   const handleLogout = () => {
     removeUserSession();
+    props.history.push("/");
   };
 
   return (

@@ -32,7 +32,10 @@ function Login(props) {
         console.log("response.data.user");
         console.log(response.data.user);
         setUserSession(response.data.token, response.data.user);
-        props.history.push("/home");
+
+        if (response.data.user.role === "secretary")
+          props.history.push("/sechome");
+        else props.history.push("/studenthome");
       })
       .catch((error) => {
         setLoading(false);

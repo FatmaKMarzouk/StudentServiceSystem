@@ -191,6 +191,7 @@ export default function StudentHome(props) {
   const handleLogout = () => {
     setOpenM(false);
     removeUserSession();
+    props.history.push("/");
   };
 
   return (
