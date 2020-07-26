@@ -18,26 +18,43 @@ const stripeChargeCallback = res => (stripeErr, stripeRes) => {
     res.status(500).send({ error: stripeErr });
   } else {
     console.log("looooloyy")
-    res.status(200).send({ success: stripeRes });
+    response.status(200).send({
+      error: false,
+      message: "Payment is successful",
+    });
   }
 };
 
 
-router.post('/payment', function (req, res){
-  console.log("inside payment api");
+router.post('/payment',function (req, res){
+console.log("inside payment api");
 if(req.user)
 {
   const username=req.user.username;
-  console.log("da5alt api payment w hatba3 username: ");
-  console.log(username);
+  var total = 0;
+  var requests = [];
+  connection.query("USE AlexUni");
+  connection.query("SELECT * FROM Requests WHERE StudentID = ? AND Paid = 0",[username],function (error, results, fields) {
+      if (results.length > 0) {
+        Object.keys(results).forEach(function (key) {
+          requests.push(results[key]);
+          var row = results[key];
+          total += row.Amount;
+        });
     const body = {
       source: req.body.token.id,
-      amount: req.body.amount,
+      amount: total,
       currency: "usd"
     };
-    console.log("bada2t tba3a body.amount");
-    console.log(body.source);
-    console.log("5allast tba3a body.amount");
+
     stripe.charges.create(body, stripeChargeCallback(res));
   }
+  });
+}
+else{
+  response.status(400).send({
+    error: true,
+    message: "Please log in to view this page!",
+  });
+}
 });
