@@ -1,4 +1,5 @@
 var express = require("express");
+const https = require('https');
 var app = express();
 var mysql = require("mysql");
 var port = process.env.PORT || 5000;
@@ -52,5 +53,12 @@ app.use(checkout);
 app.use(requests);
 app.use(payment)
 
-app.listen(port); //this function does http.createServer
+
+https.createServer({
+  key: fs.readFileSync('privateKey.key'),
+  cert: fs.readFileSync('certificate.crt')
+}, app)
+.listen(port, function () {
+  console.log('listening.......')
+})
 module.exports = env;
