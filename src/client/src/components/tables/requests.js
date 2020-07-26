@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import jsPDF from "jspdf";
+import { saveAs } from "file-saver";
 import "./requests.css";
 import PropTypes from "prop-types";
 import clsx from "clsx";
@@ -297,12 +299,17 @@ export default function EnhancedTable(props) {
   };
 
   const handleDownload = (file, requestName, studentID) => {
-    var array = new Uint8Array(file);
+    var array = new Uint8Array(file.data);
     var blob = new Blob([array], {
       type: "application/octet-stream",
     });
-    var download = require("downloadjs");
-    download(blob, requestName + "_" + studentID + ".docx");
+    /*var link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = "myFileName.docx";
+    link.click();*/
+    saveAs(blob, requestName + "_" + studentID + ".docx");
+    /* var download = require("downloadjs");
+    download(blob, requestName + "_" + studentID + ".docx");*/
   };
 
   const isSelected = (request) => selected.indexOf(request) !== -1;
@@ -321,28 +328,9 @@ export default function EnhancedTable(props) {
               studentID: request.StudentID,
               done: request.done,
               received: request.received,
-              file: request.document.data,
+              file: request.document,
             };
             orderObjects.push(orderObject);
-            /*if (orderObject.file.length > 0) {
-              var array = new Uint8Array(orderObject.file);
-              var blob = new Blob([array], {
-                type: "application/octet-stream",
-              });
-              var download = require("downloadjs");
-              download(
-                blob,
-                orderObject.requestName + "_" + orderObject.studentID + ".docx"
-              );
-              /*var url = URL.createObjectURL(blob);
-            window.open(url);*/
-            /*var link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            // set the name of the file
-            //link.download = "createdocument.docx";
-            // clicking the anchor element will download the file
-            link.click();
-            }*/
           });
           setAllRequests(orderObjects);
           setRequests(orderObjects);
@@ -363,6 +351,7 @@ export default function EnhancedTable(props) {
                 studentID: request.StudentID,
                 done: request.done,
                 received: request.received,
+                file: request.document,
               };
               orderObjects.push(orderObject);
             });
@@ -394,6 +383,7 @@ export default function EnhancedTable(props) {
                   studentID: request.StudentID,
                   done: request.done,
                   received: request.received,
+                  file: request.document,
                 };
                 searchedObjects.push(orderObject);
               });
@@ -412,6 +402,7 @@ export default function EnhancedTable(props) {
                   studentID: request.StudentID,
                   done: request.done,
                   received: request.received,
+                  file: request.document,
                 };
                 searchedObjects.push(orderObject);
               });
