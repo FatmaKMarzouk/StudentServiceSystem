@@ -15,7 +15,7 @@ const stripeBtn = () => {
     };
 
 
-    fetch("http://localhost:5000/payment", {
+    fetch("https://localhost:5000/payment", {
       method: "post",
       headers: {
         "Content-type": "application/json",

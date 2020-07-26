@@ -19,7 +19,7 @@ router.use(
 
 // enable CORS
 router.use(cors());
-router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 // static user details
@@ -36,6 +36,7 @@ const userData = {
 //In all future routes, this helps to know if the request is authenticated or not.
 router.use(function (req, res, next) {
   // check header or url parameters or post parameters for token
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   var token = req.headers["authorization"];
   if (!token) return next(); //if no token, continue
 
@@ -67,6 +68,7 @@ router.get("/", (req, res) => {
 
 // validate the user credentials
 router.post("/users/signin", function (req, res) {
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   console.log("Request BODY");
   console.log(req.body);
   const user = req.body.username;
@@ -145,7 +147,7 @@ router.post("/users/signin", function (req, res) {
             // get basic user details
             const userObj = utils.getCleanUser(userData);
             // return the token along with user details
-            return res.json({ user: userObj, token });
+            return res.status(200).json({ user: userObj, token });
           }
 
           // return 401 status if the credential is not match.

@@ -23,7 +23,7 @@ function App() {
     }
     console.log("abl el axios.verifytoken");
     axios
-      .get(`http://localhost:5000/verifyToken?token=${token}`)
+      .get(`https://localhost:5000/verifyToken?token=${token}`)
       .then((response) => {
         setUserSession(response.data.token, response.data.user);
         setAuthLoading(false);
