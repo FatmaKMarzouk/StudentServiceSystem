@@ -59,7 +59,10 @@ router.get("/", (req, res) => {
     return res
       .status(401)
       .json({ success: false, message: "Invalid user to access it." });
-  res.send("Welcome - " + req.user.name);
+      res.status(200).send({
+        error: false,
+        message: "Welcome - " + req.user.name,
+      });
 });
 
 // validate the user credentials
@@ -73,22 +76,22 @@ router.post("/users/signin", function (req, res) {
   if (user && pwd && role) {
     console.log("user && pwd && role");
     connection.query("Use AlexUni");
-    if (role == "student") 
+    if (role == "student")
     {
       console.log("student");
       connection.query(
         "SELECT * FROM Students WHERE Username = ? AND Password = ?",
         [user, pwd],
-        function (error, results, fields) 
+        function (error, results, fields)
         {
           console.log(results);
-          if (results.length > 0) 
+          if (results.length > 0)
           {
             //req.session.loggedin = true;
             //console.log("Request session in login b3d el definition");
             //console.log(req.session.loggedin);
             //req.session.username = user;
-            Object.keys(results).forEach(function (key) 
+            Object.keys(results).forEach(function (key)
             {
               var row = results[key];
               userData.name = row.NameEn;
@@ -104,10 +107,11 @@ router.post("/users/signin", function (req, res) {
             // get basic user details
             const userObj = utils.getCleanUser(userData);
             // return the token along with user details
-            return res.json({ user: userObj, token });
+            return res.status(200).json({ user: userObj, token });
+
           }
           // return 401 status if credential don't not match.
-          else 
+          else
           {
             return res.status(401).json(
             {
@@ -117,19 +121,19 @@ router.post("/users/signin", function (req, res) {
           }
         }
       );
-    } 
-    else if (role == "secretary") 
+    }
+    else if (role == "secretary")
     {
       console.log("secretary");
       connection.query(
         "SELECT * FROM Secretary WHERE ID = ? AND Password = ?", [user, pwd],
-        function (error, results, fields) 
+        function (error, results, fields)
         {
-          if (results.length > 0) 
+          if (results.length > 0)
           {
             req.session.loggedin = true;
             req.session.username = user;
-            Object.keys(results).forEach(function (key) 
+            Object.keys(results).forEach(function (key)
             {
               var row = results[key];
               userData.name = row.Name;
@@ -145,7 +149,7 @@ router.post("/users/signin", function (req, res) {
           }
 
           // return 401 status if the credential is not match.
-          else 
+          else
           {
             return res.status(401).json(
             {
@@ -198,7 +202,7 @@ router.get("/verifyToken", function (req, res) {
     }
     // get basic user details
     var userObj = utils.getCleanUser(userData);
-    return res.json({ user: userObj, token });
+    return res.status(200).json({ user: userObj, token });
   });
 });
 

@@ -186,21 +186,13 @@ router.get("/certificatecart", function (req, res, next) {
               fees = row.Fees;
             });
 
-            convertapi.convert('jpg', { File: './enrollment.docx' })
-            .then(function(result) {
-              return result.file.save('./enrollment.jpg');
-            })
-            .then(function(file) {
-              console.log("File saved: " + file);
+
               fs.readFile('./enrollment.jpg', function (_err, data) {
                 connection.query('USE AlexUni');
                 connection.query("INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName,document) VALUES( ?,?,?,?,?,? ) ",[username, "Certificate of Enrollment", JSON.stringify(allresults), fees, faculty, data]);
                res.status(200).send("submit successfully");
               })
-            })
-            .catch(function(e) {
-              console.error(e.toString());
-            });
+
 
 
             // res.redirect("/cart");

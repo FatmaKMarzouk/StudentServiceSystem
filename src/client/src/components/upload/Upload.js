@@ -114,7 +114,7 @@ class Upload extends Component {
           //const data = new FormData();
           // data.append("file", file);
           axios
-            .post("http://localhost:5000/nominationcard", formData1, {
+            .post("https://localhost:5000/nominationcard", formData1, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -126,7 +126,7 @@ class Upload extends Component {
 
           break;
 
-        /* fetch("http://localhost:5000/upload", {
+        /* fetch("https://localhost:5000/upload", {
             mode: "no-cors",
             method: "POST",
             body: formData,
@@ -154,7 +154,7 @@ class Upload extends Component {
           const formData2 = new FormData();
           formData2.append("file", file);
           axios
-            .post("http://localhost:5000/highschoolcertificate", formData2, {
+            .post("https://localhost:5000/highschoolcertificate", formData2, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -169,7 +169,7 @@ class Upload extends Component {
           const formData3 = new FormData();
           formData3.append("file", file);
           axios
-            .post("http://localhost:5000/birthcertificate", formData3, {
+            .post("https://localhost:5000/birthcertificate", formData3, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -184,7 +184,7 @@ class Upload extends Component {
           const formData4 = new FormData();
           formData4.append("file", file);
           axios
-            .post("http://localhost:5000/nationalid", formData4, {
+            .post("https://localhost:5000/nationalid", formData4, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -199,7 +199,7 @@ class Upload extends Component {
           const formData5 = new FormData();
           formData5.append("file", file);
           axios
-            .post("http://localhost:5000/photo", formData5, {
+            .post("https://localhost:5000/photo", formData5, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -230,7 +230,7 @@ class Upload extends Component {
           }
 
           axios
-            .post("http://localhost:5000/uploaddoc", formData6, {
+            .post("https://localhost:5000/uploaddoc", formData6, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
