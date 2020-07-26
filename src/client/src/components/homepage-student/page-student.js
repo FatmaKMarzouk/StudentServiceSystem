@@ -22,6 +22,10 @@ import ItemsCarousel from "../items-carousel/items-carousel";
 import ShoppingCart from "../shopping-cart/shopping-cart";
 import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import SettingsIcon from "@material-ui/icons/Settings";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { cartApi } from "../../core/Apis";
 import { getUser, getToken, removeUserSession } from "../../Utils/Common";
 
@@ -260,10 +264,20 @@ export default function StudentHome(props) {
                       onKeyDown={handleListKeyDown}
                     >
                       <MenuItem onClick={handleProfile} id="menu-list-items">
-                        My account
+                        <ListItemText id="sec-profile-menu-item">
+                          حسابي
+                        </ListItemText>
+                        <ListItemIcon id="sec-profile-menu-item">
+                          <SettingsIcon fontSize="small" />
+                        </ListItemIcon>
                       </MenuItem>
                       <MenuItem onClick={handleLogout} id="menu-list-items">
-                        Logout
+                        <ListItemText id="sec-profile-menu-item">
+                          الخروج
+                        </ListItemText>
+                        <ListItemIcon id="sec-profile-menu-item">
+                          <ExitToAppIcon fontSize="small" />
+                        </ListItemIcon>
                       </MenuItem>
                     </MenuList>
                   </ClickAwayListener>
@@ -275,174 +289,6 @@ export default function StudentHome(props) {
       </AppBar>
       <main className={classes.content} id="main-content">
         {getFunctionContent(activeFunc)}
-        {/*<ShoppingCart />*/}
-
-        {/* <Container maxWidth="lg" className={classes.container}>
-          <div className={classes.root}>
-            <h2
-              style={{
-                color: "#003366",
-                fontWeight: "bold",
-                marginRight: "2%"
-              }}
-            >
-              الخدمات الإلكترونية
-            </h2>
-
-            <Divider
-              style={{
-                marginBottom: "5%",
-                backgroundColor: "#003366"
-              }}
-            />
-            <Grid container className={classes.root} spacing={2}>
-              <Grid item xs={12}>
-                <Grid container justify="center" spacing={4}>
-                  <Grid key="1" item>
-                    <Paper className={classes.paper}>
-                      <div id="paper-icons">
-                        <FileCopyIcon id="inside-paper-icon" />
-                      </div>
-                      <DialogBox />
-                    </Paper>
-                  </Grid>
-                  <Grid key="2" item>
-                    <Paper className={classes.paper}>
-                      <div id="paper-icons">
-                        <FileCopyIcon id="inside-paper-icon" />
-                      </div>
-                      <DialogSelect />
-                    </Paper>
-                  </Grid>
-                  <Grid key="3" item>
-                    <Paper className={classes.paper}>
-                      <div id="paper-icons">
-                        <FileCopyIcon id="inside-paper-icon" />
-                      </div>
-                      <Button variant="contained" id="inside-paper-button">
-                        Choose
-                      </Button>
-                    </Paper>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </div>
-        </Container>
-
-        <Container maxWidth="lg" className={classes.container}>
-          <div className={classes.root}>
-            <h2
-              style={{
-                color: "#003366",
-                fontWeight: "bold",
-                marginRight: "2%"
-              }}
-            >
-              الخدمات الإلكترونية
-            </h2>
-
-            <Divider
-              style={{
-                marginBottom: "5%",
-                backgroundColor: "#003366"
-              }}
-            />
-            <Grid container className={classes.root} spacing={2}>
-              <Grid item xs={12}>
-                <Grid container justify="center" spacing={4}>
-                  <Grid key="1" item>
-                    <Paper className={classes.paper}>
-                      <div id="paper-icons">
-                        <FileCopyIcon id="inside-paper-icon" />
-                      </div>
-                      <Button variant="contained" id="inside-paper-button">
-                        Choose
-                      </Button>
-                    </Paper>
-                  </Grid>
-                  <Grid key="2" item>
-                    <Paper className={classes.paper}>
-                      <div id="paper-icons">
-                        <FileCopyIcon id="inside-paper-icon" />
-                      </div>
-                      <Button variant="contained" id="inside-paper-button">
-                        Choose
-                      </Button>
-                    </Paper>
-                  </Grid>
-                  <Grid key="3" item>
-                    <Paper className={classes.paper}>
-                      <div id="paper-icons">
-                        <FileCopyIcon id="inside-paper-icon" />
-                      </div>
-                      <Button variant="contained" id="inside-paper-button">
-                        Choose
-                      </Button>
-                    </Paper>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </div>
-        </Container>
-        <Container maxWidth="lg" className={classes.container}>
-          <div className={classes.root}>
-            <h2
-              style={{
-                color: "#003366",
-                fontWeight: "bold",
-                marginRight: "2%"
-              }}
-            >
-              الخدمات الإلكترونية
-            </h2>
-
-            <Divider
-              style={{
-                marginBottom: "5%",
-                backgroundColor: "#003366"
-              }}
-            />
-            <Grid container className={classes.root} spacing={2}>
-              <Grid item xs={12}>
-                <Grid container justify="center" spacing={4}>
-                  <Grid key="1" item>
-                    <Paper className={classes.paper}>
-                      <div id="paper-icons">
-                        <FileCopyIcon id="inside-paper-icon" />
-                      </div>
-                      <Button variant="contained" id="inside-paper-button">
-                        Choose
-                      </Button>
-                    </Paper>
-                  </Grid>
-                  <Grid key="2" item>
-                    <Paper className={classes.paper}>
-                      <div id="paper-icons">
-                        <FileCopyIcon id="inside-paper-icon" />
-                      </div>
-                      <Button variant="contained" id="inside-paper-button">
-                        Choose
-                      </Button>
-                    </Paper>
-                  </Grid>
-                  <Grid key="3" item>
-                    <Paper className={classes.paper}>
-                      <div id="paper-icons">
-                        <FileCopyIcon id="inside-paper-icon" />
-                      </div>
-                      <Button variant="contained" id="inside-paper-button">
-                        Choose
-                      </Button>
-                    </Paper>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </div>
-        </Container>
-            */}
         <Footer />
       </main>
     </React.Fragment>

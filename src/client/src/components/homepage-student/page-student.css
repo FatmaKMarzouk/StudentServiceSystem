@@ -63,6 +63,7 @@
   align-items: center;
   padding-top: 5%;
   padding-bottom: 2%;
+  min-height: 100vh;
 }
 
 #menu-list-grow {
@@ -76,7 +77,4 @@
 
 #menu-list-items:hover {
   background-color: #1361af36;
-}
-
-#profile-component-container {
 }

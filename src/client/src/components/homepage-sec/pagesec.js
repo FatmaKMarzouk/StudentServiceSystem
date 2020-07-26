@@ -390,7 +390,7 @@ export default function SecHome() {
                     fontSize: "12px",
                   }}
                 >
-                  إضافة سكرتيرة
+                  إضافة شئون طلبة
                 </span>
               </ListItemText>
             </ListItem>

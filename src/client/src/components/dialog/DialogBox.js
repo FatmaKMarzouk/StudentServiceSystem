@@ -280,10 +280,11 @@ export default function CustomizedDialogs(props) {
         break;
       case 4:
         annualFeesCart(token);
+        setOpen(false);
+        document.getElementById("blur").style.filter = "blur(0)";
         break;
     }
     //setOpen(false);
-    document.getElementById("blur").style.filter = "blur(0)";
   };
 
   const handleEnter = () => {

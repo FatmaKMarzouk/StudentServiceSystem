@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import jsPDF from "jspdf";
+import { saveAs } from "file-saver";
 import "./requests.css";
 import PropTypes from "prop-types";
 import clsx from "clsx";
@@ -16,6 +18,9 @@ import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
+import PrintIcon from "@material-ui/icons/Print";
+import Button from "@material-ui/core/Button";
+import GetAppIcon from "@material-ui/icons/GetApp";
 import { fade } from "@material-ui/core/styles";
 import { getToken } from "../../Utils/Common";
 import {
@@ -26,106 +31,6 @@ import {
   requestDone,
   requestReceived,
 } from "../../core/Apis";
-
-function createData(request, id) {
-  return { request, id };
-}
-
-const services = [
-  {
-    serviceName: "شهادة قيد",
-    studentID: 4249,
-  },
-  {
-    serviceName: "ترانسكريبت المواد",
-    studentID: 4237,
-  },
-  {
-    serviceName: "شهادة قيد",
-    studentID: 4005,
-  },
-  {
-    serviceName: "ترانسكريبت المواد",
-    studentID: 4274,
-  },
-  {
-    serviceName: "شهادة قيد",
-    studentID: 4283,
-  },
-  {
-    serviceName: "ترانسكريبت المواد",
-    studentID: 3889,
-  },
-  {
-    serviceName: "شهادة قيد",
-    studentID: 3781,
-  },
-  {
-    serviceName: "ترانسكريبت المواد",
-    studentID: 4001,
-  },
-];
-
-const allServices = [
-  {
-    serviceName: "شهادة قيد",
-    studentID: 4000,
-  },
-  {
-    serviceName: "ترانسكريبت المواد",
-    studentID: 4001,
-  },
-  {
-    serviceName: "شهادة قيد",
-    studentID: 4002,
-  },
-  {
-    serviceName: "ترانسكريبت المواد",
-    studentID: 4003,
-  },
-  {
-    serviceName: "شهادة قيد",
-    studentID: 4004,
-  },
-  {
-    serviceName: "ترانسكريبت المواد",
-    studentID: 4005,
-  },
-  {
-    serviceName: "شهادة قيد",
-    studentID: 4006,
-  },
-  {
-    serviceName: "ترانسكريبت المواد",
-    studentID: 4007,
-  },
-];
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
 
 const headCells = [
   {
@@ -145,13 +50,11 @@ const headCells = [
 
 function EnhancedTableHead(props) {
   const { classes, order, orderBy, onRequestSort } = props;
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
 
   return (
     <TableHead>
       <TableRow id="requests-headers">
+        <TableCell padding="checkbox" id="table-header"></TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -164,13 +67,6 @@ function EnhancedTableHead(props) {
           </TableCell>
         ))}
         <TableCell padding="checkbox" id="table-header"></TableCell>
-        {/* <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ "aria-label": "select all desserts" }}
-          />
-              </TableCell>*/}
       </TableRow>
     </TableHead>
   );
@@ -220,9 +116,9 @@ function getTableTitle(id) {
 
 function getRequestStatus(done, received) {
   console.log("DONE=" + done + "RECEIVED=" + received);
-  if (done && received) return "DONE & RECEIVED";
-  else if (done) return "DONE";
-  else return "NOTHING";
+  if (done && received) return "تم الاستلام";
+  else if (done) return "تم الانتهاء";
+  else return "-";
 }
 
 const EnhancedTableToolbar = (props) => {
@@ -402,6 +298,20 @@ export default function EnhancedTable(props) {
     }
   };
 
+  const handleDownload = (file, requestName, studentID) => {
+    var array = new Uint8Array(file.data);
+    var blob = new Blob([array], {
+      type: "application/octet-stream",
+    });
+    /*var link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = "myFileName.docx";
+    link.click();*/
+    saveAs(blob, requestName + "_" + studentID + ".docx");
+    /* var download = require("downloadjs");
+    download(blob, requestName + "_" + studentID + ".docx");*/
+  };
+
   const isSelected = (request) => selected.indexOf(request) !== -1;
 
   useEffect(() => {
@@ -418,12 +328,14 @@ export default function EnhancedTable(props) {
               studentID: request.StudentID,
               done: request.done,
               received: request.received,
+              file: request.document,
             };
             orderObjects.push(orderObject);
           });
           setAllRequests(orderObjects);
           setRequests(orderObjects);
         });
+
         console.log("ALL REQUESTS");
         break;
       case 0:
@@ -439,6 +351,7 @@ export default function EnhancedTable(props) {
                 studentID: request.StudentID,
                 done: request.done,
                 received: request.received,
+                file: request.document,
               };
               orderObjects.push(orderObject);
             });
@@ -470,6 +383,7 @@ export default function EnhancedTable(props) {
                   studentID: request.StudentID,
                   done: request.done,
                   received: request.received,
+                  file: request.document,
                 };
                 searchedObjects.push(orderObject);
               });
@@ -488,6 +402,7 @@ export default function EnhancedTable(props) {
                   studentID: request.StudentID,
                   done: request.done,
                   received: request.received,
+                  file: request.document,
                 };
                 searchedObjects.push(orderObject);
               });
@@ -553,7 +468,7 @@ export default function EnhancedTable(props) {
                 order={order}
                 orderBy={orderBy}
                 onRequestSort={handleRequestSort}
-                rowCount={services.length}
+                rowCount={requests.length}
               />
               <TableBody>
                 {requests.map((service) => {
@@ -563,7 +478,6 @@ export default function EnhancedTable(props) {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, service.requestID)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -571,6 +485,24 @@ export default function EnhancedTable(props) {
                       selected={isItemSelected}
                       id="requests-rows"
                     >
+                      <TableCell padding="checkbox" id="table-header">
+                        {service.requestName === "Choose Program" ? (
+                          <div></div>
+                        ) : (
+                          <Button
+                            id="requests-download-button"
+                            onClick={() =>
+                              handleDownload(
+                                service.file,
+                                service.requestName,
+                                service.studentID
+                              )
+                            }
+                          >
+                            <GetAppIcon style={{ fontSize: "20px" }} />
+                          </Button>
+                        )}
+                      </TableCell>
                       <TableCell id="table-body" align="center">
                         {getRequestStatus(service.done, service.received)}
                       </TableCell>
@@ -595,6 +527,9 @@ export default function EnhancedTable(props) {
                           className="requests-checkbox"
                           color="default"
                           classes={{ root: "requests-checkbox" }}
+                          onClick={(event) =>
+                            handleClick(event, service.requestID)
+                          }
                         />
                       </TableCell>
                     </TableRow>
