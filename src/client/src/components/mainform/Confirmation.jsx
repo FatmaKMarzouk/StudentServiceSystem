@@ -244,7 +244,7 @@ class Confirmation extends Component {
             console.log(this.state.annualFees.value);
           }
         });
-
+        break;
       default:
         return;
     }

@@ -14,6 +14,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const stripeChargeCallback = res => (stripeErr, stripeRes) => {
   if (stripeErr) {
+    console.log("stripeChargeCallback Error: "+stripeErr);
     res.status(500).send({ error: stripeErr });
   } else {
     console.log("looooloyy")
@@ -23,6 +24,7 @@ const stripeChargeCallback = res => (stripeErr, stripeRes) => {
 
 
 router.post('/payment', function (req, res){
+  console.log("inside payment api");
 if(req.user)
 {
   const username=req.user.username;
@@ -34,7 +36,7 @@ if(req.user)
       currency: "usd"
     };
     console.log("bada2t tba3a body.amount");
-    console.log(body.amount);
+    console.log(body.source);
     console.log("5allast tba3a body.amount");
     stripe.charges.create(body, stripeChargeCallback(res));
   }
