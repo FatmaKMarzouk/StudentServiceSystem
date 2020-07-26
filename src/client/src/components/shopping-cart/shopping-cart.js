@@ -12,6 +12,8 @@ import Paper from "@material-ui/core/Paper";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import { getToken } from "../../Utils/Common";
 import { cartApi, deleteCart } from "../../core/Apis";
+import { useHistory } from "react-router-dom";
+import StripeBtn from "../payment/stripeBtn";
 
 const TAX_RATE = 0.07;
 
@@ -66,7 +68,7 @@ const rows = [
   createRow(orders[2].orderName, orders[2].orderPrice),
 ];*/
 
-export default function SpanningTable() {
+export default function SpanningTable(props) {
   const classes = useStyles();
   const [orderss, setOrderss] = useState([]);
   const [deleteCount, setDeleteCount] = useState(0);
@@ -106,6 +108,10 @@ export default function SpanningTable() {
     deleteCart(token, reqID).then(() => {
       setDeleteCount(deleteCount + 1);
     });
+  };
+
+  const handleCheckout = () => {
+    props.history.push("/payment");
   };
 
   return (
@@ -202,9 +208,14 @@ export default function SpanningTable() {
             </TableBody>
           </Table>
         </div>
-        <button id="checkout-button" className="btn btn-success">
+        <StripeBtn>الدفع</StripeBtn>
+        {/*<button
+          id="checkout-button"
+          className="btn btn-success"
+          onClick={handleCheckout}
+        >
           الدفع
-        </button>
+        </button>*/}
       </TableContainer>
     </div>
   );

@@ -98,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function getFunctionContent(func) {
+function getFunctionContent(func, props) {
   switch (func) {
     case 0:
       return (
@@ -141,7 +141,7 @@ function getFunctionContent(func) {
     case 1:
       return (
         <div>
-          <ShoppingCart />
+          <ShoppingCart history={props.history} />
         </div>
       );
     case 2:
@@ -288,7 +288,7 @@ export default function StudentHome(props) {
         </Toolbar>
       </AppBar>
       <main className={classes.content} id="main-content">
-        {getFunctionContent(activeFunc)}
+        {getFunctionContent(activeFunc, props)}
         <Footer />
       </main>
     </React.Fragment>
