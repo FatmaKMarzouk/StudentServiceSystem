@@ -11,15 +11,15 @@ router.use(bodyParser.json());
 var connection = require('../controllers/dbconnection');
 var env = require("dotenv").config({ path: __dirname + "../.env" });
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-
+var dateFormat = require('dateformat');
 const stripeChargeCallback = res => (stripeErr, stripeRes) => {
   if (stripeErr) {
     console.log("stripeChargeCallback Error: "+stripeErr);
     res.status(500).send({ error: stripeErr });
   } else {
-    var date = dateFormat(new Date(),"yyyy-mm-dd");
-    connection.query('USE AlexUni');
-    connection.query('UPDATE Requests SET Paid = "1" , DatePaid =? WHERE ID =?',[date,username]);
+    // var date = dateFormat(new Date(),"yyyy-mm-dd");
+    // connection.query('USE AlexUni');
+    // connection.query('UPDATE Requests SET Paid = "1" , DatePaid =? WHERE ID =?',[date,username]);
     console.log("Payment is successful")
     response.status(200).send({
       error: false,

@@ -6,13 +6,14 @@ var session = require("express-session");
 var bodyParser = require("body-parser");
 var path = require("path");
 
-var total = 0;
+
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 var connection = require("../controllers/dbconnection");
 
 router.get("/cart", function (request, response, next) {
   if (request.user) {
+    var total = 0;
     var username = request.user.username;
     var requests = [];
     connection.query("USE AlexUni");
