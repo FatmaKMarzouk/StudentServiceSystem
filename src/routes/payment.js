@@ -21,6 +21,31 @@ const stripeChargeCallback = res => (stripeErr, stripeRes) => {
     var date = dateFormat(new Date(),"yyyy-mm-dd");
     connection.query('USE AlexUni');
     console.log(username);
+    connection.query('SELECT * FROM Requests WHERE Paid="0" AND StudentID = ? AND ServiceName = ?',[username,'Annual Fees'],function(error, results){
+      if (results.length > 0) {
+        connection.query(
+          "SELECT * FROM Payment WHERE StudentID = ?",[username],function (error, results, fields) {
+            if (results.length > 0) {
+              Object.keys(results).forEach(function (key) {
+                var row = results[key];
+                myDate = row.last_payment;
+              });
+              myDate = new Date(myDate);
+              myDate.setDate(myDate.getDate() + 366);
+              var date = new Date();
+              var diff = date.getTime() - myDate.getTime();
+              diff = diff / (1000 * 3600 * 24);
+              diff = parseInt(diff / 365) + 1;
+              myDate.setDate(myDate.getDate() - 366 + (diff*366))
+              connection.query('UPDATE Payment SET last_payment=? WHERE StudentID=?',['2020-10-01',username],function(error,results){
+                if (error)
+                  throw error
+              });
+            }
+          });
+
+      }
+    });
     connection.query('UPDATE Requests SET Paid = "1" , DatePaid =? WHERE StudentID =?',[date,username], function (error, results, fields) {
       if (error)
         throw error
