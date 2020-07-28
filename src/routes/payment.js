@@ -12,6 +12,7 @@ var connection = require('../controllers/dbconnection');
 var env = require("dotenv").config({ path: __dirname + "../.env" });
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 var dateFormat = require('dateformat');
+var username = "";
 const stripeChargeCallback = res => (stripeErr, stripeRes) => {
   if (stripeErr) {
     console.log("stripeChargeCallback Error: "+stripeErr);
@@ -19,6 +20,7 @@ const stripeChargeCallback = res => (stripeErr, stripeRes) => {
   } else {
     var date = dateFormat(new Date(),"yyyy-mm-dd");
     connection.query('USE AlexUni');
+    console.log(username);
     connection.query('UPDATE Requests SET Paid = "1" , DatePaid =? WHERE ID =?',[date,username]);
     console.log("Payment is successful")
     res.status(200).send({
@@ -34,7 +36,7 @@ console.log("inside payment api");
 if(req.user)
 {
   console.log("hii")
-  const username=req.user.username;
+  username=req.user.username;
   var total = 0;
   var requests = [];
   connection.query("USE AlexUni");
