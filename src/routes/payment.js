@@ -21,12 +21,18 @@ const stripeChargeCallback = res => (stripeErr, stripeRes) => {
     var date = dateFormat(new Date(),"yyyy-mm-dd");
     connection.query('USE AlexUni');
     console.log(username);
-    connection.query('UPDATE Requests SET Paid = "1" , DatePaid =? WHERE ID =?',[date,username]);
-    console.log("Payment is successful")
-    res.status(200).send({
-      error: false,
-      message: "Payment is successful",
+    connection.query('UPDATE Requests SET Paid = "1" , DatePaid =? WHERE StudentID =?',[date,username], function (error, results, fields) {
+      if (error)
+        throw error
+      else{
+        console.log("Payment is successful")
+        res.status(200).send({
+          error: false,
+          message: "Payment is successful",
+        });
+      }
     });
+
   }
 };
 
