@@ -28,9 +28,6 @@ router.get("/cart", function (request, response, next) {
             total += row.Amount;
           });
           //sessionStorage.setItem('total',total);
-          console.log("bada2t tba3a total");
-          console.log(total);
-          console.log("5allast tba3a total");
           response.status(200).send({ requests, total });
         } else {
           response.status(400).send({
@@ -65,4 +62,3 @@ router.post("/delete-cart", function (request, response, next) {
     });
   }
 });
-exports.total = total;

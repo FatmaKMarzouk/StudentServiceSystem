@@ -21,7 +21,7 @@ const stripeChargeCallback = res => (stripeErr, stripeRes) => {
     // connection.query('USE AlexUni');
     // connection.query('UPDATE Requests SET Paid = "1" , DatePaid =? WHERE ID =?',[date,username]);
     console.log("Payment is successful")
-    response.status(200).send({
+    res.status(200).send({
       error: false,
       message: "Payment is successful",
     });
@@ -33,6 +33,7 @@ router.post('/payment',function (req, res){
 console.log("inside payment api");
 if(req.user)
 {
+  console.log("hii")
   const username=req.user.username;
   var total = 0;
   var requests = [];
