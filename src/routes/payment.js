@@ -17,9 +17,9 @@ const stripeChargeCallback = res => (stripeErr, stripeRes) => {
     console.log("stripeChargeCallback Error: "+stripeErr);
     res.status(500).send({ error: stripeErr });
   } else {
-    // var date = dateFormat(new Date(),"yyyy-mm-dd");
-    // connection.query('USE AlexUni');
-    // connection.query('UPDATE Requests SET Paid = "1" , DatePaid =? WHERE ID =?',[date,username]);
+    var date = dateFormat(new Date(),"yyyy-mm-dd");
+    connection.query('USE AlexUni');
+    connection.query('UPDATE Requests SET Paid = "1" , DatePaid =? WHERE ID =?',[date,username]);
     console.log("Payment is successful")
     res.status(200).send({
       error: false,
