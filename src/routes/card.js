@@ -1,6 +1,7 @@
 var connection = require("../controllers/dbconnection");
 var mysql = require("mysql");
 var express = require("express");
+var dateFormat = require("dateformat");
 var router = express.Router();
 module.exports = router;
 var session = require("express-session");
@@ -17,7 +18,7 @@ router.get("/card", function (req, res, next) {
     var username = req.user.username;
     connection.query("Use AlexUni");
     connection.query(
-      "SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.Gender, Students.Username, Students.Photo, Students.SSN, Payment.Paid FROM Students RIGHT JOIN Payment ON Students.ID=Payment.StudentID WHERE Students.Username = ?",
+      "SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.Gender, Students.Username, Students.Photo, Students.SSN, Payment.last_payment FROM Students RIGHT JOIN Payment ON Students.ID=Payment.StudentID WHERE Students.Username = ?",
       [username],
       function (err, results, field) {
         if (results.length > 0) {
@@ -48,7 +49,7 @@ router.get("/card", function (req, res, next) {
                     //console.log(row);
                     return;
                     });
-    
+
                     console.log(allresults);
             }
         });*/
@@ -66,7 +67,20 @@ router.get("/cardcart", function (req, res, next) {
     var flag = 1;
     console.log("in cardcart api");
     console.log(allresults[0].Gender);
-    if (!allresults[0].Paid) {
+    var paid = 1;
+    allresults.last_payment = new Date(allresults.last_payment);
+    allresults.last_payment.setDate(allresults.last_payment.getDate() + 366);
+    var date = new Date();
+    var diff = date.getTime() - allresults.last_payment.getTime();
+    diff = diff / (1000 * 3600 * 24);
+    diff = parseInt(diff / 365) + 1;
+    if(diff<=0){
+       paid =1;
+    }
+    else{
+      paid=0;
+    }
+    if (paid==0) {
       flag = 0;
       res.status(400).send({
         error: true,
