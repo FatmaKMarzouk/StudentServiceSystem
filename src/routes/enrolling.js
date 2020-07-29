@@ -127,6 +127,7 @@ router.post("/enroll", function (request, response) {
                         if(error)
                           throw(error)
                       });
+                      
                         const output = `
             					<p>Congratulations! You have been accepted in Alexandria University.</p>
             					<h3>Contact Details</h3>

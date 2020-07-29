@@ -245,22 +245,33 @@ router.get("/transcript", function (request, response, next) {
 router.get("/transcriptconfirm", function (request, response, fields) {
   if (request.user) {
     var username = request.user.username;
-    var paid = "";
+    var myDate = "";
     var flag = 1;
+    var paid =0;
     connection.query("USE AlexUni");
     connection.query(
-      "SELECT Paid FROM Payment WHERE StudentID = ? ",
-      [username],
-      function (error, results3, fields) {
+      "SELECT last_payment FROM Payment WHERE StudentID = ? ",[username],function (error, results3, fields) {
         if (error) throw error;
         if (results3.length > 0) {
           Object.keys(results3).forEach(function (key) {
             var row3 = results3[key];
-
-            paid = row3.Paid;
+            myDate = row3.last_payment;
           });
+          myDate = new Date(myDate);
+          myDate.setDate(myDate.getDate() + 366);
+          var date = new Date();
+          var diff = date.getTime() - myDate.getTime();
+          diff = diff / (1000 * 3600 * 24);
+          diff = parseInt(diff / 365) + 1;
+
+          if (diff <= 0) {
+            paid=1;
+          }
+          else{
+            paid=0;
+          }
           // flag 1
-          if (paid) {
+          if (paid==1) {
             if (flag == 1) {
               fs.readFile("./transcript.docx", function (err, data) {
                 connection.query("USE AlexUni");

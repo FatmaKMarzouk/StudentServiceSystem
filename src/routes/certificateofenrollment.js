@@ -3,6 +3,7 @@ var connection = require("../controllers/dbconnection");
 var convertapi = require('convertapi')('hG9EhwYoIPrtKMrw');
 var mysql = require("mysql");
 var express = require("express");
+var dateFormat = require("dateformat");
 var router = express.Router();
 module.exports = router;
 var session = require('express-session');
@@ -26,7 +27,7 @@ router.get("/certificateofenrollment", function (req, res, next) {
     console.log("THE USERNAME REACHED TO API:");
     console.log(username);
     connection.query("Use AlexUni");
-    connection.query("SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.armypostpone, Students.Gender, Payment.Paid FROM Students RIGHT JOIN Payment ON Students.ID=Payment.StudentID WHERE Students.Username = ?",
+    connection.query("SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.armypostpone, Students.Gender, Payment.last_payment FROM Students RIGHT JOIN Payment ON Students.ID=Payment.StudentID WHERE Students.Username = ?",
       [username],
       function (err, results, field) {
         if (results.length > 0) {
@@ -153,8 +154,21 @@ router.get("/certificatecart", function (req, res, next) {
   if (req.user) {
     var username = req.user.username;
     var flag = 1;
+    var paid = 1;
+    allresults.last_payment = new Date(allresults.last_payment);
+    allresults.last_payment.setDate(allresults.last_payment.getDate() + 366);
+    var date = new Date();
+    var diff = date.getTime() - allresults.last_payment.getTime();
+    diff = diff / (1000 * 3600 * 24);
+    diff = parseInt(diff / 365) + 1;
+    if(diff<=0){
+       paid =1;
+    }
+    else{
+      paid=0;
+    }
     if (allresults.Gender === "Male") {
-      if (!allresults.Paid && allresults.armypostpone) {
+      if (paid==0 && allresults.armypostpone) {
         //   // res.json(allresults);
         // } else {
         flag = 0;
@@ -166,7 +180,7 @@ router.get("/certificatecart", function (req, res, next) {
 
     }
     else {
-      if (!allresults.Paid) {
+      if (paid==0) {
         //   // res.json(allresults);
         // } else {
         flag = 0;
