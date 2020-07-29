@@ -56,7 +56,7 @@ router.get("/card", function (req, res, next) {
   } else {
     return res.status(400).send({
       error: true,
-      message: "Please login to view this page!",
+      message: "!رجاء تسجيل الدخول",
     });
   }
 });
@@ -84,8 +84,7 @@ router.get("/cardcart", function (req, res, next) {
       flag = 0;
       res.status(400).send({
         error: true,
-        message:
-          "You are not eligible for extracting a student card as fees are not paid.",
+        message:  "يجب دفع المصاريف السنويةاولا",
       });
     }
 
@@ -103,14 +102,14 @@ router.get("/cardcart", function (req, res, next) {
       );
       res.status(200).send({
         error: false,
-        message: "Successfully added to cart!",
+        message: "!تم بنجاح",
       });
       //res.redirect('/cart');
     }
   } else {
     res.status(400).send({
       error: true,
-      message: "Please login to view this page!",
+      message: "!رجاء تسجيل الدخول",
     });
   }
 });
