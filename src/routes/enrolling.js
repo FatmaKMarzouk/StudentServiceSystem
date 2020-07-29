@@ -3,6 +3,8 @@ var express = require("express");
 var router = express.Router();
 module.exports = router;
 var path = require("path");
+var dateFormat = require("dateformat");
+var moment = require('moment');
 var bodyParser = require("body-parser");
 var session = require("express-session");
 var nodemailer = require("nodemailer");
@@ -96,13 +98,13 @@ router.post("/enroll", function (request, response) {
               });
             }
             else {
+
               if (selection == "private") {
                 connection.query("UPDATE Students SET SSP = b'1' WHERE Email = ? ", [email],
                   function (error, results, fields) { });
               }
 
-              connection.query(
-                "UPDATE Students SET Username = ID WHERE Email = ? ", [email], function (error, results, fields) {
+              connection.query("UPDATE Students SET Username = ID WHERE Email = ? ", [email], function (error, results, fields) {
                   if (error)
                     throw error
                   else {
@@ -114,6 +116,17 @@ router.post("/enroll", function (request, response) {
                           console.log(user);
                           return user;
                         });
+                        var now = new Date();
+                      var myDate = moment(now).format('YYYY-MM-DD');
+                      console.log(myDate);
+                      var year  = moment(myDate).format('YYYY');
+                      console.log(year);
+                      myDate = moment(year+"-10-01").format('YYYY-MM-DD')
+                      console.log(myDate);
+                      connection.query("INSERT INTO Payment (StudentID,last_payment) VALUES (?,?)",[user,myDate],function(error,results){
+                        if(error)
+                          throw(error)
+                      });
                         const output = `
             					<p>Congratulations! You have been accepted in Alexandria University.</p>
             					<h3>Contact Details</h3>
@@ -216,7 +229,7 @@ router.post("/nominationcard", function (request, response) {
               console.log("talet error:" + error);
             }
             console.log("Nomination card el mfrood added");
-            response.status(200).send({ 
+            response.status(200).send({
               error: false,
               message: "Nomination card added" });
           }
@@ -224,7 +237,7 @@ router.post("/nominationcard", function (request, response) {
       });
     });
     //nhayet el upload
-    
+
   }
 });
 
@@ -257,7 +270,7 @@ console.log("Inside photo");
         message:"Photo added"
       });
     })
-    
+
   })
   }
 });
@@ -289,7 +302,7 @@ router.post("/highschoolcertificate", function (request, response) {
               console.log("talet error in highschoolcertificate:" + error);
             }
             console.log("highschoolcertificate el mfrood added");
-            response.status(200).send({ 
+            response.status(200).send({
               error: false,
               message: "High School Certificate added" });
           }
@@ -327,7 +340,7 @@ router.post("/birthcertificate", function (request, response) {
               console.log("talet error in birthCertificate:" + error);
             }
             console.log("Birth Certificate el mfrood added");
-            response.status(200).send({ 
+            response.status(200).send({
               error: false,
               message: "Birth Certificate added" });
           }
@@ -365,7 +378,7 @@ router.post("/nationalid", function (request, response) {
               console.log("talet error in nationalid:" + error);
             }
             console.log("National ID el mfrood added");
-            response.status(200).send({ 
+            response.status(200).send({
               error: false,
               message: "National ID added" });
           }
