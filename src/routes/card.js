@@ -68,12 +68,13 @@ router.get("/cardcart", function (req, res, next) {
     console.log("in cardcart api");
     console.log(allresults[0].Gender);
     var paid = 1;
-    allresults.last_payment = new Date(allresults.last_payment);
-    allresults.last_payment.setDate(allresults.last_payment.getDate() + 366);
+    allresults[0].last_payment = new Date(allresults[0].last_payment);
+    allresults[0].last_payment.setDate(allresults[0].last_payment.getDate() + 366);
     var date = new Date();
-    var diff = date.getTime() - allresults.last_payment.getTime();
+    var diff = date.getTime() - allresults[0].last_payment.getTime();
     diff = diff / (1000 * 3600 * 24);
     diff = parseInt(diff / 365) + 1;
+    console.log(diff);
     if(diff<=0){
        paid =1;
     }
