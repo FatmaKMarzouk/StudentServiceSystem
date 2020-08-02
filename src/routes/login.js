@@ -7,8 +7,10 @@ var session = require("express-session");
 var bodyParser = require("body-parser");
 var path = require("path");
 var cors = require("cors");
+var bcrypt = require('bcryptjs');
 var jwt = require("jsonwebtoken");
 const utils = require("../utils");
+var hash = " ";
 router.use(
   session({
     secret: "secret",
@@ -73,63 +75,65 @@ router.post("/users/signin", function (req, res) {
   if (user && pwd && role) {
     console.log("user && pwd && role");
     connection.query("Use AlexUni");
-    if (role == "student") 
+    if (role == "student")
     {
       console.log("student");
       connection.query(
-        "SELECT * FROM Students WHERE Username = ? AND Password = ?",
-        [user, pwd],
-        function (error, results, fields) 
-        {
-          console.log(results);
-          if (results.length > 0) 
+        "SELECT * FROM Students WHERE Username = ?",[user],function (error, results, fields)
+        { if(results.length > 0){
+          Object.keys(results).forEach(function (key)
           {
-            //req.session.loggedin = true;
-            //console.log("Request session in login b3d el definition");
-            //console.log(req.session.loggedin);
-            //req.session.username = user;
-            Object.keys(results).forEach(function (key) 
-            {
-              var row = results[key];
-              userData.name = row.NameEn;
-              userData.username = row.Username;
-              userData.role = role;
-            });
-            console.log("userData FLAG");
-            console.log(userData);
-            // generate token
-            const token = utils.generateToken(userData);
-            console.log("token FLAG");
-            console.log(token);
-            // get basic user details
-            const userObj = utils.getCleanUser(userData);
-            // return the token along with user details
-            return res.json({ user: userObj, token });
-          }
-          // return 401 status if credential don't not match.
-          else 
+            var row = results[key];
+            hash = row.Password;
+            userData.name = row.NameEn;
+            userData.username = row.Username;
+            userData.role = role;
+          });
+          bcrypt.compare(pwd, hash, function(err, res) {
+              if(res==true){
+                console.log("userData FLAG");
+                console.log(userData);
+                // generate token
+                const token = utils.generateToken(userData);
+                console.log("token FLAG");
+                console.log(token);
+                // get basic user details
+                const userObj = utils.getCleanUser(userData);
+                // return the token along with user details
+                return res.json({ user: userObj, token });
+              }
+              else{
+                return res.status(401).json(
+                {
+                  error: true,
+                  message: "Password is invalid",
+                });
+              }
+        });
+
+        }
+        else{
+          return res.status(401).json(
           {
-            return res.status(401).json(
-            {
-              error: true,
-              message: "Username or Password is Wrong.",
-            });
-          }
+            error: true,
+            message: "Username doesn't exist.",
+          });
+        }
         }
       );
-    } 
-    else if (role == "secretary") 
+    }
+    else if (role == "secretary")
     {
       console.log("secretary");
       connection.query(
         "SELECT * FROM Secretary WHERE ID = ? AND Password = ?", [user, pwd],
-        function (error, results, fields) 
+        function (error, results, fields)
         {
-          if (results.length > 0) 
+          if (results.length > 0)
           {
             req.session.loggedin = true;
             req.session.username = user;
-            Object.keys(results).forEach(function (key) 
+            Object.keys(results).forEach(function (key)
             {
               var row = results[key];
               userData.name = row.Name;
@@ -145,7 +149,7 @@ router.post("/users/signin", function (req, res) {
           }
 
           // return 401 status if the credential is not match.
-          else 
+          else
           {
             return res.status(401).json(
             {
