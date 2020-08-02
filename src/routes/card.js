@@ -26,10 +26,7 @@ router.get("/card", function (req, res, next) {
             cardobject = { ...cardobject, ...results };
             //cardobject = results;
           });
-          /* console.log("bada2t teba3a cardobject barra");
-                    cardobject = JSON.stringify(cardobject);
-                    console.log(cardobject);
-                    console.log("5allast teba3a cardobject barra");*/
+        
           allresults = cardobject;
           console.log("bada2t allresults");
           console.log(allresults);
@@ -39,20 +36,7 @@ router.get("/card", function (req, res, next) {
         }
       }
     );
-    /*connection.query('Use IntegratedData');
-        connection.query('SELECT GPA,Semester FROM Student WHERE ID = ?', [username], function(err,results,field){
-            if(results.length>0)
-            {
-                Object.keys(results).forEach(function(key) {
-                    var row = results[key];
-                    resultobject2=row;
-                    //console.log(row);
-                    return;
-                    });
 
-                    console.log(allresults);
-            }
-        });*/
   } else {
     return res.status(400).send({
       error: true,
