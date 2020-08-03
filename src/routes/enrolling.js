@@ -102,7 +102,7 @@ router.post("/enroll", function (request, response) {
                         }
                         else {
 
-                          if (selection == "private") {
+                          if (selection == "SSP") {
                             connection.query("UPDATE Students SET SSP = b'1' WHERE Email = ? ", [email],
                               function (error, results, fields) { });
                           }
