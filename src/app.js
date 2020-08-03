@@ -27,7 +27,6 @@ var cart = require("./routes/cart");
 var certificateofenrollment = require("./routes/certificateofenrollment");
 var transcript = require("./routes/transcript");
 var addsec = require("./routes/addsec");
-var checkout = require("./routes/checkout");
 var card = require("./routes/card");
 var requests = require("./routes/requests");
 var payment = require("./routes/payment");
@@ -48,7 +47,6 @@ app.use(certificateofenrollment);
 app.use(card);
 app.use(addsec);
 app.use(cart);
-app.use(checkout);
 app.use(requests);
 app.use(payment)
 
