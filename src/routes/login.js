@@ -89,8 +89,8 @@ router.post("/users/signin", function (req, res) {
             userData.username = row.Username;
             userData.role = role;
           });
-          bcrypt.compare(pwd, hash, function(err, res) {
-              if(res==true){
+          bcrypt.compare(pwd, hash, function(err, yes) {
+              if(yes==true){
                 console.log("userData FLAG");
                 console.log(userData);
                 // generate token
