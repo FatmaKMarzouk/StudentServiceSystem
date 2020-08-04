@@ -53,7 +53,7 @@ const stripeChargeCallback = res => (stripeErr, stripeRes) => {
         console.log("Payment is successful")
         res.status(200).send({
           error: false,
-          message: "Payment is successful",
+          message: " !تم بنجاح",
         });
       }
     });
