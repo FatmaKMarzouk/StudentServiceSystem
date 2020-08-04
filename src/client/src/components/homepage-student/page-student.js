@@ -112,7 +112,7 @@ function getFunctionContent(func, props) {
                 <Carousel.Item>
                   <img
                     className="d-block w-100"
-                    src="test3.png"
+                    src="Carousel1.jpg"
                     alt="First slide"
                   />
                 </Carousel.Item>

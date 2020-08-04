@@ -35,6 +35,7 @@ class Upload extends Component {
     }));
     document.getElementById("files-container").style.display = "block";
     document.getElementById("upload-button").style.display = "block";
+    document.getElementById("delete-upload-button").style.display = "block";
   }
 
   async uploadFiles() {
@@ -273,6 +274,7 @@ class Upload extends Component {
       });
       document.getElementById("files-container").style.display = "none";
       document.getElementById("upload-button").style.display = "none";
+      document.getElementById("delete-upload-button").style.display = "none";
       document.getElementById("successfully-upload").style.display = "flex";
     });
   }
@@ -312,13 +314,27 @@ class Upload extends Component {
       );
     } else {
       return (
-        <button
-          disabled={this.state.files.length < 0 || this.state.uploading}
-          onClick={this.uploadFiles}
-          id="upload-button"
-        >
-          رفع
-        </button>
+        <div id="upload-buttons">
+          <button
+            disabled={this.state.files.length < 0 || this.state.uploading}
+            onClick={this.uploadFiles}
+            id="upload-button"
+          >
+            رفع
+          </button>
+          <button
+            onClick={() => {
+              this.setState({ files: [], successfullUploaded: false });
+              document.getElementById("files-container").style.display = "none";
+              document.getElementById("upload-button").style.display = "none";
+              document.getElementById("delete-upload-button").style.display =
+                "none";
+            }}
+            id="delete-upload-button"
+          >
+            مسح
+          </button>
+        </div>
       );
     }
   }
