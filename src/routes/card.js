@@ -1,6 +1,7 @@
 var connection = require("../controllers/dbconnection");
 var mysql = require("mysql");
 var express = require("express");
+var dateFormat = require("dateformat");
 var router = express.Router();
 module.exports = router;
 var session = require("express-session");
@@ -17,7 +18,7 @@ router.get("/card", function (req, res, next) {
     var username = req.user.username;
     connection.query("Use AlexUni");
     connection.query(
-      "SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.Gender, Students.Username, Students.Photo, Students.SSN, Payment.Paid FROM Students RIGHT JOIN Payment ON Students.ID=Payment.StudentID WHERE Students.Username = ?",
+      "SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.Gender, Students.Username, Students.Photo, Students.SSN, Payment.last_payment FROM Students RIGHT JOIN Payment ON Students.ID=Payment.StudentID WHERE Students.Username = ?",
       [username],
       function (err, results, field) {
         if (results.length > 0) {
@@ -25,10 +26,7 @@ router.get("/card", function (req, res, next) {
             cardobject = { ...cardobject, ...results };
             //cardobject = results;
           });
-          /* console.log("bada2t teba3a cardobject barra");
-                    cardobject = JSON.stringify(cardobject);
-                    console.log(cardobject);
-                    console.log("5allast teba3a cardobject barra");*/
+        
           allresults = cardobject;
           console.log("bada2t allresults");
           console.log(allresults);
@@ -38,24 +36,11 @@ router.get("/card", function (req, res, next) {
         }
       }
     );
-    /*connection.query('Use IntegratedData');
-        connection.query('SELECT GPA,Semester FROM Student WHERE ID = ?', [username], function(err,results,field){
-            if(results.length>0)
-            {
-                Object.keys(results).forEach(function(key) {
-                    var row = results[key];
-                    resultobject2=row;
-                    //console.log(row);
-                    return;
-                    });
-    
-                    console.log(allresults);
-            }
-        });*/
+
   } else {
     return res.status(400).send({
       error: true,
-      message: "Please login to view this page!",
+      message: "!رجاء تسجيل الدخول",
     });
   }
 });
@@ -66,12 +51,25 @@ router.get("/cardcart", function (req, res, next) {
     var flag = 1;
     console.log("in cardcart api");
     console.log(allresults[0].Gender);
-    if (!allresults[0].Paid) {
+    var paid = 1;
+    allresults[0].last_payment = new Date(allresults[0].last_payment);
+    allresults[0].last_payment.setDate(allresults[0].last_payment.getDate() + 366);
+    var date = new Date();
+    var diff = date.getTime() - allresults[0].last_payment.getTime();
+    diff = diff / (1000 * 3600 * 24);
+    diff = parseInt(diff / 365) + 1;
+    console.log(diff);
+    if(diff<=0){
+       paid =1;
+    }
+    else{
+      paid=0;
+    }
+    if (paid==0) {
       flag = 0;
       res.status(400).send({
         error: true,
-        message:
-          "You are not eligible for extracting a student card as fees are not paid.",
+        message:  "يجب دفع المصاريف السنويةاولا",
       });
     }
 
@@ -89,14 +87,14 @@ router.get("/cardcart", function (req, res, next) {
       );
       res.status(200).send({
         error: false,
-        message: "Successfully added to cart!",
+        message: "!تم بنجاح",
       });
       //res.redirect('/cart');
     }
   } else {
     res.status(400).send({
       error: true,
-      message: "Please login to view this page!",
+      message: "!رجاء تسجيل الدخول",
     });
   }
 });

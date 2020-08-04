@@ -238,29 +238,40 @@ router.get("/transcript", function (request, response, next) {
   } else {
     response.send({
       error: true,
-      message: "Please login to view this page!",
+      message: "!رجاء تسجيل الدخول",
     });
   }
 });
 router.get("/transcriptconfirm", function (request, response, fields) {
   if (request.user) {
     var username = request.user.username;
-    var paid = "";
+    var myDate = "";
     var flag = 1;
+    var paid =0;
     connection.query("USE AlexUni");
     connection.query(
-      "SELECT Paid FROM Payment WHERE StudentID = ? ",
-      [username],
-      function (error, results3, fields) {
+      "SELECT last_payment FROM Payment WHERE StudentID = ? ",[username],function (error, results3, fields) {
         if (error) throw error;
         if (results3.length > 0) {
           Object.keys(results3).forEach(function (key) {
             var row3 = results3[key];
-
-            paid = row3.Paid;
+            myDate = row3.last_payment;
           });
+          myDate = new Date(myDate);
+          myDate.setDate(myDate.getDate() + 366);
+          var date = new Date();
+          var diff = date.getTime() - myDate.getTime();
+          diff = diff / (1000 * 3600 * 24);
+          diff = parseInt(diff / 365) + 1;
+
+          if (diff <= 0) {
+            paid=1;
+          }
+          else{
+            paid=0;
+          }
           // flag 1
-          if (paid) {
+          if (paid==1) {
             if (flag == 1) {
               fs.readFile("./transcript.docx", function (err, data) {
                 connection.query("USE AlexUni");
@@ -277,7 +288,7 @@ router.get("/transcriptconfirm", function (request, response, fields) {
                 //response.redirect('/cart');
                 response.status(200).send({
                   error: false,
-                  message: "Successfully added to cart!",
+                  message: "!تم بنجاح",
                 });
               });
             }
@@ -285,7 +296,7 @@ router.get("/transcriptconfirm", function (request, response, fields) {
             flag = 0;
             response.status(400).send({
               error: true,
-              message: "You haven't paid fees",
+              message: "يجب دفع المصاريف السنويةاولا",
             });
           }
         } else {
@@ -299,84 +310,7 @@ router.get("/transcriptconfirm", function (request, response, fields) {
   } else {
     response.status(400).send({
       error: true,
-      message: "Please log in",
+      message: "!رجاء تسجيل الدخول",
     });
   }
 });
-
-// flag 1
-/* // Create an empty Word object:
-
-           let docx = officegen('docx')
-
-           // Officegen calling this function after finishing to generate the docx document:
-           docx.on('finalize', function (written) {
-               console.log(
-                   'Finish to create a Microsoft Word document.'
-               )
-           })
-
-           // Officegen calling this function to report errors:
-           docx.on('error', function (err) {
-               console.log(err)
-           })
-
-           // Create a new paragraph:
-
-
-           pObj = docx.createP({
-               align: 'center'
-           })
-
-           // We can even add images:
-           pObj.addImage(path.resolve(__dirname, 'uni_logoo.png'), {
-               cx: 120,
-               cy: 120
-           })
-
-
-           pObj = docx.createP({
-               align: 'left'
-           })
-           pObj.addText("Studnet's name :" + name)
-           //pObj.addText(name,{color : '0000A0', bold: true, underline: true})
-           pObj.addLineBreak()
-           pObj.addText("Student's ID : " + id)
-
-           pObj.addLineBreak()
-           pObj.addText("Student's program: " + prog)
-
-           pObj.addLineBreak()
-           pObj.addText("Student's total registered hours : " + totalReg)
-
-           pObj.addLineBreak()
-           pObj.addText("Student's total earned hours : " + totalEarned)
-           pObj.addLineBreak()
-
-           //var myobj1 = JSON.stringify(masterobject1);
-           pObj.addText("Subject's taken :")
-
-           pObj.addLineBreak()
-           pObj.addText(info1sep.toString())
-           pObj.addLineBreak()
-           pObj.addText("Semester GPA and registered hours :")
-           pObj.addLineBreak()
-           pObj.addText(info2sep.toString(),{color : '0000FF'})
-
-           // Let's generate the Word document into a file:
-           let out = fs.createWriteStream('transcript.docx')
-                out.on('error', function (err) {
-             console.log(err)
-           })
-
-           // Async call to generate the output file:
-          docx.generate(out)
-
-
-
-
-           info1 = []
-           info1sep = []
-           info2 = []
-           info2sep = []
-           */

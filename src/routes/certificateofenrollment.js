@@ -3,6 +3,7 @@ var connection = require("../controllers/dbconnection");
 var convertapi = require('convertapi')('hG9EhwYoIPrtKMrw');
 var mysql = require("mysql");
 var express = require("express");
+var dateFormat = require("dateformat");
 var router = express.Router();
 module.exports = router;
 var session = require('express-session');
@@ -26,7 +27,7 @@ router.get("/certificateofenrollment", function (req, res, next) {
     console.log("THE USERNAME REACHED TO API:");
     console.log(username);
     connection.query("Use AlexUni");
-    connection.query("SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.armypostpone, Students.Gender, Payment.Paid FROM Students RIGHT JOIN Payment ON Students.ID=Payment.StudentID WHERE Students.Username = ?",
+    connection.query("SELECT Students.NameEN, Students.NameAr, Students.Faculty, Students.Program, Students.armypostpone, Students.Gender, Payment.last_payment FROM Students RIGHT JOIN Payment ON Students.ID=Payment.StudentID WHERE Students.Username = ?",
       [username],
       function (err, results, field) {
         if (results.length > 0) {
@@ -143,7 +144,7 @@ router.get("/certificateofenrollment", function (req, res, next) {
   } else {
     return res.status(400).send({
       error: true,
-      message: "Please login to view this page!"
+      message: "!رجاء تسجيل الدخول"
     });
   }
 });
@@ -153,26 +154,39 @@ router.get("/certificatecart", function (req, res, next) {
   if (req.user) {
     var username = req.user.username;
     var flag = 1;
+    var paid = 1;
+    allresults.last_payment = new Date(allresults.last_payment);
+    allresults.last_payment.setDate(allresults.last_payment.getDate() + 366);
+    var date = new Date();
+    var diff = date.getTime() - allresults.last_payment.getTime();
+    diff = diff / (1000 * 3600 * 24);
+    diff = parseInt(diff / 365) + 1;
+    if(diff<=0){
+       paid =1;
+    }
+    else{
+      paid=0;
+    }
     if (allresults.Gender === "Male") {
-      if (!allresults.Paid && allresults.armypostpone) {
+      if (paid==0 && allresults.armypostpone) {
         //   // res.json(allresults);
         // } else {
         flag = 0;
         res.status(400).send({
           error: true,
-          message: "You are not eligible for extracting certificate of enrollment as fees are not paid or your army postponing papers are not done."
+          message: " يجب دفع المصاريف السنوية و تأجيل التجنيد اولا"
         });
       }
 
     }
     else {
-      if (!allresults.Paid) {
+      if (paid==0) {
         //   // res.json(allresults);
         // } else {
         flag = 0;
         res.status(400).send({
           error: true,
-          message: "You are not eligible for extracting certificate of enrollment as fees are not paid."
+          message: "يجب دفع المصاريف السنويةاولا"
         });
       }
     }
@@ -189,7 +203,7 @@ router.get("/certificatecart", function (req, res, next) {
               fs.readFile('./enrollment.docx', function (_err, data) {
                 connection.query('USE AlexUni');
                 connection.query("INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName,document) VALUES( ?,?,?,?,?,? ) ",[username, "Certificate of Enrollment", JSON.stringify(allresults), fees, faculty, data]);
-               res.status(200).send("submit successfully");
+               res.status(200).send("!تم بنجاح");
               })
 
             // res.redirect("/cart");
@@ -207,62 +221,7 @@ router.get("/certificatecart", function (req, res, next) {
     } else {
       res.status(401).send({
         error: true,
-        message: "Please log in to view this page!"
+        message: "!رجاء تسجيل الدخول"
       });
     }
 });
-/*router.get('/cart-test', function(req,res,next)
-{     if(req.session.loggedin){
-      var username = req.session.username;
-      var flag =1;
-                if(allresults.Gender==='Male')
-                {
-                    if(allresults.Paid && allresults.armypostpone)
-                    {
-                        // res.json(allresults);
-                    }
-                    else
-                    {
-                         res.send('You are not eligible for extracting certificate of enrollment as fees are not paid or your army postponing papers are not done.');
-                         flag =0;
-                    }
-                }
-                else
-                {
-                    if(allresults.Paid)
-                    {
-                        // res.json(allresults);
-                    }
-                    else
-                    {
-                        res.send('You are not eligible for extracting certificate of enrollment as fees are not paid.');
-                        flag=0;
-                    }
-                }
-                if(flag == 1){
-                  connection.query('USE AlexUni');
-                  connection.query('SELECT * FROM Services WHERE Name = "Certificate of Enrollment" ',function(error,results1,fields){
-                    if(results1.length>0){
-                      Object.keys(results1).forEach(function(key){
-                        var row = results1[key];
-                        fees = row.Fees;
-                      });
-
-                      fs.readFile('./enrollment.docx', function (err, data) {
-                      connection.query('USE AlexUni');
-                    connection.query('INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName,document) VALUES( ?,?,?,?,?,? ) ',[username,"Certificate of Enrollment",JSON.stringify(allresults),fees,faculty,data]);
-                    res.redirect('/cart');
-                      })
-
-                    }
-                    else {
-                      console.log('No such service');
-                    }
-
-                });
-              }
-}
-else{
-  console.log("Please log in to view this page!")
-}
-});*/
