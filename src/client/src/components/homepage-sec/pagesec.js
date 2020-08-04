@@ -310,7 +310,14 @@ export default function SecHome(props) {
 
           <Link
             component="button"
-            variant="h6"
+            variant="h5"
+            style={{
+              marginLeft: "auto",
+              fontWeight: "bold",
+              color: "white",
+              fontFamily: "Cairo",
+              fontSize: "18px",
+            }}
             className={classes.title}
             underline="none"
             onClick={handleHome}

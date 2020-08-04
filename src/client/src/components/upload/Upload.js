@@ -34,6 +34,7 @@ class Upload extends Component {
       files: prevState.files.concat(files),
     }));
     document.getElementById("files-container").style.display = "block";
+    document.getElementById("upload-button").style.display = "block";
   }
 
   async uploadFiles() {
@@ -271,6 +272,7 @@ class Upload extends Component {
         open: true,
       });
       document.getElementById("files-container").style.display = "none";
+      document.getElementById("upload-button").style.display = "none";
       document.getElementById("successfully-upload").style.display = "flex";
     });
   }
@@ -367,6 +369,14 @@ class Upload extends Component {
           <br />
           <div id="upload-container">
             <div id="inside-upload-container">
+              <div className="upload-circle">
+                <Dropzone
+                  onFilesAdded={this.onFilesAdded}
+                  disabled={
+                    this.state.uploading || this.state.successfullUploaded
+                  }
+                />
+              </div>
               <div id="files-container">
                 {this.state.files.map((file) => {
                   return (
@@ -377,18 +387,10 @@ class Upload extends Component {
                     </div>
                   );
                 })}
-                {this.renderActions()}
-              </div>
-              <div className="upload-circle">
-                <Dropzone
-                  onFilesAdded={this.onFilesAdded}
-                  disabled={
-                    this.state.uploading || this.state.successfullUploaded
-                  }
-                />
               </div>
             </div>
             {this.getInputID(this.props.stepNum)}
+            {this.renderActions()}
           </div>
           <div id="successfully-upload">
             <Alert

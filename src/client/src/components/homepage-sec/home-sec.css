@@ -18,11 +18,15 @@
   font-family: "Cairo";
 }
 
-.MuiMenu-paper.Component-paper-80 {
+.MuiMenu-paper.Component-paper-508 {
   background-color: #002346;
   border: none;
   color: white;
   font-family: "Cairo";
+}
+
+.MuiMenu-list {
+  background-color: #002346;
 }
 
 #hide-scrollbar::-webkit-scrollbar {
