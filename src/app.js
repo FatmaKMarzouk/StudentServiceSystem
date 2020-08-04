@@ -47,7 +47,6 @@ app.use(certificateofenrollment);
 app.use(card);
 app.use(addsec);
 app.use(cart);
-app.use(checkout);
 app.use(requests);
 app.use(payment)
 
