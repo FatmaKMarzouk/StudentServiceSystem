@@ -11,7 +11,8 @@ var postpone = require("./routes/postpone");
 var homesec = require("./routes/homesec");
 var enrollement = require("./routes/enrolling");
 var chooseprog = require("./routes/chooseprog");
-const cors = require("cors");
+var cors = require("cors");
+app.use(cors());
 
 var docx = require("docx");
 
