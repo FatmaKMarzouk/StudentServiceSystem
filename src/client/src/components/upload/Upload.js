@@ -21,6 +21,7 @@ class Upload extends Component {
       uploadProgress: {},
       successfullUploaded: false,
       stdId: 0,
+      openAlert: false,
     };
 
     this.onFilesAdded = this.onFilesAdded.bind(this);
@@ -39,24 +40,28 @@ class Upload extends Component {
   }
 
   async uploadFiles() {
-    this.setState({ uploadProgress: {}, uploading: true });
-    const promises = [];
-    console.log("SARA SAKRRRR");
-    console.log(this.state.files);
-    this.state.files.forEach((file) => {
-      console.log("Test 1");
-      console.log(file);
-      promises.push(this.sendRequest(file));
-      console.log("PROMISES");
-      console.log(promises);
-    });
-    try {
-      await Promise.all(promises);
+    if (this.state.stdId == "") {
+      this.setState({ openAlert: true });
+    } else {
+      this.setState({ uploadProgress: {}, uploading: true });
+      const promises = [];
+      console.log("SARA SAKRRRR");
+      console.log(this.state.files);
+      this.state.files.forEach((file) => {
+        console.log("Test 1");
+        console.log(file);
+        promises.push(this.sendRequest(file));
+        console.log("PROMISES");
+        console.log(promises);
+      });
+      try {
+        await Promise.all(promises);
 
-      this.setState({ successfullUploaded: true, uploading: false });
-    } catch (e) {
-      // Not Production ready! Do some error handling here instead...
-      this.setState({ successfullUploaded: true, uploading: false });
+        this.setState({ successfullUploaded: true, uploading: false });
+      } catch (e) {
+        // Not Production ready! Do some error handling here instead...
+        this.setState({ successfullUploaded: true, uploading: false });
+      }
     }
   }
 
@@ -334,6 +339,18 @@ class Upload extends Component {
           >
             مسح
           </button>
+          <Dialog
+            open={this.state.openAlert}
+            onClose={this.handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogContent>
+              <Alert variant="outlined" severity="error">
+                يجب ادخال الرقم الجامعي للطالب أولاً
+              </Alert>
+            </DialogContent>
+          </Dialog>
         </div>
       );
     }
@@ -346,6 +363,10 @@ class Upload extends Component {
     console.log(event.target.value);
 
     this.setState({ stdId: event.target.value });
+  };
+
+  handleClose = () => {
+    this.setState({ openAlert: false });
   };
 
   getInputID(id) {

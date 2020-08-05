@@ -18,17 +18,6 @@
   font-family: "Cairo";
 }
 
-.MuiMenu-paper.Component-paper-508 {
-  background-color: #002346;
-  border: none;
-  color: white;
-  font-family: "Cairo";
-}
-
-.MuiMenu-list {
-  background-color: #002346;
-}
-
 #hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -45,4 +34,17 @@
 
 #grid-root {
   flex-grow: 1;
+}
+
+#menu-list-grow {
+  background-color: #002346;
+}
+
+#menu-list-items {
+  font-family: "Cairo";
+  color: white;
+}
+
+#menu-list-items:hover {
+  background-color: #1361af36;
 }

@@ -90,8 +90,9 @@
 }
 
 #progress-button:disabled {
-  background-color: #868686;
-  color: rgb(70, 69, 69);
+  background-color: #adadad;
+  color: rgb(105, 104, 104);
+  cursor: not-allowed;
 }
 
 #add-secretary-button {
