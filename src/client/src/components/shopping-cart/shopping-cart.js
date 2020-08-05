@@ -97,6 +97,8 @@ export default function SpanningTable(props) {
           orderObjects.push(orderObject);
         });
         setOrderss(orderObjects);
+      } else {
+        setOrderss([]);
       }
     });
     console.log("HELLO");
