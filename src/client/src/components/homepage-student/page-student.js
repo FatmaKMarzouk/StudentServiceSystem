@@ -112,15 +112,15 @@ function getFunctionContent(func, props) {
                 <Carousel.Item>
                   <img
                     className="d-block w-100"
-                    src="Carousel1.jpg"
-                    alt="First slide"
+                    src="Carousel2.jpg"
+                    alt="Third slide"
                   />
                 </Carousel.Item>
                 <Carousel.Item>
                   <img
                     className="d-block w-100"
-                    src="test2.jpg"
-                    alt="Third slide"
+                    src="Carousel11.jpg"
+                    alt="First slide"
                   />
                 </Carousel.Item>
               </Carousel>
