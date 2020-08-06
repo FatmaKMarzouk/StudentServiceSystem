@@ -30,7 +30,7 @@ router.get("/allrequests", function (request, response) {
           });
           connection.query("USE AlexUni");
           connection.query(
-            "SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received,document FROM Requests WHERE FacultyName = ? && Paid = ?",
+            "SELECT ID,StudentID,ServiceNameAr,Data,Amount,Paid,DatePaid,done,received,document FROM Requests WHERE FacultyName = ? && Paid = ?",
             [facultysec, "1"],
             function (error, results, fields) {
               if (results.length > 0) {
@@ -90,7 +90,7 @@ router.get("/undonerequests", function (request, response) {
 
         connection.query("USE AlexUni");
         connection.query(
-          "SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received,document FROM Requests WHERE FacultyName = ? && done = ? && Paid = ?",
+          "SELECT ID,StudentID,ServiceNameAr,Data,Amount,Paid,DatePaid,done,received,document FROM Requests WHERE FacultyName = ? && done = ? && Paid = ?",
           [facultysec, "0", "1"],
           function (error, results, fields) {
             if (results.length > 0) {
@@ -134,7 +134,7 @@ router.post("/searchrequests", function (request, response) {
       var secusername = request.user.username;
 
       connection.query(
-        "SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received,document FROM Requests WHERE StudentID = ? && Paid=1",
+        "SELECT ID,StudentID,ServiceNameAr,Data,Amount,Paid,DatePaid,done,received,document FROM Requests WHERE StudentID = ? && Paid=1",
         [studentid],
         function (error, results, fields) {
           if (results.length > 0) {
@@ -178,7 +178,7 @@ router.post("/searchundonerequests", function (request, response) {
       var secusername = request.user.username;
 
       connection.query(
-        "SELECT ID,StudentID,ServiceName,Data,Amount,Paid,DatePaid,received,document FROM Requests WHERE StudentID = ? && done = ? && Paid=1",
+        "SELECT ID,StudentID,ServiceNameAr,Data,Amount,Paid,DatePaid,received,document FROM Requests WHERE StudentID = ? && done = ? && Paid=1",
         [studentid, "0"],
         function (error, results, fields) {
           if (results.length > 0) {
