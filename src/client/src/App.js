@@ -23,7 +23,7 @@ function App() {
     }
     console.log("abl el axios.verifytoken");
     axios
-      .get(`http://ec2-18-222-90-155.us-east-2.compute.amazonaws.com:5000/verifyToken?token=${token}`)
+      .get(`http://18.222.90.155:5000/verifyToken?token=${token}`)
       .then((response) => {
         setUserSession(response.data.token, response.data.user);
         setAuthLoading(false);
