@@ -47,7 +47,7 @@ function App() {
         <PrivateRoute path="/sechome" component={SecHome} />
         <PrivateRoute path="/studenthome" component={StudentHome} />
         <PrivateRoute path="/enroll" component={Enrolling} />
-        <PrivateRoute path="/payment" component={payment} />
+        <PublicRoute path="/payment" component={payment} />
       </Switch>
     </BrowserRouter>
   );
