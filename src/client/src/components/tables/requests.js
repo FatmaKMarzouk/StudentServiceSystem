@@ -121,6 +121,14 @@ function getRequestStatus(done, received) {
   else return "-";
 }
 
+function getRequestName(requestName) {
+  if (requestName == "Choose Program") return "اختيار البرنامج";
+  else if (requestName == "Annual fees") return "مصاريف عام";
+  else if (requestName == "Student Card") return "الكارنيه الجامعي";
+  else if (requestName == "Request Transcript") return "طلب ترانسكريبت المواد";
+  else if (requestName == "Certificate of Enrollment") return "شهادة قيد";
+}
+
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const { numSelected } = props;
@@ -524,7 +532,7 @@ export default function EnhancedTable(props) {
                         align="right"
                         id="table-body"
                       >
-                        {service.requestNameAr}
+                        {getRequestName(service.requestName)}
                       </TableCell>
                       <TableCell padding="checkbox" id="table-body">
                         <Checkbox
