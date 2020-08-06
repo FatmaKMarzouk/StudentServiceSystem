@@ -97,7 +97,7 @@ class AddSecretary extends Component {
       <div className="main-form" dir="rtl">
         <Form onSubmit={this.handleSubmit}>
           <div className="column">
-            <div id="main-form-titles">البيانات الشخصية</div>
+            <div id="main-form-titles">إضافة شئون طلبة</div>
             <div id="form-labels">
               <div id="form-labels-column">
                 <Form.Field>

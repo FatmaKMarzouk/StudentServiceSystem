@@ -488,7 +488,9 @@ export default function EnhancedTable(props) {
                       id="requests-rows"
                     >
                       <TableCell padding="checkbox" id="table-header">
-                        {service.requestName === "Choose Program" ? (
+                        {service.requestName === "Choose Program" ||
+                        service.requestName === "Annual Fees" ||
+                        service.requestName === "Student Card" ? (
                           <div></div>
                         ) : (
                           <Button

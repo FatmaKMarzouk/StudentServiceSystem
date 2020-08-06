@@ -210,7 +210,7 @@ export default function SpanningTable(props) {
             </TableBody>
           </Table>
         </div>
-        <StripeBtn>الدفع</StripeBtn>
+        <StripeBtn updateCart={() => setDeleteCount(deleteCount + 1)} />
         {/*<button
           id="checkout-button"
           className="btn btn-success"

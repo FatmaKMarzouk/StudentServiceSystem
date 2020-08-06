@@ -147,7 +147,7 @@ function getFunctionContent(func, props) {
     case 2:
       return (
         <div id="profile-component-container">
-          <Profile />
+          <Profile history={props.history} />
         </div>
       );
     default:
