@@ -1,6 +1,5 @@
 var connection = require("../controllers/dbconnection");
 //var msopdf = require('node-msoffice-pdf');
-var convertapi = require('convertapi')('hG9EhwYoIPrtKMrw');
 var mysql = require("mysql");
 var express = require("express");
 var dateFormat = require("dateformat");

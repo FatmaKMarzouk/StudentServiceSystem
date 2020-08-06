@@ -9,7 +9,6 @@
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {
-    "@pdftron/pdfnet-node": "^7.1.1-1",
     "aws-sdk": "^2.653.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
