@@ -26,7 +26,7 @@ router.get("/card", function (req, res, next) {
             cardobject = { ...cardobject, ...results };
             //cardobject = results;
           });
-        
+
           allresults = cardobject;
           console.log("bada2t allresults");
           console.log(allresults);
@@ -76,13 +76,9 @@ router.get("/cardcart", function (req, res, next) {
     if (flag == 1) {
       connection.query("USE AlexUni");
       connection.query(
-        "INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName) VALUES( ?,?,?,?,? ) ",
+        "INSERT INTO Requests (StudentID,ServiceName,ServiceNameAr,Data,Amount,FacultyName) VALUES( ?,?,?,?,?,? ) ",
         [
-          username,
-          "Student Card",
-          JSON.stringify(allresults),
-          "50",
-          "Faculty of Engineering",
+          username,"Student Card", "طلب كارنية كلية",JSON.stringify(allresults),"50","Faculty of Engineering",
         ]
       );
       res.status(200).send({

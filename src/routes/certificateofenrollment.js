@@ -201,7 +201,7 @@ router.get("/certificatecart", function (req, res, next) {
 
               fs.readFile('./enrollment.docx', function (_err, data) {
                 connection.query('USE AlexUni');
-                connection.query("INSERT INTO Requests (StudentID,ServiceName,Data,Amount,FacultyName,document) VALUES( ?,?,?,?,?,? ) ",[username, "Certificate of Enrollment", JSON.stringify(allresults), fees, faculty, data]);
+                connection.query("INSERT INTO Requests (StudentID,ServiceName,ServiceNameAr,Data,Amount,FacultyName,document) VALUES( ?,?,?,?,?,?,? ) ",[username, "Certificate of Enrollment","طلب شهادة قيد" ,JSON.stringify(allresults), fees, faculty, data]);
                 res.status(200).send({
                   error: false,
                   message: "!تم بنجاح",

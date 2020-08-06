@@ -92,8 +92,8 @@ router.get("/confirmannualfees", function (request, response, next) {
           });
           connection.query("USE AlexUni");
           connection.query(
-            "INSERT INTO Requests (StudentID,ServiceName,Amount,done,FacultyName) VALUES( ?,?,?,?,? ) ",
-            [username, "Annual Fees", total, "1", faculty]
+            "INSERT INTO Requests (StudentID,ServiceName,ServiceNameAr,Amount,done,FacultyName) VALUES( ?,?,?,?,?,? ) ",
+            [username, "Annual Fees","دفع مصاريف سنوية" ,total, "1", faculty]
           );
           response.status(200).send({
             error: false,

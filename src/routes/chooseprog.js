@@ -17,7 +17,7 @@ router.get('/chooseprog', function(request, response,next) {
   if (request.user) {
     // response.sendFile(__dirname+'/chooseprog.html');
     username = request.user.username;
-    var facultyname=""; 
+    var facultyname="";
     var ssp="";
     connection.query('USE AlexUni');
     connection.query('SELECT Faculty,SSP FROM Students WHERE Username = ? ', [username], function(error, results1, fields) {
@@ -128,7 +128,7 @@ router.post('/submitprog', function(request, response,next) {
                Date : date
              }
     connection.query('USE AlexUni');
-    connection.query('INSERT INTO Requests (StudentID,ServiceName,Data,Amount,Paid,DatePaid,done,received,FacultyName) VALUES( ?,?,?,?,?,?,?,?,? ) ',[username,"Choose Program",JSON.stringify(info),info.Fee,"1",info.Date,"1","1","Faculty of Engineering"]);
+    connection.query('INSERT INTO Requests (StudentID,ServiceName,ServiceNameAr,Data,Amount,Paid,DatePaid,done,received,FacultyName) VALUES( ?,?,?,?,?,?,?,?,?,? ) ',[username,"Choose Program","اختيار البرنامج",JSON.stringify(info),info.Fee,"1",info.Date,"1","1","Faculty of Engineering"]);
     console.log("submitprog test 5");
     console.log("el flag bta3 el response hna ya ali => ");
     response.status(200).send(
