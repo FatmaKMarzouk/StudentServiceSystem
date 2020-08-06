@@ -326,6 +326,7 @@ export default function EnhancedTable(props) {
               const orderObject = {
                 requestID: request.ID,
                 requestName: request.ServiceName,
+                requestNameAr: request.ServiceNameAr,
                 studentID: request.StudentID,
                 done: request.done,
                 received: request.received,
@@ -350,6 +351,7 @@ export default function EnhancedTable(props) {
               const orderObject = {
                 requestID: request.ID,
                 requestName: request.ServiceName,
+                requestNameAr: request.ServiceNameAr,
                 studentID: request.StudentID,
                 done: request.done,
                 received: request.received,
@@ -382,6 +384,7 @@ export default function EnhancedTable(props) {
                 const orderObject = {
                   requestID: request.ID,
                   requestName: request.ServiceName,
+                  requestNameAr: request.ServiceNameAr,
                   studentID: request.StudentID,
                   done: request.done,
                   received: request.received,
@@ -401,6 +404,7 @@ export default function EnhancedTable(props) {
                 const orderObject = {
                   requestID: request.ID,
                   requestName: request.ServiceName,
+                  requestNameAr: request.ServiceNameAr,
                   studentID: request.StudentID,
                   done: request.done,
                   received: request.received,
@@ -520,7 +524,7 @@ export default function EnhancedTable(props) {
                         align="right"
                         id="table-body"
                       >
-                        {service.requestName}
+                        {service.requestNameAr}
                       </TableCell>
                       <TableCell padding="checkbox" id="table-body">
                         <Checkbox

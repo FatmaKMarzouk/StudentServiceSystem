@@ -92,6 +92,7 @@ export default function SpanningTable(props) {
           const orderObject = {
             orderID: order.ID,
             orderName: order.ServiceName,
+            orderNameAr: order.ServiceNameAr,
             orderPrice: order.Amount,
           };
           orderObjects.push(orderObject);
@@ -151,7 +152,7 @@ export default function SpanningTable(props) {
                       {ccyFormat(order.orderPrice)}
                     </TableCell>
                     <TableCell id="cart-row" align="right" colSpan={3}>
-                      {order.orderName}
+                      {order.orderNameAr}
                     </TableCell>
                     {/*<TableCell id="cart-row" align="right">
                   {row.qty}
