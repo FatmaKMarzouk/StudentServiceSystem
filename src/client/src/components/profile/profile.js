@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import "./profile.css";
 import TextField from "@material-ui/core/TextField";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import LockIcon from "@material-ui/icons/Lock";
-import { removeUserSession, getUser } from "../../Utils/Common";
+import { removeUserSession, getToken } from "../../Utils/Common";
 
 function Profile(props) {
   const handleLogout = () => {
@@ -11,18 +11,22 @@ function Profile(props) {
     props.history.push("/");
   };
 
-  const Test = () => {
-    const user = getUser();
-  };
+  useEffect(() => {
+    const token = getToken();
+    cartApi(token).then((data) => {
+      console.log(data);
+      console.log("USER DATA");
+      /* data.requests.map((user) => {
+        const username = user.username;
+        const userID = user.userId;
+    }*/
+    });
+  });
 
   return (
     <div id="profile-page-background">
       <div id="-profile-settings-container">
-        <div
-          id="profile-settings"
-          style={{ marginBottom: "20px" }}
-          onClick={Test}
-        >
+        <div id="profile-settings" style={{ marginBottom: "20px" }}>
           تغيير كلمة السر
           <LockIcon id="profile-settings-icon" />
         </div>
