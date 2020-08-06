@@ -53,7 +53,7 @@ const stripeChargeCallback = res => (stripeErr, stripeRes) => {
         console.log("Payment is successful")
         res.status(200).send({
           error: false,
-          message: " !تم بنجاح",
+          message: "تم بنجاح, يمكنك استلام طلباتك من مكتب شئون الطلبة في خلال 3  ايام عمل",
         });
       }
     });
