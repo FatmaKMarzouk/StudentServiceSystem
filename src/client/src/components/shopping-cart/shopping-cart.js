@@ -70,7 +70,7 @@ const rows = [
 
 function getRequestName(requestName) {
   if (requestName == "Choose Program") return "اختيار البرنامج";
-  else if (requestName == "Annual fees") return "مصاريف عام";
+  else if (requestName == "Annual Fees") return "مصاريف عام";
   else if (requestName == "Student Card") return "الكارنيه الجامعي";
   else if (requestName == "Request Transcript") return "طلب ترانسكريبت المواد";
   else if (requestName == "Certificate of Enrollment") return "شهادة قيد";
