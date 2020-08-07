@@ -476,7 +476,28 @@ export const secretaryInfoApi = (token) => {
 export const postPasswordInfoStudent = (token, newPasswordInfo) => {
   console.log("PASSWORD INFO");
   console.log(newPasswordInfo);
-  return fetch("http://localhost:5000/changepass", {
+  return fetch("http://localhost:5000/changepass/Student", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ newPassword: newPasswordInfo }),
+  })
+    .then((response) => {
+      console.log("RESPONSE of change pass");
+      console.log(response);
+      console.log(response.error);
+      console.log(response.message);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+export const postPasswordInfoSecretary = (token, newPasswordInfo) => {
+  console.log("PASSWORD INFO");
+  console.log(newPasswordInfo);
+  return fetch("http://localhost:5000/changepass/Secretary", {
     method: "post",
     headers: {
       "Content-type": "application/json",

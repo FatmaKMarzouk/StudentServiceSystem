@@ -8,6 +8,7 @@ import {
   secretaryInfoApi,
   studentInfoApi,
   postPasswordInfoStudent,
+  postPasswordInfoSecretary,
 } from "../../core/Apis";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -61,8 +62,20 @@ export default function Profile(props) {
       console.log(token);
       switch (props.id) {
         case 1:
+          postPasswordInfoSecretary(token, passwordInfo).then((data) => {
+            if (data.error) {
+              setAlertMessage(data.message);
+              setAlertSeverity("error");
+              setOpenAlert(true);
+            } else {
+              setAlertMessage(data.message);
+              setAlertSeverity("success");
+              setOpenAlert(true);
+            }
+          });
           break;
         case 2:
+          console.log("PASSWORDINFO " + passwordInfo.oldPass);
           postPasswordInfoStudent(token, passwordInfo).then((data) => {
             if (data.error) {
               setAlertMessage(data.message);
@@ -85,9 +98,10 @@ export default function Profile(props) {
     console.log(input);
     console.log("event.target.value");
     console.log(event.target.value);
+    const value = event.target.value;
     setPasswordInfo((prevState) => ({
       ...prevState,
-      [input]: event.target.value,
+      [input]: value,
     }));
   };
 
@@ -96,9 +110,9 @@ export default function Profile(props) {
     switch (props.id) {
       case 1:
         secretaryInfoApi(token).then((data) => {
-          console.log(data);
           console.log("USER DATA");
           data.map((user) => {
+            console.log(user);
             console.log(user.Name + " " + user.ID);
             setUsername(user.Name);
             setUserID(user.ID);
@@ -111,15 +125,15 @@ export default function Profile(props) {
           console.log(data);
           console.log("USER DATA");
           data.map((user) => {
-            console.log(user.Name + " " + user.ID);
-            setUsername(user.Name);
+            console.log(user.NameAr + " " + user.ID);
+            setUsername(user.NameAr);
             setUserID(user.ID);
             console.log("username= " + username + " id= " + userID);
           });
         });
         break;
     }
-  });
+  }, [username]);
 
   return (
     <div id="profile-page-background">
@@ -141,27 +155,15 @@ export default function Profile(props) {
         <div id="profile-image-container">
           <img alt="profile image" src="profile_img.png" id="profile-img" />
         </div>
-        <div id="profile-information">
-          <TextField
-            id="outlined-read-only-input"
-            label="Name"
-            defaultValue={username}
-            InputProps={{
-              readOnly: true,
-            }}
-            variant="outlined"
-            margin="dense"
-          />
-          <TextField
-            id="outlined-read-only-input"
-            label="UserID"
-            defaultValue={userID}
-            InputProps={{
-              readOnly: true,
-            }}
-            variant="outlined"
-            margin="dense"
-          />
+        <div id="profile-user-details-container">
+          <div id="profile-user-details">
+            <div id="profile-user-details-mainlabel">الاسم</div>
+            <div id="profile-user-details-label">{username}</div>
+          </div>
+          <div id="profile-user-details">
+            <div id="profile-user-details-mainlabel">اسم المستخدم</div>
+            <div id="profile-user-details-label">{userID}</div>
+          </div>
         </div>
       </div>
       <Dialog
