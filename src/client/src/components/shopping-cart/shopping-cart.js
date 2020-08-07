@@ -12,6 +12,8 @@ import Paper from "@material-ui/core/Paper";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import { getToken } from "../../Utils/Common";
 import { cartApi, deleteCart } from "../../core/Apis";
+import { useHistory } from "react-router-dom";
+import StripeBtn from "../payment/stripeBtn";
 
 const TAX_RATE = 0.07;
 
@@ -66,7 +68,15 @@ const rows = [
   createRow(orders[2].orderName, orders[2].orderPrice),
 ];*/
 
-export default function SpanningTable() {
+function getRequestName(requestName) {
+  if (requestName == "Choose Program") return "اختيار البرنامج";
+  else if (requestName == "Annual fees") return "مصاريف عام";
+  else if (requestName == "Student Card") return "الكارنيه الجامعي";
+  else if (requestName == "Request Transcript") return "طلب ترانسكريبت المواد";
+  else if (requestName == "Certificate of Enrollment") return "شهادة قيد";
+}
+
+export default function SpanningTable(props) {
   const classes = useStyles();
   const [orderss, setOrderss] = useState([]);
   const [deleteCount, setDeleteCount] = useState(0);
@@ -95,6 +105,8 @@ export default function SpanningTable() {
           orderObjects.push(orderObject);
         });
         setOrderss(orderObjects);
+      } else {
+        setOrderss([]);
       }
     });
     console.log("HELLO");
@@ -106,6 +118,10 @@ export default function SpanningTable() {
     deleteCart(token, reqID).then(() => {
       setDeleteCount(deleteCount + 1);
     });
+  };
+
+  const handleCheckout = () => {
+    props.history.push("/payment");
   };
 
   return (
@@ -143,7 +159,7 @@ export default function SpanningTable() {
                       {ccyFormat(order.orderPrice)}
                     </TableCell>
                     <TableCell id="cart-row" align="right" colSpan={3}>
-                      {order.orderName}
+                      {getRequestName(order.orderName)}
                     </TableCell>
                     {/*<TableCell id="cart-row" align="right">
                   {row.qty}
@@ -202,9 +218,14 @@ export default function SpanningTable() {
             </TableBody>
           </Table>
         </div>
-        <button id="checkout-button" className="btn btn-success">
+        <StripeBtn updateCart={() => setDeleteCount(deleteCount + 1)} />
+        {/*<button
+          id="checkout-button"
+          className="btn btn-success"
+          onClick={handleCheckout}
+        >
           الدفع
-        </button>
+        </button>*/}
       </TableContainer>
     </div>
   );

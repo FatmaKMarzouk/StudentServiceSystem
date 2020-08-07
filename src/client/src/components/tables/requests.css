@@ -42,9 +42,6 @@
   margin-left: -13px;
 }
 
-#requests-search:hover {
-}
-
 #requests-bar {
   display: flex;
   align-items: flex-end;
@@ -82,4 +79,18 @@
 
 #requests-headers {
   border-bottom: solid 1px #002346;
+}
+
+#requests-download-button {
+  min-width: 10px;
+  font-family: "Cairo";
+  font-size: 10px;
+  padding: 20%;
+  height: 20px;
+  box-shadow: 10px 0px 89px -5px rgb(167, 164, 167);
+  color: #0a59a8;
+}
+
+#requests-download-button:hover {
+  background-color: white;
 }

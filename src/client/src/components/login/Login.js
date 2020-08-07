@@ -20,7 +20,7 @@ function Login(props) {
     setError(null);
     setLoading(true);
     axios
-      .post("https://localhost:5000/users/signin", {
+      .post("http://ec2-3-134-107-83.us-east-2.compute.amazonaws.com:5000/users/signin", {
         username: username.value,
         password: password.value,
         role: role.value,
@@ -32,9 +32,13 @@ function Login(props) {
         console.log("response.data.user");
         console.log(response.data.user);
         setUserSession(response.data.token, response.data.user);
-        props.history.push("/home");
+
+        if (response.data.user.role === "secretary")
+          props.history.push("/sechome");
+        else props.history.push("/studenthome");
       })
       .catch((error) => {
+        console.log("login error: "+ error);
         setLoading(false);
         if (error.response.status === 401)
           setError(error.response.data.message);

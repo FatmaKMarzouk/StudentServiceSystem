@@ -3,6 +3,8 @@ var express = require("express");
 var router = express.Router();
 module.exports = router;
 var path = require("path");
+var dateFormat = require("dateformat");
+var moment = require('moment');
 var bodyParser = require("body-parser");
 var session = require("express-session");
 var nodemailer = require("nodemailer");
@@ -10,6 +12,7 @@ var facultysec;
 var request = require("request");
 var fs = require("fs");
 var multer = require("multer");
+var bcrypt = require('bcryptjs');
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "public");
@@ -19,27 +22,28 @@ var storage = multer.diskStorage({
   },
 });
 var connection = require("../controllers/dbconnection");
+const { response } = require("express");
 var email;
 
 var upload = multer({ storage: storage }).single("file");
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-router.post('/upload', function (req, res) {
+router.post('/upload', function (request, response) {
   console.log("bdayet upload");
   console.log(upload.filename);
   console.log("nhayet upload");
-  upload(req, res, function (err) {
+  upload(request, response, function (error) {
     console.log("gowa el upload");
-    if (err instanceof multer.MulterError) {
-      console.log("awl error" + err);
-      return res.status(500).json(err)
-    } else if (err) {
-      console.log("tany error" + err);
-      return res.status(500).json(err)
+    if (error instanceof multer.MulterError) {
+      console.log("awl error" + error);
+      return response.status(500).json(error)
+    } else if (error) {
+      console.log("tany error" + error);
+      return res.status(500).json(error)
     }
     console.log("gowa el upload lsssssa");
-    return res.status(200).send(req.file)
+    return response.status(200).send(request.file)
 
   })
 });
@@ -84,88 +88,107 @@ router.post("/enroll", function (request, response) {
             Math.floor(Math.random() * charactersLength)
           );
         }
+        bcrypt.genSalt(10, function(err, salt) {
+          bcrypt.hash(result, salt, function(err, hash) {
 
-        connection.query("INSERT INTO Students (NameEn, NameAr, ParentPhone, Gender, medicalCondition, Email, Nationality, Birthdate, SSN, phoneNumber, Address, Password, Faculty, Program, ParentName, ParentSSN, ParentRelation) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ",
-          [nameen, namear, parentphone, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, result, facultysec, "General", parentname, parentssn, parentrelation,],
-          function (error, results, fields) {
-            if (error) {
-              response.status(200).send({
-                error: true,
-                message: "Student not added",
-              });
-            }
-            else {
-              if (selection == "private") {
-                connection.query("UPDATE Students SET SSP = b'1' WHERE Email = ? ", [email],
-                  function (error, results, fields) { });
-              }
+                    connection.query("INSERT INTO Students (NameEn, NameAr, ParentPhone, Gender, medicalCondition, Email, Nationality, Birthdate, SSN, phoneNumber, Address, Password, Faculty, Program, ParentName, ParentSSN, ParentRelation) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ",
+                      [nameen, namear, parentphone, gender, medicalcondition, email, nationality, birthdate, ssn, phonenumber, address, hash, facultysec, "General", parentname, parentssn, parentrelation,],
+                      function (error, results, fields) {
+                        if (error) {
+                          response.status(200).send({
+                            error: true,
+                            message: "Student not added",
+                          });
+                        }
+                        else {
 
-              connection.query(
-                "UPDATE Students SET Username = ID WHERE Email = ? ", [email], function (error, results, fields) {
-                  if (error)
-                    throw error
-                  else {
-                    connection.query("SELECT Username FROM Students WHERE Email = ? ", [email], function (error, results1, fields) {
-                      if (results1.length > 0) {
-                        Object.keys(results1).forEach(function (key) {
-                          var row = results1[key];
-                          user = row.Username;
-                          console.log(user);
-                          return user;
-                        });
-                        const output = `
-            					<p>Congratulations! You have been accepted in Alexandria University.</p>
-            					<h3>Contact Details</h3>
-            					<ul>
-            					<li>Faculty: ${facultysec}</li>
-            					<li>Username: ${user}</li>
-            					<li>Password: ${result}</li>
-            					</ul>
-            					<h3>Note:</h3>
-            					<p>Please login and change your password.</p>
-            				`;
-
-                        let transporter = nodemailer.createTransport({
-                          host: "smtp.gmail.com",
-                          port: 587,
-                          secure: false, // true for 465, false for other ports
-                          auth: {
-                            user: "alexandriauniversity7@gmail.com", // generated ethereal user
-                            pass: "Unified7!!", // generated ethereal password
-                          },
-                          tls: {
-                            rejectUnauthorized: false,
-                          },
-                        });
-
-                        let mailOptions = {
-                          from:
-                            '"Alexandria University" <alexandriauniversity7@gmail.com>', // sender address
-                          to: email, // list of receivers
-                          subject: "Alexandria University", // Subject line
-                          text: "Hello world?", // plain text body
-                          html: output, // html body
-                        };
-                        transporter.sendMail(mailOptions, (error, info) => {
-                          if (error) {
-
+                          if (selection == "SSP") {
+                            connection.query("UPDATE Students SET SSP = b'1' WHERE Email = ? ", [email],
+                              function (error, results, fields) { });
                           }
-                          else {
-                            console.log("Message sent: %s", info.messageId);
-                          }
-                        });
-                      }
-                    });
-                    response.status(200).send({
-                      error: false,
-                      message: "Student added successfully",
-                    });
-                    console.log("Student added successfully")
-                  }
-                });
-            }
 
-          });
+                          connection.query("UPDATE Students SET Username = ID WHERE Email = ? ", [email], function (error, results, fields) {
+                              if (error)
+                                throw error
+                              else {
+                                connection.query("SELECT Username FROM Students WHERE Email = ? ", [email], function (error, results1, fields) {
+                                  if (results1.length > 0) {
+                                    Object.keys(results1).forEach(function (key) {
+                                      var row = results1[key];
+                                      user = row.Username;
+                                      console.log(user);
+                                      return user;
+                                    });
+                                    var now = new Date();
+                                  var myDate = moment(now).format('YYYY-MM-DD');
+                                  console.log(myDate);
+                                  var year  = moment(myDate).format('YYYY');
+                                  console.log(year);
+                                  myDate = moment(year+"-10-01").format('YYYY-MM-DD')
+                                  console.log(myDate);
+                                  connection.query("INSERT INTO Payment (StudentID,last_payment) VALUES (?,?)",[user,myDate],function(error,results){
+                                    if(error)
+                                      throw(error)
+                                  });
+
+                                    const output = `
+                        					<p>Congratulations! You have been accepted in Alexandria University.</p>
+                        					<h3>Contact Details</h3>
+                        					<ul>
+                        					<li>Faculty: ${facultysec}</li>
+                        					<li>Username: ${user}</li>
+                        					<li>Password: ${result}</li>
+                        					</ul>
+                        					<h3>Note:</h3>
+                        					<p>Please login and change your password.</p>
+                        				`;
+
+                                    let transporter = nodemailer.createTransport({
+                                      host: "smtp.gmail.com",
+                                      port: 587,
+                                      secure: false, // true for 465, false for other ports
+                                      auth: {
+                                        user: "alexandriauniversity7@gmail.com", // generated ethereal user
+                                        pass: "Unified7!!", // generated ethereal password
+                                      },
+                                      tls: {
+                                        rejectUnauthorized: false,
+                                      },
+                                    });
+
+                                    let mailOptions = {
+                                      from:
+                                        '"Alexandria University" <alexandriauniversity7@gmail.com>', // sender address
+                                      to: email, // list of receivers
+                                      subject: "Alexandria University", // Subject line
+                                      text: "Hello world?", // plain text body
+                                      html: output, // html body
+                                    };
+                                    transporter.sendMail(mailOptions, (error, info) => {
+                                      if (error) {
+
+                                      }
+                                      else {
+                                        console.log("Message sent: %s", info.messageId);
+                                      }
+                                    });
+                                  }
+                                });
+                                response.status(200).send({
+                                  error: false,
+                                  message: "Student added successfully",
+                                });
+                                console.log("Student added successfully")
+                              }
+                            });
+                        }
+
+                      });
+        });
+      })
+
+
+
 
 
       }
@@ -215,7 +238,7 @@ router.post("/nominationcard", function (request, response) {
               console.log("talet error:" + error);
             }
             console.log("Nomination card el mfrood added");
-            response.status(200).send({ 
+            response.status(200).send({
               error: false,
               message: "Nomination card added" });
           }
@@ -223,7 +246,7 @@ router.post("/nominationcard", function (request, response) {
       });
     });
     //nhayet el upload
-    
+
   }
 });
 
@@ -256,7 +279,7 @@ console.log("Inside photo");
         message:"Photo added"
       });
     })
-    
+
   })
   }
 });
@@ -288,7 +311,7 @@ router.post("/highschoolcertificate", function (request, response) {
               console.log("talet error in highschoolcertificate:" + error);
             }
             console.log("highschoolcertificate el mfrood added");
-            response.status(200).send({ 
+            response.status(200).send({
               error: false,
               message: "High School Certificate added" });
           }
@@ -326,7 +349,7 @@ router.post("/birthcertificate", function (request, response) {
               console.log("talet error in birthCertificate:" + error);
             }
             console.log("Birth Certificate el mfrood added");
-            response.status(200).send({ 
+            response.status(200).send({
               error: false,
               message: "Birth Certificate added" });
           }
@@ -364,7 +387,7 @@ router.post("/nationalid", function (request, response) {
               console.log("talet error in nationalid:" + error);
             }
             console.log("National ID el mfrood added");
-            response.status(200).send({ 
+            response.status(200).send({
               error: false,
               message: "National ID added" });
           }

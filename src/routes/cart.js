@@ -6,13 +6,14 @@ var session = require("express-session");
 var bodyParser = require("body-parser");
 var path = require("path");
 
-var total = 0;
+
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 var connection = require("../controllers/dbconnection");
 
 router.get("/cart", function (request, response, next) {
   if (request.user) {
+    var total = 0;
     var username = request.user.username;
     var requests = [];
     connection.query("USE AlexUni");
@@ -27,9 +28,6 @@ router.get("/cart", function (request, response, next) {
             total += row.Amount;
           });
           //sessionStorage.setItem('total',total);
-          console.log("bada2t tba3a total");
-          console.log(total);
-          console.log("5allast tba3a total");
           response.status(200).send({ requests, total });
         } else {
           response.status(400).send({
@@ -64,4 +62,3 @@ router.post("/delete-cart", function (request, response, next) {
     });
   }
 });
-exports.total = total;

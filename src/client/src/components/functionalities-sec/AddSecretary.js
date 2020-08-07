@@ -5,19 +5,99 @@ import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import EmailIcon from "@material-ui/icons/Email";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import { getToken } from "../../Utils/Common";
+import { postSecretaryInfo } from "../../core/Apis";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import Alert from "@material-ui/lab/Alert";
+
 //import { nationalities } from "./Nationalities";
 
 class AddSecretary extends Component {
-  handleSubmit = () => {};
+  state = {
+    name: "",
+    email: "",
+    admin: "",
+    disabled: true,
+    alertMessage: "",
+    alertSeverity: "",
+    openAlert: false,
+  };
 
-  handleChange = () => {};
+  handleSubmit = () => {
+    const token = getToken();
+    console.log("token ");
+    console.log(token);
+
+    postSecretaryInfo(token, this.state).then((data) => {
+      console.log("FIVE");
+      if (data.error) {
+        this.setState({
+          alertMessage: data.message,
+          alertSeverity: "error",
+          openAlert: true,
+        });
+        console.log(data.message);
+      } else {
+        this.setState({
+          alertMessage: data.message,
+          alertSeverity: "success",
+          openAlert: true,
+        });
+        console.log(data.message);
+      }
+    });
+  };
+
+  handleClose = () => {
+    this.setState({ openAlert: false });
+  };
+
+  handleChange = (input) => (event) => {
+    console.log("in handle change");
+    console.log("input");
+    console.log(input);
+    console.log("event.target.value");
+    console.log(event.target.value);
+
+    this.setState({ [input]: event.target.value }, () => {
+      console.log("Name");
+      console.log(this.state.name);
+      console.log("Email");
+      console.log(this.state.email);
+      console.log("Admin");
+      console.log(this.state.admin);
+      if (
+        this.state.name == "" ||
+        this.state.email == "" ||
+        this.state.admin == ""
+      ) {
+        console.log("in THEN disabled .... TRUE");
+        this.setState({ disabled: true }, () => {
+          console.log(this.state.disabled);
+        });
+      } else {
+        console.log("in ELSE disabled .... FALSE");
+        this.setState({ disabled: false }, () => {
+          console.log(this.state.disabled);
+        });
+      }
+    });
+  };
+
+  isFormValid = () => {
+    const { name, email, admin } = this.state;
+    console.log("HEELLOOOOOOOOOOOO");
+    console.log("IS FORM VALID =" + name && email && admin);
+    return !(name && email && admin);
+  };
 
   render() {
     return (
       <div className="main-form" dir="rtl">
         <Form onSubmit={this.handleSubmit}>
           <div className="column">
-            <div id="main-form-titles">البيانات الشخصية</div>
+            <div id="main-form-titles">إضافة شئون طلبة</div>
             <div id="form-labels">
               <div id="form-labels-column">
                 <Form.Field>
@@ -27,7 +107,7 @@ class AddSecretary extends Component {
                       required
                       id="outlined-required"
                       variant="outlined"
-                      onChange={this.handleChange()}
+                      onChange={this.handleChange("name")}
                       margin="dense"
                       style={{ width: "280px" }}
                     />
@@ -41,7 +121,7 @@ class AddSecretary extends Component {
                       id="outlined-required"
                       variant="outlined"
                       type="email"
-                      onChange={this.handleChange()}
+                      onChange={this.handleChange("email")}
                       margin="dense"
                       style={{ width: "280px" }}
                     />
@@ -62,7 +142,7 @@ class AddSecretary extends Component {
                       id="outlined-required"
                       select
                       required
-                      onChange={this.handleChange()}
+                      onChange={this.handleChange("admin")}
                       variant="outlined"
                       margin="dense"
                       style={{
@@ -84,6 +164,7 @@ class AddSecretary extends Component {
                   type="submit"
                   id="progress-button"
                   onClick={this.handleSubmit}
+                  disabled={this.state.disabled}
                 >
                   استمرار
                 </Button>
@@ -91,6 +172,18 @@ class AddSecretary extends Component {
             </div>
           </div>
         </Form>
+        <Dialog
+          open={this.state.openAlert}
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogContent style={{ padding: 0 }}>
+            <Alert variant="outlined" severity={this.state.alertSeverity}>
+              {this.state.alertMessage}
+            </Alert>
+          </DialogContent>
+        </Dialog>
       </div>
     );
   }

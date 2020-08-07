@@ -23,7 +23,7 @@ function App() {
     }
     console.log("abl el axios.verifytoken");
     axios
-      .get(`https://localhost:5000/verifyToken?token=${token}`)
+      .get(`http://ec2-3-134-107-83.us-east-2.compute.amazonaws.com:5000/verifyToken?token=${token}`)
       .then((response) => {
         setUserSession(response.data.token, response.data.user);
         setAuthLoading(false);
@@ -44,9 +44,10 @@ function App() {
     <BrowserRouter>
       <Switch>
         <PublicRoute exact path="/" component={Login} />
-        <PrivateRoute path="/home" component={StudentHome} />
+        <PrivateRoute path="/sechome" component={SecHome} />
+        <PrivateRoute path="/studenthome" component={StudentHome} />
         <PrivateRoute path="/enroll" component={Enrolling} />
-        <PrivateRoute path="/payment" component={payment} />
+        <PublicRoute path="/payment" component={payment} />
       </Switch>
     </BrowserRouter>
   );

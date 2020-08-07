@@ -40,7 +40,7 @@ router.get("/annualfees", function (request, response, next) {
           if (diff <= 0) {
             response.status(200).send({
               error: false,
-              message: "You have paid your annual fees",
+              message: "ليس عليك مصاريف سنوية غير مدفوعة",
             });
           } else {
             connection.query("USE AlexUni");
@@ -56,11 +56,11 @@ router.get("/annualfees", function (request, response, next) {
                   response.status(200).send({
                     error: false,
                     message:
-                      "You have to pay " +
+                      "يجب دفع قيمة  " +
                       total +
-                      " for " +
+                      " جنيه ل " +
                       diff +
-                      " academic years",
+                      " سنوات دراسية",
                   });
                 }
               }
@@ -72,7 +72,7 @@ router.get("/annualfees", function (request, response, next) {
   } else {
     response.status(400).send({
       error: true,
-      message: "Please log in to view this page!",
+      message: "!رجاء تسجيل الدخو",
     });
   }
 });
@@ -92,12 +92,12 @@ router.get("/confirmannualfees", function (request, response, next) {
           });
           connection.query("USE AlexUni");
           connection.query(
-            "INSERT INTO Requests (StudentID,ServiceName,Amount,done,FacultyName) VALUES( ?,?,?,?,? ) ",
-            [username, "Annual Fees", total, "1", faculty]
+            "INSERT INTO Requests (StudentID,ServiceName,ServiceNameAr,Amount,done,FacultyName) VALUES( ?,?,?,?,?,? ) ",
+            [username, "Annual Fees","دفع مصاريف سنوية" ,total, "1", faculty]
           );
           response.status(200).send({
             error: false,
-            message: "Your request is added successfully",
+            message: "!تم بنجاح",
           });
         }
       }
@@ -105,7 +105,7 @@ router.get("/confirmannualfees", function (request, response, next) {
   } else {
     response.status(400).send({
       error: true,
-      message: "Please log in to view this page!",
+      message: "!رجاء تسجيل الدخول",
     });
   }
 });
