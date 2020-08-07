@@ -112,15 +112,15 @@ function getFunctionContent(func, props) {
                 <Carousel.Item>
                   <img
                     className="d-block w-100"
-                    src="test3.png"
-                    alt="First slide"
+                    src="Carousel2.jpg"
+                    alt="Third slide"
                   />
                 </Carousel.Item>
                 <Carousel.Item>
                   <img
                     className="d-block w-100"
-                    src="test2.jpg"
-                    alt="Third slide"
+                    src="Carousel11.jpg"
+                    alt="First slide"
                   />
                 </Carousel.Item>
               </Carousel>
@@ -147,7 +147,7 @@ function getFunctionContent(func, props) {
     case 2:
       return (
         <div id="profile-component-container">
-          <Profile />
+          <Profile history={props.history} id={2} />
         </div>
       );
     default:

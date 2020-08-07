@@ -68,6 +68,14 @@ const rows = [
   createRow(orders[2].orderName, orders[2].orderPrice),
 ];*/
 
+function getRequestName(requestName) {
+  if (requestName == "Choose Program") return "اختيار البرنامج";
+  else if (requestName == "Annual fees") return "مصاريف عام";
+  else if (requestName == "Student Card") return "الكارنيه الجامعي";
+  else if (requestName == "Request Transcript") return "طلب ترانسكريبت المواد";
+  else if (requestName == "Certificate of Enrollment") return "شهادة قيد";
+}
+
 export default function SpanningTable(props) {
   const classes = useStyles();
   const [orderss, setOrderss] = useState([]);
@@ -97,6 +105,8 @@ export default function SpanningTable(props) {
           orderObjects.push(orderObject);
         });
         setOrderss(orderObjects);
+      } else {
+        setOrderss([]);
       }
     });
     console.log("HELLO");
@@ -149,7 +159,7 @@ export default function SpanningTable(props) {
                       {ccyFormat(order.orderPrice)}
                     </TableCell>
                     <TableCell id="cart-row" align="right" colSpan={3}>
-                      {order.orderName}
+                      {getRequestName(order.orderName)}
                     </TableCell>
                     {/*<TableCell id="cart-row" align="right">
                   {row.qty}
@@ -208,7 +218,7 @@ export default function SpanningTable(props) {
             </TableBody>
           </Table>
         </div>
-        <StripeBtn>الدفع</StripeBtn>
+        <StripeBtn updateCart={() => setDeleteCount(deleteCount + 1)} />
         {/*<button
           id="checkout-button"
           className="btn btn-success"

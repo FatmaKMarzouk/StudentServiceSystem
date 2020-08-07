@@ -31,8 +31,11 @@
 }
 
 .items-carousel {
-  /*background-image: url("bg.jpg");*/
-  background-color: rgb(169, 190, 207);
+  background-image: url("6.jpg");
+  /*background-color: rgb(169, 190, 207);*/
+  /*background-color: #bcc3c5;*/
+  background-repeat: no-repeat;
+  background-size: cover;
   padding: 2%;
   height: auto;
 }

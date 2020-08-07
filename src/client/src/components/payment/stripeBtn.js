@@ -4,30 +4,32 @@ import axios from "axios";
 import { getToken } from "../../Utils/Common";
 var amount;
 
-const stripeBtn = () => {
-  const publishableKey = "pk_test_51Gy0PkBVIbnFGJuVSUf8sC63Hu0bWLG3P6A1CkfuGSkomQfbDnz6mRSCGqgyaOQxqlYr1oPLjH3AgFynDxsvHJoy00JzuWWpKh";
+const stripeBtn = (props) => {
+  const publishableKey =
+    "pk_test_51Gy0PkBVIbnFGJuVSUf8sC63Hu0bWLG3P6A1CkfuGSkomQfbDnz6mRSCGqgyaOQxqlYr1oPLjH3AgFynDxsvHJoy00JzuWWpKh";
   //const total = sessionStorage.getItem('total');
-  const onToken = token => {
+  const onToken = (token) => {
     const mytoken = getToken();
     const body = {
       amount: 999,
-      token: token
+      token: token,
     };
 
-  fetch("http://localhost:5000/payment", {
-    method: "post",
-    headers: {
-      "Content-type": "application/json",
-      Authorization: `Bearer ${mytoken}`,
-    },
-    body: JSON.stringify(body),
-  })
-    .then((response) => {
-      console.log("payment api response");
-      console.log(response);
-      return response.json();
+    fetch("http://localhost:5000/payment", {
+      method: "post",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${mytoken}`,
+      },
+      body: JSON.stringify(body),
     })
-    .catch((err) => console.log(err));
+      .then((response) => {
+        console.log("payment api response");
+        console.log(response);
+        props.updateCart();
+        return response.json();
+      })
+      .catch((err) => console.log(err));
   };
 
   // axios
@@ -47,7 +49,6 @@ const stripeBtn = () => {
       amount={amount}
       token={onToken}
       stripeKey={publishableKey}
-
     />
   );
 };

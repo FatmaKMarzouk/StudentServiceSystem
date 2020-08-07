@@ -18,6 +18,7 @@ class AddSecretary extends Component {
     name: "",
     email: "",
     admin: "",
+    disabled: true,
     alertMessage: "",
     alertSeverity: "",
     openAlert: false,
@@ -59,7 +60,36 @@ class AddSecretary extends Component {
     console.log("event.target.value");
     console.log(event.target.value);
 
-    this.setState({ [input]: event.target.value });
+    this.setState({ [input]: event.target.value }, () => {
+      console.log("Name");
+      console.log(this.state.name);
+      console.log("Email");
+      console.log(this.state.email);
+      console.log("Admin");
+      console.log(this.state.admin);
+      if (
+        this.state.name == "" ||
+        this.state.email == "" ||
+        this.state.admin == ""
+      ) {
+        console.log("in THEN disabled .... TRUE");
+        this.setState({ disabled: true }, () => {
+          console.log(this.state.disabled);
+        });
+      } else {
+        console.log("in ELSE disabled .... FALSE");
+        this.setState({ disabled: false }, () => {
+          console.log(this.state.disabled);
+        });
+      }
+    });
+  };
+
+  isFormValid = () => {
+    const { name, email, admin } = this.state;
+    console.log("HEELLOOOOOOOOOOOO");
+    console.log("IS FORM VALID =" + name && email && admin);
+    return !(name && email && admin);
   };
 
   render() {
@@ -67,7 +97,7 @@ class AddSecretary extends Component {
       <div className="main-form" dir="rtl">
         <Form onSubmit={this.handleSubmit}>
           <div className="column">
-            <div id="main-form-titles">البيانات الشخصية</div>
+            <div id="main-form-titles">إضافة شئون طلبة</div>
             <div id="form-labels">
               <div id="form-labels-column">
                 <Form.Field>
@@ -134,6 +164,7 @@ class AddSecretary extends Component {
                   type="submit"
                   id="progress-button"
                   onClick={this.handleSubmit}
+                  disabled={this.state.disabled}
                 >
                   استمرار
                 </Button>

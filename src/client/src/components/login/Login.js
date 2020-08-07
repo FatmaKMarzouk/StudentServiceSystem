@@ -20,7 +20,7 @@ function Login(props) {
     setError(null);
     setLoading(true);
     axios
-      .post("http://localhost:5000/users/signin", {
+      .post("http://3.134.107.83:5000/users/signin", {
         username: username.value,
         password: password.value,
         role: role.value,
@@ -38,6 +38,7 @@ function Login(props) {
         else props.history.push("/studenthome");
       })
       .catch((error) => {
+        console.log("login error: "+ error);
         setLoading(false);
         if (error.response.status === 401)
           setError(error.response.data.message);
