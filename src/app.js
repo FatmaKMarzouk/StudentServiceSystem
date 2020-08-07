@@ -11,7 +11,8 @@ var postpone = require("./routes/postpone");
 var homesec = require("./routes/homesec");
 var enrollement = require("./routes/enrolling");
 var chooseprog = require("./routes/chooseprog");
-var changepass = require("./routes/changepass");
+var changepassstudent = require("./routes/changepassstudent");
+var changepasssec = require("./routes/changepasssec");
 var cors = require("cors");
 app.use(cors());
 
@@ -41,7 +42,8 @@ app.use(enrollement);
 app.use(postpone);
 app.use(home);
 app.use(annualfees);
-app.use(changepass)
+app.use(changepassstudent);
+app.use(changepasssec);
 app.use(transcript);
 
 app.use(chooseprog.router);

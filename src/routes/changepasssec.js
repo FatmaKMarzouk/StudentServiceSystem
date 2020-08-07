@@ -11,9 +11,9 @@ router.use(bodyParser.json());
 var connection = require('../controllers/dbconnection');
 var env = require("dotenv").config({ path: __dirname + "../.env" });
 var bcrypt = require('bcryptjs');
-var hash = " ";
+var pwd = " ";
 var email = " ";
-router.post("/changepass", function (request, res) {
+router.post("/changepass/Secretary", function (request, res) {
   if (request.user) {
     var username = request.user.username;
     var oldPass = request.body.oldPass;
@@ -21,21 +21,19 @@ router.post("/changepass", function (request, res) {
     var confirmNewPass = request.body.confirmNewPass;
 
     connection.query('USE AlexUni');
-    connection.query("SELECT * FROM Students WHERE Username = ?",[username],function (error, results, fields)
-      { if(results.length > 0){
+    connection.query("SELECT * FROM Secretary WHERE Username = ?",[username],function (error, results, fields){
+      if(results.length > 0){
         Object.keys(results).forEach(function (key)
         {
           var row = results[key];
-          hash = row.Password;
-          email = row.Email;
+          pwd = row.Password;
+          email = row.email;
         });
 
-        bcrypt.compare(oldPass, hash, function(err, yes) {
-            if(yes==true){
+
+            if(pwd == oldPass){
               if(newPass == confirmNewPass){
-                bcrypt.genSalt(10, function(err, salt) {
-                  bcrypt.hash(newPass, salt, function(err, hash) {
-                    connection.query("UPDATE Students SET Password=? WHERE ID=?",[hash,username],function(error,results){
+                    connection.query("UPDATE Secretary SET Password=? WHERE ID=?",[newPass,username],function(error,results){
                       if(error)
                         throw(error)
                       else{
@@ -81,8 +79,8 @@ router.post("/changepass", function (request, res) {
                       });
                       }
                     });
-                  });
-                });
+
+
               }
               else{
                 return res.status(401).json(
@@ -100,16 +98,9 @@ router.post("/changepass", function (request, res) {
                 message: "كلمة المرور الحالية خاطئة",
               });
             }
-      });
 
-        }
-        else{
-          res.status(401).send({
-            error: true,
-            message: "Student doesn't exist!"
-          });
-        }
-      });
+      }
+    });
 
   }
   else{
