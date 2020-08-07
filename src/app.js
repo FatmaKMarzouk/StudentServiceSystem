@@ -1,7 +1,8 @@
 var express = require("express");
 var app = express();
 var mysql = require("mysql");
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 5000;
+const hostname = 'ec2-3-134-107-83.us-east-2.compute.amazonaws.com';
 var path = require("path");
 var multer = require("multer");
 var env = require("dotenv").config({ path: __dirname + "/.env" });
@@ -54,5 +55,5 @@ app.use(cart);
 app.use(requests);
 app.use(payment)
 
-app.listen(port,"0.0.0.0");
+app.listen(port,hostname);
 module.exports = env;
