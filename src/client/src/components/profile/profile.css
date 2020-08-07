@@ -87,3 +87,16 @@
   font-weight: bold;
   color: rgb(223, 174, 41);
 }
+
+#password-form-field {
+  font-family: "Cairo";
+  color: #002346;
+  justify-content: flex-end;
+  display: flex;
+  align-items: center;
+}
+
+#password-form-field-label {
+  margin-left: 2%;
+  font-weight: bold;
+}

@@ -201,7 +201,9 @@ function GetFunctionContent(func, props) {
         </div>
       );
     case 3:
-      return <Profile style={{ marginTop: "-10%" }} history={props.history} />;
+      return (
+        <Profile style={{ marginTop: "-10%" }} history={props.history} id={1} />
+      );
     case 4:
       return <AddSecretary />;
 
