@@ -20,7 +20,7 @@ function Login(props) {
     setError(null);
     setLoading(true);
     axios
-      .post("http://3.134.107.83:5000/users/signin", {
+      .post("http://localhost:5000/users/signin", {
         username: username.value,
         password: password.value,
         role: role.value,
