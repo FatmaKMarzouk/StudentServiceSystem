@@ -1,7 +1,7 @@
 var express = require("express");
 var app = express();
 var mysql = require("mysql");
-var port = process.env.PORT || 80;
+var port = process.env.PORT || 5000;
 var path = require("path");
 var multer = require("multer");
 var env = require("dotenv").config({ path: __dirname + "/.env" });
