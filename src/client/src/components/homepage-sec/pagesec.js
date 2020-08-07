@@ -169,7 +169,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-function GetFunctionContent(func) {
+function GetFunctionContent(func, props) {
   const [fetchRequests, setFetchRequests] = useState(0);
   switch (func) {
     case 0:
@@ -201,7 +201,9 @@ function GetFunctionContent(func) {
         </div>
       );
     case 3:
-      return <Profile style={{ marginTop: "-10%" }} />;
+      return (
+        <Profile style={{ marginTop: "-10%" }} history={props.history} id={1} />
+      );
     case 4:
       return <AddSecretary />;
 
@@ -411,7 +413,7 @@ export default function SecHome(props) {
 
       <main className={classes.content}>
         {activeFunc === 3 ? (
-          GetFunctionContent(activeFunc)
+          GetFunctionContent(activeFunc, props)
         ) : (
           <div>
             <div className={classes.appBarSpacer} />

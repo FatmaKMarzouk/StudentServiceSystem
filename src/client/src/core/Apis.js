@@ -435,3 +435,82 @@ export const postSecretaryInfo = (token, newSecretaryInfo) => {
     })
     .catch((err) => console.log(err));
 };
+
+//-------------------------------------------------
+//Profile Info
+//Student Profile
+export const studentInfoApi = (token) => {
+  console.log("ana f api REQUESTS");
+  return fetch(`http://localhost:5000/studentinfo`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+export const secretaryInfoApi = (token) => {
+  return fetch(`http://localhost:5000/secretaryinfo`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+//--------------------------------
+//CHANGE PASSWORD
+
+export const postPasswordInfoStudent = (token, newPasswordInfo) => {
+  console.log("PASSWORD INFO");
+  console.log(newPasswordInfo);
+  return fetch("http://localhost:5000/changepass/Student", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ newPassword: newPasswordInfo }),
+  })
+    .then((response) => {
+      console.log("RESPONSE of change pass");
+      console.log(response);
+      console.log(response.error);
+      console.log(response.message);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+export const postPasswordInfoSecretary = (token, newPasswordInfo) => {
+  console.log("PASSWORD INFO");
+  console.log(newPasswordInfo);
+  return fetch("http://localhost:5000/changepass/Secretary", {
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ newPassword: newPasswordInfo }),
+  })
+    .then((response) => {
+      console.log("RESPONSE of change pass");
+      console.log(response);
+      console.log(response.error);
+      console.log(response.message);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};

@@ -87,3 +87,50 @@
   font-weight: bold;
   color: rgb(223, 174, 41);
 }
+
+#password-form-field {
+  font-family: "Cairo";
+  color: #002346;
+  justify-content: flex-end;
+  display: flex;
+  align-items: center;
+}
+
+#password-form-field-label {
+  margin-left: 2%;
+  font-weight: bold;
+}
+
+#profile-user-details {
+  font-family: "Cairo";
+  color: #003366;
+  display: flex;
+  direction: rtl;
+  margin-bottom: 10px;
+  flex-direction: column;
+}
+
+#profile-user-details-label {
+  padding: 5px;
+  border: #002346 1px solid;
+  border-radius: 5px;
+  width: 200px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0px 2px 2px 2px rgba(179, 177, 177, 0.7);
+}
+
+#profile-user-details-container {
+  margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+#profile-user-details-mainlabel {
+  font-weight: bold;
+  display: flex;
+  justify-content: flex-start;
+  color: rgb(211, 162, 26);
+}
