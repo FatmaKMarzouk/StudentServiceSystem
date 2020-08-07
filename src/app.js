@@ -54,5 +54,5 @@ app.use(cart);
 app.use(requests);
 app.use(payment)
 
-app.listen(port,"ec2-3-134-107-83.us-east-2.compute.amazonaws.com");
+app.listen(port,"0.0.0.0");
 module.exports = env;
