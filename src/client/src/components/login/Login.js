@@ -20,7 +20,7 @@ function Login(props) {
     setError(null);
     setLoading(true);
     axios
-      .post("http://ec2-3-134-107-83.us-east-2.compute.amazonaws.com:5000/users/signin", {
+      .post("https://ec2-3-134-107-83.us-east-2.compute.amazonaws.com:5000/users/signin", {
         username: username.value,
         password: password.value,
         role: role.value,
