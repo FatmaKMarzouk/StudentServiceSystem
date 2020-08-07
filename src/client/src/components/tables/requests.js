@@ -11,6 +11,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
@@ -118,14 +119,6 @@ function getRequestStatus(done, received) {
   if (done && received) return "تم الاستلام";
   else if (done) return "تم الانتهاء";
   else return "-";
-}
-
-function getRequestName(requestName) {
-  if (requestName == "Choose Program") return "اختيار البرنامج";
-  else if (requestName == "Annual Fees") return "مصاريف عام";
-  else if (requestName == "Student Card") return "الكارنيه الجامعي";
-  else if (requestName == "Request Transcript") return "طلب ترانسكريبت المواد";
-  else if (requestName == "Certificate of Enrollment") return "شهادة قيد";
 }
 
 const EnhancedTableToolbar = (props) => {
@@ -333,7 +326,6 @@ export default function EnhancedTable(props) {
               const orderObject = {
                 requestID: request.ID,
                 requestName: request.ServiceName,
-
                 studentID: request.StudentID,
                 done: request.done,
                 received: request.received,
@@ -358,7 +350,6 @@ export default function EnhancedTable(props) {
               const orderObject = {
                 requestID: request.ID,
                 requestName: request.ServiceName,
-
                 studentID: request.StudentID,
                 done: request.done,
                 received: request.received,
@@ -391,7 +382,6 @@ export default function EnhancedTable(props) {
                 const orderObject = {
                   requestID: request.ID,
                   requestName: request.ServiceName,
-
                   studentID: request.StudentID,
                   done: request.done,
                   received: request.received,
@@ -411,7 +401,6 @@ export default function EnhancedTable(props) {
                 const orderObject = {
                   requestID: request.ID,
                   requestName: request.ServiceName,
-
                   studentID: request.StudentID,
                   done: request.done,
                   received: request.received,
@@ -499,9 +488,7 @@ export default function EnhancedTable(props) {
                       id="requests-rows"
                     >
                       <TableCell padding="checkbox" id="table-header">
-                        {service.requestName === "Choose Program" ||
-                        service.requestName === "Annual Fees" ||
-                        service.requestName === "Student Card" ? (
+                        {service.requestName === "Choose Program" ? (
                           <div></div>
                         ) : (
                           <Button
@@ -531,7 +518,7 @@ export default function EnhancedTable(props) {
                         align="right"
                         id="table-body"
                       >
-                        {getRequestName(service.requestName)}
+                        {service.requestName}
                       </TableCell>
                       <TableCell padding="checkbox" id="table-body">
                         <Checkbox

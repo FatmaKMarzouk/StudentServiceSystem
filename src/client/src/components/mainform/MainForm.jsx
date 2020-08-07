@@ -22,8 +22,6 @@ class MainForm extends Component {
     medicalcondition: "",
     parentphone: "",
     selection: "",
-    disabled: true,
-    progressDisabled: true,
   };
 
   nextStep = () => {
@@ -41,40 +39,7 @@ class MainForm extends Component {
   };
 
   handleChange = (input) => (event) => {
-    this.setState({ [input]: event.target.value }, () => {
-      console.log("Name");
-      console.log(this.state.name);
-      console.log("Email");
-      console.log(this.state.email);
-      console.log("Admin");
-      console.log(this.state.admin);
-      if (
-        this.state.namear == "" ||
-        this.state.ssn == "" ||
-        this.state.email == "" ||
-        this.state.gender == "" ||
-        this.state.address == "" ||
-        this.state.phonenumber == "" ||
-        this.state.nationality == "" ||
-        this.state.parentname == "" ||
-        this.state.parentssn == "" ||
-        this.state.parentrelation == "" ||
-        this.state.birthdate == "" ||
-        this.state.medicalcondition == "" ||
-        this.state.parentphone == "" ||
-        this.state.selection == ""
-      ) {
-        console.log("in THEN disabled .... TRUE");
-        this.setState({ disabled: true }, () => {
-          console.log(this.state.disabled);
-        });
-      } else {
-        console.log("in ELSE disabled .... FALSE");
-        this.setState({ disabled: false }, () => {
-          console.log(this.state.disabled);
-        });
-      }
-    });
+    this.setState({ [input]: event.target.value });
   };
 
   render() {
@@ -119,7 +84,6 @@ class MainForm extends Component {
             nextStep={this.nextStep}
             handleChange={this.handleChange}
             values={values}
-            disabled={this.state.disabled}
           />
         );
       case 2:

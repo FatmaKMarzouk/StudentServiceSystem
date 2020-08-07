@@ -23,7 +23,7 @@ function App() {
     }
     console.log("abl el axios.verifytoken");
     axios
-      .get(`http://127.0.0.1:5000/verifyToken?token=${token}`)
+      .get(`http://localhost:5000/verifyToken?token=${token}`)
       .then((response) => {
         setUserSession(response.data.token, response.data.user);
         setAuthLoading(false);
@@ -47,7 +47,7 @@ function App() {
         <PrivateRoute path="/sechome" component={SecHome} />
         <PrivateRoute path="/studenthome" component={StudentHome} />
         <PrivateRoute path="/enroll" component={Enrolling} />
-        <PublicRoute path="/payment" component={payment} />
+        <PrivateRoute path="/payment" component={payment} />
       </Switch>
     </BrowserRouter>
   );

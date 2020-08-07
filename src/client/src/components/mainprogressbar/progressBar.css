@@ -89,12 +89,6 @@
   width: 140px;
 }
 
-#progress-button:disabled {
-  background-color: #adadad;
-  color: rgb(105, 104, 104);
-  cursor: not-allowed;
-}
-
 #add-secretary-button {
   border-radius: 5px;
   background-color: #388e3c;

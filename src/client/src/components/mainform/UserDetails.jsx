@@ -605,7 +605,6 @@ class UserDetails extends Component {
                 type="submit"
                 id="progress-button"
                 onClick={this.saveAndContinue}
-                disabled={this.props.disabled}
               >
                 استمرار
               </Button>

@@ -11,10 +11,7 @@ var postpone = require("./routes/postpone");
 var homesec = require("./routes/homesec");
 var enrollement = require("./routes/enrolling");
 var chooseprog = require("./routes/chooseprog");
-var changepassstudent = require("./routes/changepassstudent");
-var changepasssec = require("./routes/changepasssec");
-var cors = require("cors");
-app.use(cors());
+const cors = require("cors");
 
 var docx = require("docx");
 
@@ -30,6 +27,7 @@ var cart = require("./routes/cart");
 var certificateofenrollment = require("./routes/certificateofenrollment");
 var transcript = require("./routes/transcript");
 var addsec = require("./routes/addsec");
+var checkout = require("./routes/checkout");
 var card = require("./routes/card");
 var requests = require("./routes/requests");
 var payment = require("./routes/payment");
@@ -42,8 +40,7 @@ app.use(enrollement);
 app.use(postpone);
 app.use(home);
 app.use(annualfees);
-app.use(changepassstudent);
-app.use(changepasssec);
+
 app.use(transcript);
 
 app.use(chooseprog.router);
@@ -51,8 +48,9 @@ app.use(certificateofenrollment);
 app.use(card);
 app.use(addsec);
 app.use(cart);
+app.use(checkout);
 app.use(requests);
 app.use(payment)
 
-app.listen('5000','127.0.0.1');
+app.listen(port); //this function does http.createServer
 module.exports = env;

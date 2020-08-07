@@ -14,9 +14,6 @@ import {
   getAnnualFees,
   postStudentInfo,
 } from "../../core/Apis";
-import Alert from "@material-ui/lab/Alert";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
 
 class Confirmation extends Component {
   state = {
@@ -62,9 +59,6 @@ class Confirmation extends Component {
       gender: "",
       selection: "",
     },
-    openAlert: false,
-    alertSeverity: "",
-    alertMessage: "",
   };
   saveAndContinue = (e) => {
     e.preventDefault();
@@ -83,25 +77,11 @@ class Confirmation extends Component {
     postStudentInfo(token, this.state.newStudentInfo).then((data) => {
       console.log("FIVE");
       if (data.error) {
-        this.setState({
-          openAlert: true,
-          alertSeverity: "error",
-          alertMessage: data.message,
-        });
         console.log(data.message);
       } else {
-        this.setState({
-          openAlert: true,
-          alertSeverity: "success",
-          alertMessage: data.message,
-        });
         console.log(data.message);
       }
     });
-  };
-
-  handleClose = () => {
-    this.setState({ openAlert: false });
   };
 
   back = (e) => {
@@ -479,18 +459,6 @@ class Confirmation extends Component {
               <Button id="progress-button" onClick={this.submitNewStudent}>
                 تأكيد
               </Button>
-              <Dialog
-                open={this.state.openAlert}
-                //onClose={this.handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <DialogContent>
-                  <Alert variant="outlined" severity={this.state.alertSeverity}>
-                    {this.state.alertMessage}
-                  </Alert>
-                </DialogContent>
-              </Dialog>
             </div>
           </div>
         );

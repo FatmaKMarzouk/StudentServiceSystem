@@ -31,11 +31,6 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Profile from "../profile/profile";
 import { removeUserSession, getToken } from "../../Utils/Common";
-import Grow from "@material-ui/core/Grow";
-import Popper from "@material-ui/core/Popper";
-import Paper from "@material-ui/core/Paper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import MenuList from "@material-ui/core/MenuList";
 
 import { addSecretary } from "../../core/Apis";
 
@@ -169,7 +164,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-function GetFunctionContent(func, props) {
+function GetFunctionContent(func) {
   const [fetchRequests, setFetchRequests] = useState(0);
   switch (func) {
     case 0:
@@ -197,13 +192,11 @@ function GetFunctionContent(func, props) {
     case 2:
       return (
         <div className="Card">
-          <Upload value="استمارة ٦ جند" stepNum={6} disabled={true} />
+          <Upload value="استمارة ٦ جند" stepNum={6} />
         </div>
       );
     case 3:
-      return (
-        <Profile style={{ marginTop: "-10%" }} history={props.history} id={1} />
-      );
+      return <Profile />;
     case 4:
       return <AddSecretary />;
 
@@ -219,31 +212,13 @@ export default function SecHome(props) {
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [activeFunc, setActiveFunc] = React.useState(0);
-  const [openM, setOpenM] = React.useState(false);
-  const anchorRef = React.useRef(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  function handleListKeyDown(event) {
-    if (event.key === "Tab") {
-      event.preventDefault();
-      setOpenM(false);
-    }
-  }
-
-  const handleToggle = () => {
-    setOpenM((prevOpenM) => !prevOpenM);
-  };
-
-  const handleClose = (event) => {
+  const handleClose = () => {
     setAnchorEl(null);
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-
-    setOpenM(false);
   };
 
   const handleDrawerOpen = () => {
@@ -306,13 +281,12 @@ export default function SecHome(props) {
             aria-haspopup="true"
             variant="contained"
             color="inherit"
-            onClick={handleToggle}
+            onClick={handleClick}
             style={{ padding: "0px", minWidth: "0" }}
-            ref={anchorRef}
           >
             <AccountCircle fontSize="medium" />
           </IconButton>
-          {/* <StyledMenu
+          <StyledMenu
             id="customized-menu"
             anchorEl={anchorEl}
             keepMounted
@@ -331,19 +305,12 @@ export default function SecHome(props) {
                 <ExitToAppIcon fontSize="small" />
               </ListItemIcon>
             </StyledMenuItem>
-         </StyledMenu>*/}
+          </StyledMenu>
           <Divider />
 
           <Link
             component="button"
-            variant="h5"
-            style={{
-              marginLeft: "auto",
-              fontWeight: "bold",
-              color: "white",
-              fontFamily: "Cairo",
-              fontSize: "18px",
-            }}
+            variant="h6"
             className={classes.title}
             underline="none"
             onClick={handleHome}
@@ -364,64 +331,14 @@ export default function SecHome(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Popper
-            open={openM}
-            anchorEl={anchorRef.current}
-            role={undefined}
-            transition
-            disablePortal
-          >
-            {({ TransitionProps, placement }) => (
-              <Grow
-                {...TransitionProps}
-                style={{
-                  transformOrigin:
-                    placement === "bottom" ? "center top" : "center bottom",
-                }}
-              >
-                <Paper>
-                  <ClickAwayListener onClickAway={handleClose}>
-                    <MenuList
-                      autoFocusItem={openM}
-                      id="menu-list-grow"
-                      onKeyDown={handleListKeyDown}
-                    >
-                      <MenuItem onClick={handleProfile} id="menu-list-items">
-                        <ListItemText id="sec-profile-menu-item">
-                          حسابي
-                        </ListItemText>
-                        <ListItemIcon id="sec-profile-menu-item">
-                          <SettingsIcon fontSize="small" />
-                        </ListItemIcon>
-                      </MenuItem>
-                      <MenuItem onClick={handleLogout} id="menu-list-items">
-                        <ListItemText id="sec-profile-menu-item">
-                          الخروج
-                        </ListItemText>
-                        <ListItemIcon id="sec-profile-menu-item">
-                          <ExitToAppIcon fontSize="small" />
-                        </ListItemIcon>
-                      </MenuItem>
-                    </MenuList>
-                  </ClickAwayListener>
-                </Paper>
-              </Grow>
-            )}
-          </Popper>
         </Toolbar>
       </AppBar>
 
       <main className={classes.content}>
-        {activeFunc === 3 ? (
-          GetFunctionContent(activeFunc, props)
-        ) : (
-          <div>
-            <div className={classes.appBarSpacer} />
-            <div maxWidth="lg" className={classes.container}>
-              {GetFunctionContent(activeFunc)}
-            </div>
-          </div>
-        )}
+        <div className={classes.appBarSpacer} />
+        <div maxWidth="lg" className={classes.container}>
+          {GetFunctionContent(activeFunc)}
+        </div>
       </main>
       <Drawer
         variant="permanent"
