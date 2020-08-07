@@ -38,6 +38,7 @@ function Login(props) {
         else props.history.push("/studenthome");
       })
       .catch((error) => {
+        console.log("login error: "+ error);
         setLoading(false);
         if (error.response.status === 401)
           setError(error.response.data.message);
