@@ -70,7 +70,7 @@ export default function DialogSelect() {
       } else {
         console.log("IN ELSEEE DATA GETPROGRAMS:: ");
         console.log(data);
-        setPrograms2(data);
+        setPrograms2(data.results2);
         console.log("programs222222!!!!!!");
         console.log(programs2);
 

@@ -34,18 +34,19 @@
   display: flex;
   justify-content: center;
   font-family: "Cairo";
-  font-size: 22px;
+  font-size: 20px;
 }
 
 #student-card-content {
   font-family: "Cairo";
-  margin-right: 10px;
+  margin-right: 5px;
   padding-bottom: 10px;
+  font-size: 12px;
 }
 
 #student-card-name {
   font-weight: bold;
   font-family: "Cairo";
-  font-size: 16px;
+  font-size: 12px;
   padding-bottom: 10px;
 }
