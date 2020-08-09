@@ -276,11 +276,10 @@ router.get("/transcriptconfirm", function (request, response, fields) {
               fs.readFile("./transcript.docx", function (err, data) {
                 connection.query("USE AlexUni");
                 connection.query(
-                  "INSERT INTO Requests (StudentID,ServiceName,ServiceNameِAr,Amount,FacultyName,document) VALUES( ?,?,?,?,?,? ) ",
+                  "INSERT INTO Requests (StudentID,ServiceName,Amount,FacultyName,document) VALUES( ?,?,?,?,? ) ",
                   [
                     username,
                     "Request Transcript",
-                    "طلب ترانسكريبت",
                     "50",
                     "Faculty of Engineering",
                     data,
