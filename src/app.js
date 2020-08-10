@@ -57,12 +57,12 @@ app.use(requests);
 app.use(payment)
 
 
-https.createServer({
-  key: fs.readFileSync('../privkey.pem'),
-  cert: fs.readFileSync('../fullchain.pem')
-}, app)
-.listen(port, function () {
-  console.log('listening.......')
-})
-// app.listen(port,hostname);
-// module.exports = env;
+// https.createServer({
+//   key: fs.readFileSync('privateKey.key'),
+//   cert: fs.readFileSync('certificate.crt')
+// }, app)
+// .listen(port, function () {
+//   console.log('listening.......')
+// })
+app.listen(port,hostname);
+module.exports = env;
