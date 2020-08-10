@@ -15,7 +15,7 @@ const stripeBtn = (props) => {
       token: token,
     };
 
-    fetch("http://ec2-3-134-107-83.us-east-2.compute.amazonaws.com:5000/payment", {
+    fetch("http://ec2-3-16-161-126.us-east-2.compute.amazonaws.com:5000/payment", {
       method: "post",
       headers: {
         "Content-type": "application/json",
