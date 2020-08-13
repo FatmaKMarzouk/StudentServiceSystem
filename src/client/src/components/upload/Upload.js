@@ -122,7 +122,7 @@ class Upload extends Component {
           //const data = new FormData();
           // data.append("file", file);
           axios
-            .post("https://ec2-3-16-161-126.us-east-2.compute.amazonaws.com:5000/nominationcard", formData1, {
+            .post("https://localhost:5000/nominationcard", formData1, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -162,7 +162,7 @@ class Upload extends Component {
           const formData2 = new FormData();
           formData2.append("file", file);
           axios
-            .post("https://ec2-3-16-161-126.us-east-2.compute.amazonaws.com:5000/highschoolcertificate", formData2, {
+            .post("https://localhost:5000/highschoolcertificate", formData2, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -177,7 +177,7 @@ class Upload extends Component {
           const formData3 = new FormData();
           formData3.append("file", file);
           axios
-            .post("https://ec2-3-16-161-126.us-east-2.compute.amazonaws.com:5000/birthcertificate", formData3, {
+            .post("https://localhost:5000/birthcertificate", formData3, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -192,7 +192,7 @@ class Upload extends Component {
           const formData4 = new FormData();
           formData4.append("file", file);
           axios
-            .post("https://ec2-3-16-161-126.us-east-2.compute.amazonaws.com:5000/nationalid", formData4, {
+            .post("https://localhost:5000/nationalid", formData4, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -207,7 +207,7 @@ class Upload extends Component {
           const formData5 = new FormData();
           formData5.append("file", file);
           axios
-            .post("https://ec2-3-16-161-126.us-east-2.compute.amazonaws.com:5000/photo", formData5, {
+            .post("https://localhost:5000/photo", formData5, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -240,7 +240,7 @@ class Upload extends Component {
           const stdId = 1;
           axios
             .post(
-              `http://ec2-3-16-161-126.us-east-2.compute.amazonaws.com:5000/uploaddoc?stdId=${this.state.stdId}`,
+              `http://localhost:5000/uploaddoc?stdId=${this.state.stdId}`,
               formData6,
               {
                 headers: {
