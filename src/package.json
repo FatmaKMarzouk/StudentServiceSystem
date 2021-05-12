@@ -34,7 +34,7 @@
     "multer": "^1.4.2",
     "mysql": "^2.18.1",
     "node-msoffice-pdf": "0.0.7",
-    "nodemailer": "^6.4.6",
+    "nodemailer": "^6.4.16",
     "officegen": "^0.6.4",
     "request": "^2.88.2",
     "stripe": "^8.67.0"
