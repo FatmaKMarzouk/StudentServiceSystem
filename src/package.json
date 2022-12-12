@@ -23,7 +23,7 @@
     "debug": "~2.6.9",
     "docx": "^5.0.2",
     "ejs": "^3.0.2",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-generator": "^4.16.1",
     "express-session": "^1.17.0",
     "http-errors": "~1.6.3",
